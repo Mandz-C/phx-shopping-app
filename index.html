@@ -1384,153 +1384,183 @@
         }
         
         async function submitOrder(orderData) {
-            try {
-                console.log('Submitting order to Supabase...', orderData.id);
-                
-                // First update stock for each item
-                for (const cartItem of cart) {
-                    const item = items.find(i => i.id == cartItem.itemId);
-                    if (item) {
-                        const newStock = item.stock - cartItem.quantity;
-                        await updateMaterialStockInSupabase(item.id, newStock);
-                        item.stock = newStock; // Update local
-                    }
-                }
-                
-                // Submit order
-                const { data: order, error: orderError } = await supabase
-                    .from('orders')
-                    .insert({
-                        order_id: orderData.id,
-                        requestor_name: orderData.requestorName,
-                        user_id: orderData.userId,
-                        device_id: orderData.deviceId,
-                        shop_id: orderData.shopId,
-                        contact_number: orderData.contactNumber,
-                        address: orderData.address,
-                        store_status: orderData.storeStatus,
-                        region: orderData.region,
-                        date_needed: orderData.dateNeeded,
-                        notes: orderData.notes,
-                        status: 'pending',
-                        items: orderData.items
-                    })
-                    .select()
-                    .single();
-                    
-                if (orderError) {
-                    console.error('Supabase error submitting order:', orderError);
-                    throw orderError;
-                }
-                
-                console.log('Order submitted successfully:', order);
-                
-                // Clear cart
-                cart = [];
-                localStorage.setItem('infxCart', JSON.stringify(cart));
-                updateCartCount();
-                
-                // Reload data
-                await loadOrders();
-                await loadItems(); // Reload items to get updated stock
-                
-                addNotification(
-                    'status_update',
-                    '📦 New Request Submitted',
-                    `Your request ${orderData.id} has been submitted successfully.`,
-                    orderData.id,
-                    currentUser.id
-                );
-                
-                return true;
-            } catch (error) {
-                console.error('Error submitting order:', error);
-                alert('Error submitting order. Please try again.');
-                return false;
+    try {
+        console.log('Submitting order to Supabase...', orderData.id);
+        
+        // First update stock for each item - DEDUCT stock immediately
+        for (const cartItem of cart) {
+            const item = items.find(i => i.id == cartItem.itemId);
+            if (item) {
+                const newStock = item.stock - cartItem.quantity;
+                await updateMaterialStockInSupabase(item.id, newStock);
+                item.stock = newStock; // Update local
             }
         }
         
-        async function updateOrderStatus(orderId, newStatus) {
-            try {
-                console.log('Updating order status in Supabase:', orderId, 'to:', newStatus);
-                
-                // Find the order first
-                const order = orders.find(o => o.id === orderId);
-                if (!order) {
-                    throw new Error('Order not found');
+        // Submit order
+        const { data: order, error: orderError } = await supabase
+            .from('orders')
+            .insert({
+                order_id: orderData.id,
+                requestor_name: orderData.requestorName,
+                user_id: orderData.userId,
+                device_id: orderData.deviceId,
+                shop_id: orderData.shopId,
+                contact_number: orderData.contactNumber,
+                address: orderData.address,
+                store_status: orderData.storeStatus,
+                region: orderData.region,
+                date_needed: orderData.dateNeeded,
+                notes: orderData.notes,
+                status: 'pending',
+                items: orderData.items
+            })
+            .select()
+            .single();
+            
+        if (orderError) {
+            console.error('Supabase error submitting order:', orderError);
+            
+            // IMPORTANT: If order submission fails, RESTORE THE STOCK
+            for (const cartItem of cart) {
+                const item = items.find(i => i.id == cartItem.itemId);
+                if (item) {
+                    const newStock = item.stock + cartItem.quantity;
+                    await updateMaterialStockInSupabase(item.id, newStock);
+                    item.stock = newStock;
                 }
-                
-                const oldStatus = order.status;
-                
-                // Update order status in Supabase
-                const { data, error } = await supabase
-                    .from('orders')
-                    .update({ 
-                        status: newStatus 
-                    })
-                    .eq('order_id', orderId)
-                    .select();
-                    
-                if (error) {
-                    console.error('Supabase error updating order:', error);
-                    throw error;
-                }
-                
-                console.log('Update response:', data);
-                
-                // Update local data
-                order.status = newStatus;
-                
-                // Handle stock changes if cancelled
-                if (newStatus === 'cancelled' && oldStatus !== 'cancelled') {
-                    for (const orderItem of order.items) {
-                        const item = items.find(i => i.id == orderItem.itemId);
-                        if (item) {
-                            const newStock = item.stock + orderItem.quantity;
-                            await updateMaterialStockInSupabase(item.id, newStock);
-                            item.stock = newStock;
-                        }
-                    }
-                    await loadItems(); // Refresh items
-                }
-                
-                // Send notification
-                const statusMessages = {
-                    'pending': 'is pending review',
-                    'approved': 'has been approved by management',
-                    'released': 'has been released from warehouse',
-                    'completed': 'has been completed',
-                    'cancelled': 'has been cancelled',
-                    'rejected': 'has been rejected'
-                };
-                
-                if (statusMessages[newStatus]) {
-                    addNotification(
-                        'status_update',
-                        `📦 Order Status Update`,
-                        `Your order ${orderId} ${statusMessages[newStatus]}.`,
-                        orderId,
-                        order.userId
-                    );
-                }
-                
-                // Reload orders
-                await loadOrders();
-                
-                // Update UI
-                displayStoreItems();
-                if (document.getElementById('adminContent').style.display === 'block') {
-                    displayOrdersAdmin();
-                }
-                
-                alert(`✅ Order ${orderId} status updated to ${newStatus}`);
-                return true;
-            } catch (error) {
-                console.error('Error updating order status:', error);
-                alert('Error updating order status: ' + error.message);
-                return false;
             }
+            
+            throw orderError;
         }
+        
+        console.log('Order submitted successfully:', order);
+        
+        // Clear cart
+        cart = [];
+        localStorage.setItem('infxCart', JSON.stringify(cart));
+        updateCartCount();
+        
+        // Reload data
+        await loadOrders();
+        await loadItems(); // Reload items to get updated stock
+        
+        addNotification(
+            'status_update',
+            '📦 New Request Submitted',
+            `Your request ${orderData.id} has been submitted successfully.`,
+            orderData.id,
+            currentUser.id
+        );
+        
+        return true;
+    } catch (error) {
+        console.error('Error submitting order:', error);
+        alert('Error submitting order. Please try again.');
+        return false;
+    }
+}
+        
+        async function updateOrderStatus(orderId, newStatus) {
+    try {
+        console.log('Updating order status in Supabase:', orderId, 'to:', newStatus);
+        
+        // Find the order first
+        const order = orders.find(o => o.id === orderId);
+        if (!order) {
+            throw new Error('Order not found');
+        }
+        
+        const oldStatus = order.status;
+        
+        // Update order status in Supabase FIRST
+        const { data, error } = await supabase
+            .from('orders')
+            .update({ 
+                status: newStatus 
+            })
+            .eq('order_id', orderId)
+            .select();
+            
+        if (error) {
+            console.error('Supabase error updating order:', error);
+            throw error;
+        }
+        
+        console.log('Update response:', data);
+        
+        // Update local data
+        order.status = newStatus;
+        
+        // Handle stock changes if cancelled or rejected
+        if ((newStatus === 'cancelled' || newStatus === 'rejected') && 
+            (oldStatus !== 'cancelled' && oldStatus !== 'rejected')) {
+            
+            // RESTORE stock because order is being cancelled
+            for (const orderItem of order.items) {
+                const item = items.find(i => i.id == orderItem.itemId);
+                if (item) {
+                    const newStock = item.stock + orderItem.quantity;
+                    await updateMaterialStockInSupabase(item.id, newStock);
+                    item.stock = newStock;
+                }
+            }
+            await loadItems(); // Refresh items
+        }
+        // If changing FROM cancelled/rejected TO another status
+        else if ((oldStatus === 'cancelled' || oldStatus === 'rejected') && 
+                 (newStatus !== 'cancelled' && newStatus !== 'rejected')) {
+            
+            // DEDUCT stock again because order is being reactivated
+            for (const orderItem of order.items) {
+                const item = items.find(i => i.id == orderItem.itemId);
+                if (item) {
+                    const newStock = Math.max(0, item.stock - orderItem.quantity);
+                    await updateMaterialStockInSupabase(item.id, newStock);
+                    item.stock = newStock;
+                }
+            }
+            await loadItems(); // Refresh items
+        }
+        // DO NOTHING for released/completed - stock stays deducted!
+        
+        // Send notification
+        const statusMessages = {
+            'pending': 'is pending review',
+            'approved': 'has been approved by management',
+            'released': 'has been released from warehouse',
+            'completed': 'has been completed',
+            'cancelled': 'has been cancelled',
+            'rejected': 'has been rejected'
+        };
+        
+        if (statusMessages[newStatus]) {
+            addNotification(
+                'status_update',
+                `📦 Order Status Update`,
+                `Your order ${orderId} ${statusMessages[newStatus]}.`,
+                orderId,
+                order.userId
+            );
+        }
+        
+        // Reload orders
+        await loadOrders();
+        
+        // Update UI
+        displayStoreItems();
+        if (document.getElementById('adminContent').style.display === 'block') {
+            displayOrdersAdmin();
+        }
+        
+        alert(`✅ Order ${orderId} status updated to ${newStatus}`);
+        return true;
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status: ' + error.message);
+        return false;
+    }
+}
         
         // ==============================================
         // MATERIAL MANAGEMENT FUNCTIONS FOR SUPABASE
@@ -1586,19 +1616,27 @@
         }
         
         async function updateMaterialStockInSupabase(itemId, newStock) {
-            try {
-                const { error } = await supabase
-                    .from('materials')
-                    .update({ stock: newStock })
-                    .eq('id', itemId);
-                    
-                if (error) throw error;
-                return true;
-            } catch (error) {
-                console.error('Error updating material stock:', error);
-                throw error;
-            }
+    try {
+        console.log('Updating stock in Supabase for item', itemId, 'to', newStock);
+        
+        const { data, error } = await supabase
+            .from('materials')
+            .update({ stock: newStock })
+            .eq('id', itemId)
+            .select();
+            
+        if (error) {
+            console.error('Supabase error updating stock:', error);
+            throw error;
         }
+        
+        console.log('Stock updated successfully:', data);
+        return true;
+    } catch (error) {
+        console.error('Error updating material stock:', error);
+        throw error;
+    }
+}
         
         async function updateMaterialStock(itemId) {
             const item = items.find(i => i.id == itemId);
@@ -2679,4 +2717,5 @@ Total Items: ${order.items.reduce((sum, item) => sum + item.quantity, 0)}`);
         window.onload = initializeApp;
     </script>
 </body>
+
 </html>
