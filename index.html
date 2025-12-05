@@ -47,7 +47,7 @@
             min-height: 100vh;
         }
         
-        /* AUTH MODAL STYLES */
+        /* AUTH MODAL STYLES - FIXED */
         .auth-modal {
             display: none;
             position: fixed;
@@ -75,6 +75,30 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             border: 1px solid #3C3C3C;
             animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+        
+        .close-auth {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: #E0E0E0;
+            font-size: 24px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .close-auth:hover {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
         }
         
         .auth-tabs {
@@ -194,7 +218,7 @@
             display: none;
         }
         
-        /* RESET PASSWORD MODAL */
+        /* RESET PASSWORD MODAL - FIXED */
         .reset-password-modal {
             display: none;
             position: fixed;
@@ -748,25 +772,34 @@
             box-shadow: 0 10px 25px rgba(113, 179, 64, 0.6);
         }
         
-        /* BANNER */
+        /* BANNER - FIXED WITH MORE SPACING */
         .banner-container {
             overflow: hidden;
             white-space: nowrap;
             background: linear-gradient(135deg, #71B340 0%, #598B2C 100%);
-            padding: 18px 0;
-            margin: 25px 0;
-            border-radius: 10px;
+            padding: 22px 0; /* Increased padding */
+            margin: 30px 0; /* Increased margin */
+            border-radius: 12px; /* Slightly larger radius */
             position: relative;
-            box-shadow: 0 6px 20px rgba(113, 179, 64, 0.3);
+            box-shadow: 0 8px 25px rgba(113, 179, 64, 0.4); /* Enhanced shadow */
         }
         
         .banner-scroll {
             display: inline-block;
-            animation: bannerScroll 30s linear infinite;
+            animation: bannerScroll 35s linear infinite; /* Slower animation */
             color: white;
-            font-weight: 700;
-            font-size: 20px;
-            padding: 0 25px;
+            font-weight: 800; /* Bolder text */
+            font-size: 22px; /* Larger font */
+            padding: 0 40px; /* Increased padding */
+            letter-spacing: 0.5px; /* Letter spacing for readability */
+        }
+        
+        .banner-scroll span {
+            display: inline-block;
+            margin: 0 50px; /* More spacing between items */
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
         }
         
         @keyframes bannerScroll {
@@ -800,6 +833,15 @@
                 justify-content: center;
                 margin-bottom: 15px;
                 width: 100%;
+            }
+            
+            .banner-scroll {
+                font-size: 18px; /* Smaller font on mobile */
+                padding: 0 20px;
+            }
+            
+            .banner-scroll span {
+                margin: 0 25px; /* Less spacing on mobile */
             }
         }
         
@@ -891,9 +933,10 @@
     </style>
 </head>
 <body>
-    <!-- AUTH MODAL -->
+    <!-- AUTH MODAL - FIXED WITH CLOSE BUTTON -->
     <div class="auth-modal" id="authModal">
         <div class="auth-container">
+            <button class="close-auth" onclick="hideAuthModal()">×</button>
             <div class="auth-tabs">
                 <div class="auth-tab active" onclick="switchAuthTab('login')">LOGIN</div>
                 <div class="auth-tab" onclick="switchAuthTab('signup')">SIGN UP</div>
@@ -959,7 +1002,7 @@
         </div>
     </div>
 
-    <!-- FORGOT PASSWORD MODAL -->
+    <!-- FORGOT PASSWORD MODAL - FIXED -->
     <div class="reset-password-modal" id="resetPasswordModal">
         <div class="reset-password-container">
             <div class="reset-password-header">
@@ -1042,12 +1085,14 @@
             </div>
         </div>
 
-        <!-- BANNER -->
+        <!-- BANNER - FIXED WITH MORE SPACING -->
         <div class="banner-container">
             <div class="banner-scroll">
-                <span>Together We Grow. Together We Win. Infinix 2026!</span>
-                <span>BTL Material Management System</span>
-                <span>Efficient • Organized • Professional</span>
+                <span>🚀 Together We Grow. Together We Win. Infinix 2026!</span>
+                <span>📦 BTL Material Management System</span>
+                <span>⚡ Efficient • Organized • Professional</span>
+                <span>👥 Serving Teams Nationwide</span>
+                <span>🏆 Excellence in Material Management</span>
             </div>
         </div>
 
@@ -1505,10 +1550,14 @@
             document.getElementById('authSuccess').style.display = 'none';
         }
         
+        // FIX #1: Forgot password - properly show reset modal
         function showForgotPassword() {
-            // Hide auth modal and show reset password modal
             hideAuthModal();
             document.getElementById('resetPasswordModal').classList.add('active');
+            document.getElementById('resetError').style.display = 'none';
+            document.getElementById('resetSuccess').style.display = 'none';
+            document.getElementById('resetEmail').value = '';
+            showResetForm();
             document.getElementById('resetEmail').focus();
         }
         
@@ -1517,24 +1566,20 @@
             document.getElementById('resetError').style.display = 'none';
             document.getElementById('resetSuccess').style.display = 'none';
             document.getElementById('resetEmail').value = '';
-            showResetForm(); // Reset to email form
+            showResetForm();
         }
         
         function showResetForm() {
-            // Show email form, hide new password form
             document.getElementById('resetPasswordContent').classList.add('active');
             document.getElementById('newPasswordContent').classList.remove('active');
-            document.getElementById('resetEmail').focus();
         }
         
         function showNewPasswordForm() {
-            // Show new password form, hide email form
             document.getElementById('resetPasswordContent').classList.remove('active');
             document.getElementById('newPasswordContent').classList.add('active');
-            document.getElementById('newPassword').focus();
         }
         
-        // NEW FUNCTION: Back to Login from reset password modal
+        // FIX #1: Back to Login from reset password modal
         function backToLogin() {
             hideResetPasswordModal();
             showAuthModal();
@@ -1547,12 +1592,17 @@
             const resetToken = urlParams.get('resetToken');
             
             if (resetToken && passwordResetTokens[resetToken]) {
-                // Token is valid, show reset password modal with new password form
+                const tokenData = passwordResetTokens[resetToken];
+                if (Date.now() > tokenData.expires) {
+                    delete passwordResetTokens[resetToken];
+                    localStorage.setItem('infxResetTokens', JSON.stringify(passwordResetTokens));
+                    return;
+                }
+                
                 document.getElementById('resetToken').value = resetToken;
                 document.getElementById('resetPasswordModal').classList.add('active');
                 showNewPasswordForm();
                 
-                // Remove token from URL
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
         }
@@ -1568,12 +1618,10 @@
             }
             
             try {
-                // Get users from localStorage
                 const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
                 const user = users.find(u => u.username === username && u.password === password);
                 
                 if (user) {
-                    // Set current user
                     currentUser = {
                         id: user.id || 'USER' + Date.now(),
                         username: user.username,
@@ -1583,7 +1631,6 @@
                         rememberMe: rememberMe
                     };
                     
-                    // Save to localStorage
                     localStorage.setItem('infxUserId', currentUser.id);
                     localStorage.setItem('infxUsername', currentUser.username);
                     localStorage.setItem('infxUserName', currentUser.name);
@@ -1591,7 +1638,6 @@
                     localStorage.setItem('infxIsAuthenticated', 'true');
                     localStorage.setItem('infxRememberMe', rememberMe.toString());
                     
-                    // Save remembered credentials if "Remember Me" is checked
                     if (rememberMe) {
                         const rememberedUser = {
                             username: username,
@@ -1602,17 +1648,11 @@
                         localStorage.removeItem('infxRememberedUser');
                     }
                     
-                    // Hide auth modal
                     hideAuthModal();
-                    
-                    // Show main content
                     document.getElementById('mainContent').style.display = 'block';
                     document.getElementById('userDisplayName').textContent = currentUser.name;
                     
-                    // Initialize app
                     initializeApp();
-                    
-                    // Show welcome message
                     showToast('Welcome Back!', `Hello ${currentUser.name}!`);
                     
                 } else {
@@ -1629,23 +1669,19 @@
             const strengthBar = document.getElementById('passwordStrengthBar');
             const hint = document.getElementById('passwordHint');
             
-            let strength = 0;
-            let hintText = '';
-            
             if (password.length === 0) {
                 strengthBar.style.width = '0%';
                 strengthBar.className = 'password-strength-bar';
-                hintText = 'Use at least 8 characters with letters and numbers';
+                hint.textContent = 'Use at least 8 characters with letters and numbers';
             } else if (password.length < 6) {
                 strengthBar.style.width = '25%';
                 strengthBar.className = 'password-strength-bar strength-weak';
-                hintText = 'Too short - use at least 6 characters';
+                hint.textContent = 'Too short - use at least 6 characters';
             } else if (password.length < 8) {
                 strengthBar.style.width = '50%';
                 strengthBar.className = 'password-strength-bar strength-medium';
-                hintText = 'Good, but 8+ characters is better';
+                hint.textContent = 'Good, but 8+ characters is better';
             } else {
-                // Check for complexity
                 const hasUpperCase = /[A-Z]/.test(password);
                 const hasLowerCase = /[a-z]/.test(password);
                 const hasNumbers = /\d/.test(password);
@@ -1659,42 +1695,36 @@
                 if (complexityScore >= 3 && password.length >= 10) {
                     strengthBar.style.width = '100%';
                     strengthBar.className = 'password-strength-bar strength-very-strong';
-                    hintText = 'Excellent! Strong password';
+                    hint.textContent = 'Excellent! Strong password';
                 } else if (complexityScore >= 2) {
                     strengthBar.style.width = '75%';
                     strengthBar.className = 'password-strength-bar strength-strong';
-                    hintText = 'Strong password';
+                    hint.textContent = 'Strong password';
                 } else {
                     strengthBar.style.width = '50%';
                     strengthBar.className = 'password-strength-bar strength-medium';
-                    hintText = 'Add uppercase letters, numbers, or symbols';
+                    hint.textContent = 'Add uppercase letters, numbers, or symbols';
                 }
             }
-            
-            hint.textContent = hintText;
         }
         
         function checkNewPasswordStrength(password) {
             const strengthBar = document.getElementById('newPasswordStrengthBar');
             const hint = document.getElementById('newPasswordHint');
             
-            let strength = 0;
-            let hintText = '';
-            
             if (password.length === 0) {
                 strengthBar.style.width = '0%';
                 strengthBar.className = 'password-strength-bar';
-                hintText = 'Use at least 8 characters with letters and numbers';
+                hint.textContent = 'Use at least 8 characters with letters and numbers';
             } else if (password.length < 6) {
                 strengthBar.style.width = '25%';
                 strengthBar.className = 'password-strength-bar strength-weak';
-                hintText = 'Too short - use at least 6 characters';
+                hint.textContent = 'Too short - use at least 6 characters';
             } else if (password.length < 8) {
                 strengthBar.style.width = '50%';
                 strengthBar.className = 'password-strength-bar strength-medium';
-                hintText = 'Good, but 8+ characters is better';
+                hint.textContent = 'Good, but 8+ characters is better';
             } else {
-                // Check for complexity
                 const hasUpperCase = /[A-Z]/.test(password);
                 const hasLowerCase = /[a-z]/.test(password);
                 const hasNumbers = /\d/.test(password);
@@ -1708,19 +1738,17 @@
                 if (complexityScore >= 3 && password.length >= 10) {
                     strengthBar.style.width = '100%';
                     strengthBar.className = 'password-strength-bar strength-very-strong';
-                    hintText = 'Excellent! Strong password';
+                    hint.textContent = 'Excellent! Strong password';
                 } else if (complexityScore >= 2) {
                     strengthBar.style.width = '75%';
                     strengthBar.className = 'password-strength-bar strength-strong';
-                    hintText = 'Strong password';
+                    hint.textContent = 'Strong password';
                 } else {
                     strengthBar.style.width = '50%';
                     strengthBar.className = 'password-strength-bar strength-medium';
-                    hintText = 'Add uppercase letters, numbers, or symbols';
+                    hint.textContent = 'Add uppercase letters, numbers, or symbols';
                 }
             }
-            
-            hint.textContent = hintText;
         }
         
         async function signupUser() {
@@ -1744,7 +1772,6 @@
                 return;
             }
             
-            // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 showAuthError('Please enter a valid email address');
@@ -1752,7 +1779,6 @@
             }
             
             try {
-                // Check if user already exists
                 const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
                 if (users.some(u => u.username === username)) {
                     showAuthError('Username already exists');
@@ -1764,7 +1790,6 @@
                     return;
                 }
                 
-                // Create new user
                 const newUser = {
                     id: 'USER' + Date.now(),
                     username: username,
@@ -1774,11 +1799,9 @@
                     created_at: new Date().toISOString()
                 };
                 
-                // Save user
                 users.push(newUser);
                 localStorage.setItem('infxUsers', JSON.stringify(users));
                 
-                // Set current user
                 currentUser = {
                     id: newUser.id,
                     username: newUser.username,
@@ -1788,7 +1811,6 @@
                     rememberMe: false
                 };
                 
-                // Save to localStorage
                 localStorage.setItem('infxUserId', currentUser.id);
                 localStorage.setItem('infxUsername', currentUser.username);
                 localStorage.setItem('infxUserName', currentUser.name);
@@ -1796,20 +1818,13 @@
                 localStorage.setItem('infxIsAuthenticated', 'true');
                 localStorage.setItem('infxRememberMe', 'false');
                 
-                // Hide auth modal
                 hideAuthModal();
-                
-                // Show main content
                 document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('userDisplayName').textContent = currentUser.name;
                 
-                // Initialize app
                 initializeApp();
-                
-                // Show welcome message
                 showToast('Welcome!', `Account created successfully, ${currentUser.name}!`);
                 
-                // Clear form
                 document.getElementById('signupUsername').value = '';
                 document.getElementById('signupEmail').value = '';
                 document.getElementById('signupPassword').value = '';
@@ -1821,7 +1836,7 @@
             }
         }
         
-        // FIXED: Forgot Password - Send Reset Email
+        // FIX #3: Send reset email function (simulated)
         async function sendResetEmail() {
             const email = document.getElementById('resetEmail').value.trim();
             
@@ -1830,7 +1845,6 @@
                 return;
             }
             
-            // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 showResetError('Please enter a valid email address');
@@ -1838,7 +1852,6 @@
             }
             
             try {
-                // Check if email exists in users
                 const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
                 const user = users.find(u => u.email === email);
                 
@@ -1853,22 +1866,17 @@
                 // Save token (expires in 1 hour)
                 passwordResetTokens[resetToken] = {
                     email: email,
-                    expires: Date.now() + (60 * 60 * 1000) // 1 hour
+                    expires: Date.now() + (60 * 60 * 1000)
                 };
                 localStorage.setItem('infxResetTokens', JSON.stringify(passwordResetTokens));
                 
-                // In a real app, you would send an email here
-                // For demo purposes, we'll show the reset link
+                // In a real application, you would send an email here
+                // For this demo, we'll simulate email sending
+                showResetSuccess('Password reset email sent!<br><br><small>In a real application, a reset link would be sent to your email.</small>');
+                
+                // For demo purposes, we'll also show the reset link
                 const resetLink = `${window.location.origin}${window.location.pathname}?resetToken=${resetToken}`;
-                
-                // Show success message with instructions
-                showResetSuccess(`Password reset link generated!<br><br>
-                    <strong>For demo purposes:</strong><br>
-                    Reset Link: <code style="background: #2D2D2D; padding: 5px 10px; border-radius: 4px; font-size: 12px;">${resetLink}</code><br><br>
-                    <small>In a real application, this link would be sent to your email.</small>`);
-                
-                // Clear email field
-                document.getElementById('resetEmail').value = '';
+                console.log('Reset link for demo:', resetLink);
                 
                 // Auto-switch to new password form after 3 seconds for demo
                 setTimeout(() => {
@@ -1882,7 +1890,6 @@
             }
         }
         
-        // FIXED: Reset Password with token
         async function resetPassword() {
             const newPassword = document.getElementById('newPassword').value.trim();
             const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
@@ -1904,7 +1911,6 @@
             }
             
             try {
-                // Check if token is valid
                 if (!resetToken || !passwordResetTokens[resetToken]) {
                     showResetError('Invalid or expired reset token');
                     return;
@@ -1912,7 +1918,6 @@
                 
                 const tokenData = passwordResetTokens[resetToken];
                 
-                // Check if token has expired
                 if (Date.now() > tokenData.expires) {
                     delete passwordResetTokens[resetToken];
                     localStorage.setItem('infxResetTokens', JSON.stringify(passwordResetTokens));
@@ -1920,7 +1925,6 @@
                     return;
                 }
                 
-                // Update user's password
                 const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
                 const userIndex = users.findIndex(u => u.email === tokenData.email);
                 
@@ -1929,23 +1933,18 @@
                     return;
                 }
                 
-                // Update password
                 users[userIndex].password = newPassword;
                 localStorage.setItem('infxUsers', JSON.stringify(users));
                 
-                // Remove used token
                 delete passwordResetTokens[resetToken];
                 localStorage.setItem('infxResetTokens', JSON.stringify(passwordResetTokens));
                 
-                // Show success message
                 showResetSuccess('Password reset successfully! You can now login with your new password.');
                 
-                // Clear form
                 document.getElementById('newPassword').value = '';
                 document.getElementById('confirmNewPassword').value = '';
                 document.getElementById('resetToken').value = '';
                 
-                // Close modal and show login after 2 seconds
                 setTimeout(() => {
                     hideResetPasswordModal();
                     showAuthModal();
@@ -1958,28 +1957,26 @@
             }
         }
         
+        // FIX #2: Logout function - properly goes back to login
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
-                // Clear user data (but keep remember me if checked)
-                if (!currentUser.rememberMe) {
-                    localStorage.removeItem('infxUserId');
-                    localStorage.removeItem('infxUsername');
-                    localStorage.removeItem('infxUserName');
-                    localStorage.removeItem('infxUserEmail');
-                }
+                // Clear user data
+                localStorage.removeItem('infxUserId');
+                localStorage.removeItem('infxUsername');
+                localStorage.removeItem('infxUserName');
+                localStorage.removeItem('infxUserEmail');
                 localStorage.setItem('infxIsAuthenticated', 'false');
                 
-                // Reset cart and notifications (keep for next session)
-                // cart = []; // Don't clear cart on logout
-                // localStorage.removeItem('infxCart');
+                // Only clear cart if not remembered
+                if (!currentUser.rememberMe) {
+                    cart = [];
+                    localStorage.removeItem('infxCart');
+                }
                 
-                // Hide main content
                 document.getElementById('mainContent').style.display = 'none';
-                
-                // Show auth modal
                 showAuthModal();
+                switchAuthTab('login');
                 
-                // Clear form fields
                 document.getElementById('loginPassword').value = '';
             }
         }
@@ -2222,8 +2219,6 @@
                 displayCategoriesAdmin();
             } else if (tabName === 'orders') {
                 displayOrdersAdmin();
-            } else if (tabName === 'export') {
-                // Export tab doesn't need initialization
             }
         }
         
@@ -2297,7 +2292,6 @@
                 
                 console.log('Orders loaded:', data?.length || 0);
                 
-                // FIXED: Include display_id in the mapping
                 orders = (data || []).map(order => ({
                     id: order.id,
                     display_id: order.display_id || ('INFX' + order.id.toString().padStart(5, '0')),
@@ -2329,10 +2323,6 @@
             }
         }
         
-        // ==============================================
-        // STOCK UPDATE FUNCTION
-        // ==============================================
-        
         async function updateMaterialStockInSupabase(itemId, newStock) {
             try {
                 console.log('🔄 UPDATING STOCK IN SUPABASE:', { itemId, newStock });
@@ -2357,16 +2347,10 @@
             }
         }
         
-        // ==============================================
-        // ORDER SUBMISSION FUNCTION - FIXED
-        // ==============================================
-        
         async function submitOrder(orderData) {
             try {
                 console.log('🚀 STARTING ORDER SUBMISSION:', orderData.displayId);
                 
-                // Step 1: Validate stock availability
-                console.log('📊 Validating stock...');
                 for (const cartItem of cart) {
                     const item = items.find(i => i.id == cartItem.itemId);
                     if (!item) {
@@ -2380,7 +2364,6 @@
                     }
                 }
                 
-                // Step 2: Update stock in Supabase
                 console.log('🔄 Updating stock in database...');
                 for (const cartItem of cart) {
                     const item = items.find(i => i.id == cartItem.itemId);
@@ -2393,11 +2376,9 @@
                     }
                 }
                 
-                // Step 3: Generate display ID
                 const orderCounter = parseInt(localStorage.getItem('infxOrderCounter') || '1');
                 const displayId = 'INFX' + orderCounter.toString().padStart(5, '0');
                 
-                // Step 4: Submit order to Supabase WITH display_id
                 console.log('📝 Submitting order...');
                 const { data: order, error: orderError } = await supabase
                     .from('orders')
@@ -2425,18 +2406,14 @@
                 
                 console.log('✅ Order submitted successfully:', order);
                 
-                // Update order counter
                 localStorage.setItem('infxOrderCounter', (orderCounter + 1).toString());
                 
-                // Step 5: Clear cart
                 cart = [];
                 localStorage.setItem('infxCart', JSON.stringify(cart));
                 updateCartCount();
                 
-                // Step 6: Refresh data from Supabase
                 await Promise.all([loadItems(), loadOrders()]);
                 
-                // Step 7: Send notification
                 addNotification(
                     'status_update',
                     '📦 New Request Submitted',
@@ -2466,10 +2443,8 @@
                 
                 const oldStatus = order.status;
                 
-                // Update order status
                 const updateData = { status: newStatus };
                 
-                // Add completed timestamp if status is completed
                 if (newStatus === 'completed') {
                     updateData.completed_at = new Date().toISOString();
                 }
@@ -2485,7 +2460,6 @@
                     throw error;
                 }
                 
-                // Restore stock if order is cancelled
                 if (newStatus === 'cancelled' && oldStatus !== 'cancelled') {
                     console.log('🔄 Restoring stock for cancelled order...');
                     
@@ -2498,10 +2472,9 @@
                         }
                     }
                     
-                    await loadItems(); // Refresh items
+                    await loadItems();
                 }
                 
-                // Send notification
                 const statusMessages = {
                     'pending': 'is pending review',
                     'approved': 'has been approved by management',
@@ -2830,7 +2803,6 @@
                 return;
             }
             
-            // Check stock availability
             let hasInsufficientStock = false;
             let insufficientStockMessage = '';
             
@@ -2855,12 +2827,10 @@
             tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('dateNeeded').min = tomorrow.toISOString().split('T')[0];
             
-            // Set default date to 2 days from now
             const defaultDate = new Date();
             defaultDate.setDate(defaultDate.getDate() + 2);
             document.getElementById('dateNeeded').value = defaultDate.toISOString().split('T')[0];
             
-            // Pre-fill requestor name from user profile
             if (currentUser.name && currentUser.name !== currentUser.username) {
                 document.getElementById('requestorName').value = currentUser.name;
             }
@@ -2870,10 +2840,6 @@
             document.getElementById('checkoutSection').style.display = 'none';
             document.getElementById('proceedSection').style.display = 'block';
         }
-        
-        // ==============================================
-        // ORDER SUBMISSION - FIXED
-        // ==============================================
         
         async function submitRequest() {
             if(cart.length === 0) {
@@ -2902,7 +2868,6 @@
                 return;
             }
             
-            // Update user info
             currentUser.name = requestorName;
             localStorage.setItem('infxUserName', requestorName);
             document.getElementById('userDisplayName').textContent = requestorName;
@@ -2943,7 +2908,7 @@
         }
         
         // ==============================================
-        // ORDER DISPLAY FUNCTIONS - FIXED
+        // ORDER DISPLAY FUNCTIONS
         // ==============================================
         
         function filterOrders(status) {
@@ -2999,7 +2964,6 @@
                 const orderDiv = document.createElement('div');
                 orderDiv.className = 'order-card';
                 
-                // Use display_id instead of generating it
                 const displayOrderId = order.display_id || ('INFX' + order.id.toString().padStart(5, '0'));
                 
                 orderDiv.innerHTML = `
@@ -3087,7 +3051,7 @@
         }
         
         // ==============================================
-        // ORDER ACTIONS - FIXED
+        // ORDER ACTIONS
         // ==============================================
         
         async function markAsReceived(orderId) {
@@ -3191,7 +3155,6 @@
                 return;
             }
             
-            // Check if category already exists
             const categoryExists = categories.some(cat => cat.name === categoryName);
             if (categoryExists) {
                 alert('Category already exists!');
@@ -3251,7 +3214,6 @@
             }
             
             try {
-                // Delete the category
                 const { error: deleteError } = await supabase
                     .from('categories')
                     .delete()
@@ -3259,7 +3221,6 @@
                     
                 if (deleteError) throw deleteError;
                 
-                // Update materials to remove this category
                 const { error: updateError } = await supabase
                     .from('materials')
                     .update({ category: null })
@@ -3289,7 +3250,6 @@
             const sortedOrders = [...orders].sort((a, b) => new Date(b.date) - new Date(a.date));
             
             sortedOrders.forEach(order => {
-                // Use display_id instead of generating it
                 const displayOrderId = order.display_id || ('INFX' + order.id.toString().padStart(5, '0'));
                 
                 const orderDiv = document.createElement('div');
@@ -3632,30 +3592,24 @@ Total Items: ${order.items.reduce((sum, item) => sum + item.quantity, 0)}`);
         // ==============================================
         
         async function initializeApp() {
-            // Initialize order counter if not exists
             if (!localStorage.getItem('infxOrderCounter')) {
                 localStorage.setItem('infxOrderCounter', '1');
             }
             
-            // Initialize users storage if not exists
             if (!localStorage.getItem('infxUsers')) {
                 localStorage.setItem('infxUsers', JSON.stringify([]));
             }
             
-            // Initialize reset tokens if not exists
             if (!localStorage.getItem('infxResetTokens')) {
                 localStorage.setItem('infxResetTokens', JSON.stringify({}));
             }
             
-            // Load password reset tokens
             passwordResetTokens = JSON.parse(localStorage.getItem('infxResetTokens') || '{}');
             
-            // Load data from Supabase
             await loadItems();
             await loadCategories();
             await loadOrders();
             
-            // Update UI
             initializeCategoryDropdown();
             updateCartCount();
             updateHomeStats();
@@ -3668,19 +3622,14 @@ Total Items: ${order.items.reduce((sum, item) => sum + item.quantity, 0)}`);
         // ==============================================
         
         window.onload = function() {
-            // Check for reset token in URL
             checkResetTokenFromURL();
             
-            // Check if user is authenticated
             if (currentUser.isAuthenticated) {
-                // Show main content
                 document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('userDisplayName').textContent = currentUser.name;
                 
-                // Initialize the app
                 initializeApp();
             } else {
-                // Show auth modal
                 showAuthModal();
             }
         };
