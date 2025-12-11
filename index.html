@@ -83,29 +83,6 @@
             margin: 20px;
         }
         
-        .close-auth {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: transparent;
-            border: none;
-            color: var(--text-light);
-            font-size: 22px;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .close-auth:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
-        }
-        
         .auth-tabs {
             display: flex;
             margin-bottom: 25px;
@@ -322,7 +299,7 @@
             width: 0;
         }
         
-        /* SIDEBAR TOGGLE BUTTON - CHANGED TO HAMBURGER */
+        /* SIDEBAR TOGGLE BUTTON - FIXED ALIGNMENT */
         .sidebar-toggle {
             position: fixed;
             top: 20px;
@@ -345,6 +322,22 @@
         .sidebar-toggle:hover {
             background: var(--light-blue);
             transform: scale(1.1);
+        }
+        
+        /* SIDEBAR OVERLAY FOR CLICK OUTSIDE */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
         }
         
         .sidebar-header {
@@ -515,21 +508,26 @@
             padding-left: 70px;
         }
         
-        /* HEADER - BROUGHT BACK */
+        /* HEADER - FIXED ALIGNMENT */
         .header {
             background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            padding: 20px 25px;
+            padding: 15px 25px;
             border-radius: 10px;
             margin-bottom: 20px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
             position: relative;
             border: 1px solid var(--light-blue);
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
         }
         
         .header-content {
             position: relative;
             padding: 8px 0;
+            text-align: center;
         }
         
         .header h1 {
@@ -541,7 +539,6 @@
             flex-wrap: wrap;
             font-size: 22px;
             font-weight: 700;
-            text-align: center;
         }
         
         .logo-header {
@@ -558,15 +555,16 @@
         /* HEADER TOP RIGHT NOTIFICATION */
         .header-top-right {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
         
-        /* NOTIFICATION BELL */
+        /* NOTIFICATION BELL - FIXED CLICK AREA */
         .notification-bell {
+            position: relative;
             cursor: pointer;
             font-size: 20px;
             color: var(--text-lighter);
@@ -579,6 +577,7 @@
             justify-content: center;
             transition: all 0.3s;
             border: 1px solid var(--accent-blue);
+            z-index: 1;
         }
         
         .notification-bell:hover {
@@ -601,6 +600,8 @@
             justify-content: center;
             font-weight: 700;
             box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+            z-index: 2;
+            pointer-events: none;
         }
         
         /* PAGE TITLE */
@@ -906,10 +907,151 @@
             box-shadow: 0 8px 20px rgba(83, 109, 254, 0.6);
         }
         
+        /* ADMIN MODAL */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 10001;
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .admin-modal.active {
+            display: flex;
+        }
+        
+        .admin-container {
+            background: var(--card-dark);
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-dark);
+            animation: fadeIn 0.3s ease;
+            position: relative;
+            margin: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent-blue);
+        }
+        
+        .admin-header h2 {
+            color: var(--text-lighter);
+            margin: 0;
+            font-size: 22px;
+            border: none;
+        }
+        
+        .close-admin {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 22px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .close-admin:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        
+        /* ADMIN TABS */
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .admin-tab {
+            padding: 10px 16px;
+            background: var(--background-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab.active {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%);
+            color: var(--text-lighter);
+            border-color: var(--accent-blue);
+        }
+        
+        .admin-content {
+            display: none;
+        }
+        
+        .admin-content.active {
+            display: block;
+        }
+        
+        /* TOAST NOTIFICATION STYLES */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-dark);
+            color: var(--text-lighter);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            z-index: 1003;
+            max-width: 350px;
+            border-left: 4px solid var(--accent-blue);
+            animation: slideInRight 0.3s ease;
+            transition: all 0.3s;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideOutRight {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100%); }
+        }
+        
         /* GRID LAYOUTS */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             width: 100%;
         }
@@ -1005,6 +1147,8 @@
             
             .sidebar-toggle {
                 display: flex;
+                top: 20px;
+                left: 15px;
             }
             
             .main-content {
@@ -1054,6 +1198,7 @@
             
             .header {
                 padding: 15px;
+                min-height: 70px;
             }
             
             .header h1 {
@@ -1066,6 +1211,11 @@
                 position: static;
                 margin-top: 10px;
                 justify-content: center;
+            }
+            
+            .admin-container {
+                padding: 20px;
+                margin: 10px;
             }
         }
         
@@ -1101,8 +1251,18 @@
             }
             
             .sidebar-toggle {
-                top: 15px;
+                top: 20px;
                 left: 15px;
+            }
+            
+            .toast {
+                max-width: calc(100% - 40px);
+                left: 20px;
+                right: 20px;
+            }
+            
+            .admin-tabs {
+                flex-direction: column;
             }
         }
         
@@ -1129,7 +1289,6 @@
     <!-- AUTH MODAL - LOGIN/SIGNUP ONLY -->
     <div class="auth-modal" id="authModal">
         <div class="auth-container">
-            <button class="close-auth" onclick="hideAuthModal()">×</button>
             <div class="auth-tabs">
                 <div class="auth-tab active" onclick="switchAuthTab('login')">LOGIN</div>
                 <div class="auth-tab" onclick="switchAuthTab('signup')">SIGN UP</div>
@@ -1216,9 +1375,97 @@
         </div>
     </div>
 
+    <!-- ADMIN MODAL -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h2><i class="fas fa-cogs"></i> Admin Panel</h2>
+                <button class="close-admin" onclick="hideAdminPanel()">×</button>
+            </div>
+            
+            <div class="admin-tabs">
+                <div class="admin-tab active" onclick="switchAdminTab('orders')">Orders</div>
+                <div class="admin-tab" onclick="switchAdminTab('materials')">Materials</div>
+                <div class="admin-tab" onclick="switchAdminTab('stats')">Statistics</div>
+                <div class="admin-tab" onclick="switchAdminTab('users')">Users</div>
+            </div>
+            
+            <!-- ORDERS ADMIN TAB -->
+            <div class="admin-content active" id="adminOrdersTab">
+                <h3>Manage Orders</h3>
+                <div style="margin-bottom: 15px;">
+                    <input type="text" id="adminOrderSearch" placeholder="🔍 Search orders..." onkeyup="searchAdminOrders()" style="margin: 0;">
+                </div>
+                <div id="adminOrdersList" style="max-height: 400px; overflow-y: auto;">
+                    <div class="loading">Loading orders...</div>
+                </div>
+            </div>
+            
+            <!-- MATERIALS ADMIN TAB -->
+            <div class="admin-content" id="adminMaterialsTab">
+                <h3>Manage Materials</h3>
+                <div style="margin-bottom: 20px;">
+                    <button onclick="showAddMaterialForm()"><i class="fas fa-plus"></i> Add New Material</button>
+                </div>
+                <div id="adminMaterialsList" style="max-height: 400px; overflow-y: auto;">
+                    <div class="loading">Loading materials...</div>
+                </div>
+            </div>
+            
+            <!-- STATISTICS ADMIN TAB -->
+            <div class="admin-content" id="adminStatsTab">
+                <h3>System Statistics</h3>
+                <div class="grid-3" style="margin-bottom: 20px;">
+                    <div class="stat-card">
+                        <div class="stat-number" id="adminTotalOrders">0</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="adminTotalUsers">0</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="adminPendingOrders">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="adminApprovedOrders">0</div>
+                        <div class="stat-label">Approved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="adminCompletedOrders">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="adminTotalMaterials">0</div>
+                        <div class="stat-label">Materials</div>
+                    </div>
+                </div>
+                
+                <h3>Export Data</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="exportOrdersToExcel()"><i class="fas fa-file-excel"></i> Export Orders</button>
+                    <button onclick="exportMaterialsToExcel()"><i class="fas fa-file-excel"></i> Export Materials</button>
+                    <button onclick="exportUsersToExcel()"><i class="fas fa-file-excel"></i> Export Users</button>
+                </div>
+            </div>
+            
+            <!-- USERS ADMIN TAB -->
+            <div class="admin-content" id="adminUsersTab">
+                <h3>Manage Users</h3>
+                <div id="adminUsersList" style="max-height: 400px; overflow-y: auto;">
+                    <div class="loading">Loading users...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MAIN CONTENT (Hidden until logged in) -->
     <div id="mainContent" style="display: none;">
-        <!-- SIDEBAR TOGGLE BUTTON - ALWAYS HAMBURGER -->
+        <!-- SIDEBAR OVERLAY FOR CLICK OUTSIDE -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+        
+        <!-- SIDEBAR TOGGLE BUTTON -->
         <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
         </button>
@@ -1274,7 +1521,7 @@
 
         <!-- MAIN CONTENT AREA -->
         <div class="main-content" id="mainContentArea">
-            <!-- HEADER - BROUGHT BACK -->
+            <!-- HEADER -->
             <div class="header">
                 <div class="header-top-right">
                     <div class="notification-bell" id="notificationBell" onclick="toggleNotifications()">
@@ -1285,7 +1532,7 @@
                 
                 <div class="header-content">
                     <h1><span class="logo-header">INFINIX</span> | BTL Material Management</h1>
-                    <p style="font-size: 12px; opacity: 0.9;">Efficient Material Request & Tracking System</p>
+                    <p style="font-size: 12px; opacity: 0.9; margin-top: 5px;">Efficient Material Request & Tracking System</p>
                 </div>
             </div>
 
@@ -1584,6 +1831,7 @@
         let notifications = JSON.parse(localStorage.getItem('infxNotifications')) || [];
         let currentOrderFilter = 'all';
         const ADMIN_PASSWORD = "INFINIXBTL123";
+        let isAdminMode = false;
         
         // USER AUTHENTICATION
         let currentUser = {
@@ -1592,19 +1840,21 @@
             name: localStorage.getItem('infxUserName') || '',
             email: localStorage.getItem('infxUserEmail') || '',
             isAuthenticated: localStorage.getItem('infxIsAuthenticated') === 'true' || false,
-            rememberMe: localStorage.getItem('infxRememberMe') === 'true' || false
+            rememberMe: localStorage.getItem('infxRememberMe') === 'true' || false,
+            isAdmin: localStorage.getItem('infxIsAdmin') === 'true' || false
         };
         
         // SIDEBAR STATE
         let sidebarCollapsed = localStorage.getItem('infxSidebarCollapsed') === 'true' || false;
         
         // ==============================================
-        // SIDEBAR TOGGLE FUNCTION - ALWAYS HAMBURGER
+        // SIDEBAR FUNCTIONS
         // ==============================================
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContentArea');
             const toggleBtn = document.getElementById('sidebarToggle');
+            const overlay = document.getElementById('sidebarOverlay');
             
             sidebarCollapsed = !sidebarCollapsed;
             
@@ -1612,13 +1862,29 @@
                 sidebar.classList.add('collapsed');
                 mainContent.classList.add('expanded');
                 toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                overlay.classList.remove('active');
             } else {
                 sidebar.classList.remove('collapsed');
                 mainContent.classList.remove('expanded');
                 toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                overlay.classList.add('active');
             }
             
             localStorage.setItem('infxSidebarCollapsed', sidebarCollapsed.toString());
+        }
+        
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContentArea');
+            const toggleBtn = document.getElementById('sidebarToggle');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('expanded');
+            toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            overlay.classList.remove('active');
+            sidebarCollapsed = true;
+            localStorage.setItem('infxSidebarCollapsed', 'true');
         }
         
         // ==============================================
@@ -1641,7 +1907,7 @@
         }
         
         // ==============================================
-        // AUTHENTICATION FUNCTIONS - SIMPLIFIED
+        // AUTHENTICATION FUNCTIONS
         // ==============================================
         
         function showAuthModal() {
@@ -1718,7 +1984,8 @@
                         name: user.name || user.username,
                         email: user.email,
                         isAuthenticated: true,
-                        rememberMe: rememberMe
+                        rememberMe: rememberMe,
+                        isAdmin: user.isAdmin || false
                     };
                     
                     localStorage.setItem('infxUserId', currentUser.id);
@@ -1727,6 +1994,7 @@
                     localStorage.setItem('infxUserEmail', currentUser.email);
                     localStorage.setItem('infxIsAuthenticated', 'true');
                     localStorage.setItem('infxRememberMe', rememberMe.toString());
+                    localStorage.setItem('infxIsAdmin', currentUser.isAdmin.toString());
                     
                     if (rememberMe) {
                         const rememberedUser = {
@@ -1742,6 +2010,16 @@
                     document.getElementById('mainContent').style.display = 'block';
                     document.getElementById('userDisplayName').textContent = currentUser.name;
                     document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                    
+                    // Update user role in sidebar
+                    const userRoleElement = document.querySelector('.user-role');
+                    if (currentUser.isAdmin) {
+                        userRoleElement.textContent = 'Administrator';
+                        userRoleElement.style.color = 'var(--success)';
+                    } else {
+                        userRoleElement.textContent = 'User';
+                        userRoleElement.style.color = 'var(--accent-blue)';
+                    }
                     
                     initializeSidebar();
                     initializeApp();
@@ -1801,6 +2079,7 @@
                     email: email,
                     password: password,
                     name: username,
+                    isAdmin: false,
                     created_at: new Date().toISOString()
                 };
                 
@@ -1813,7 +2092,8 @@
                     name: newUser.name,
                     email: newUser.email,
                     isAuthenticated: true,
-                    rememberMe: false
+                    rememberMe: false,
+                    isAdmin: false
                 };
                 
                 localStorage.setItem('infxUserId', currentUser.id);
@@ -1822,6 +2102,7 @@
                 localStorage.setItem('infxUserEmail', currentUser.email);
                 localStorage.setItem('infxIsAuthenticated', 'true');
                 localStorage.setItem('infxRememberMe', 'false');
+                localStorage.setItem('infxIsAdmin', 'false');
                 
                 hideAuthModal();
                 document.getElementById('mainContent').style.display = 'block';
@@ -1887,6 +2168,7 @@
                 localStorage.removeItem('infxUserName');
                 localStorage.removeItem('infxUserEmail');
                 localStorage.setItem('infxIsAuthenticated', 'false');
+                localStorage.setItem('infxIsAdmin', 'false');
                 
                 if (!currentUser.rememberMe) {
                     cart = [];
@@ -1894,6 +2176,7 @@
                 }
                 
                 currentUser.isAuthenticated = false;
+                currentUser.isAdmin = false;
                 document.getElementById('mainContent').style.display = 'none';
                 
                 showAuthModal();
@@ -1925,6 +2208,324 @@
             const successEl = document.getElementById('resetSuccess');
             successEl.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             successEl.style.display = 'block';
+        }
+        
+        // ==============================================
+        // ADMIN PANEL FUNCTIONS
+        // ==============================================
+        function showAdminPanel() {
+            if (currentUser.isAdmin) {
+                // If already admin, show admin panel directly
+                document.getElementById('adminModal').classList.add('active');
+                loadAdminData();
+                switchAdminTab('orders');
+            } else {
+                // Ask for admin password
+                const password = prompt('Enter Admin Password:');
+                if (password === ADMIN_PASSWORD) {
+                    // Set user as admin
+                    currentUser.isAdmin = true;
+                    localStorage.setItem('infxIsAdmin', 'true');
+                    
+                    // Update UI
+                    document.querySelector('.user-role').textContent = 'Administrator';
+                    document.querySelector('.user-role').style.color = 'var(--success)';
+                    
+                    // Show admin panel
+                    document.getElementById('adminModal').classList.add('active');
+                    loadAdminData();
+                    switchAdminTab('orders');
+                    showToast('Admin Access Granted', 'You now have administrator privileges!');
+                } else if (password !== null) {
+                    alert('Incorrect password!');
+                }
+            }
+        }
+        
+        function hideAdminPanel() {
+            document.getElementById('adminModal').classList.remove('active');
+        }
+        
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.admin-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            document.getElementById('admin' + tabName.charAt(0).toUpperCase() + tabName.slice(1) + 'Tab').classList.add('active');
+            
+            if (tabName === 'orders') {
+                displayAdminOrders();
+            } else if (tabName === 'materials') {
+                displayAdminMaterials();
+            } else if (tabName === 'stats') {
+                updateAdminStats();
+            } else if (tabName === 'users') {
+                displayAdminUsers();
+            }
+        }
+        
+        function loadAdminData() {
+            displayAdminOrders();
+            displayAdminMaterials();
+            updateAdminStats();
+            displayAdminUsers();
+        }
+        
+        function displayAdminOrders() {
+            const ordersList = document.getElementById('adminOrdersList');
+            ordersList.innerHTML = '';
+            
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<p style="text-align: center; padding: 30px; color: var(--text-light);">No orders found</p>';
+                return;
+            }
+            
+            orders.forEach(order => {
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'order-card';
+                orderDiv.style.margin = '8px 0';
+                
+                const orderNumber = order.id.toString().padStart(5, '0');
+                const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
+                
+                orderDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <div class="order-id" style="background: linear-gradient(135deg, var(--background-dark) 0%, var(--card-dark) 100%); color: var(--accent-blue); padding: 6px 12px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 700; font-size: 14px; letter-spacing: 1px; border: 1px solid var(--accent-blue);">INFX${orderNumber}</div>
+                        <span class="status ${order.status}">${order.status.toUpperCase()}</span>
+                    </div>
+                    <p style="font-size: 13px;"><strong>Requestor:</strong> ${order.requestorName}</p>
+                    <p style="font-size: 13px;"><strong>Shop:</strong> ${order.shopId} • ${order.region}</p>
+                    <p style="font-size: 13px;"><strong>Items:</strong> ${totalItems} items</p>
+                    <p style="font-size: 13px;"><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</p>
+                    
+                    <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button onclick="updateOrderStatus(${order.id}, 'approved')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'approved' ? 'disabled' : ''}><i class="fas fa-check"></i> Approve</button>
+                        <button onclick="updateOrderStatus(${order.id}, 'released')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'released' ? 'disabled' : ''}><i class="fas fa-truck"></i> Release</button>
+                        <button onclick="updateOrderStatus(${order.id}, 'completed')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'completed' ? 'disabled' : ''}><i class="fas fa-check-circle"></i> Complete</button>
+                        <button onclick="updateOrderStatus(${order.id}, 'cancelled')" style="padding: 6px 10px; font-size: 11px; background: var(--danger);" ${order.status === 'cancelled' ? 'disabled' : ''}><i class="fas fa-times"></i> Cancel</button>
+                        <button onclick="viewOrderDetails(${order.id})" style="padding: 6px 10px; font-size: 11px; background: var(--info);"><i class="fas fa-eye"></i> View</button>
+                    </div>
+                `;
+                ordersList.appendChild(orderDiv);
+            });
+        }
+        
+        function displayAdminMaterials() {
+            const materialsList = document.getElementById('adminMaterialsList');
+            materialsList.innerHTML = '';
+            
+            if (items.length === 0) {
+                materialsList.innerHTML = '<p style="text-align: center; padding: 30px; color: var(--text-light);">No materials found</p>';
+                return;
+            }
+            
+            items.forEach(item => {
+                const materialDiv = document.createElement('div');
+                materialDiv.className = 'item-card';
+                materialDiv.style.margin = '8px 0';
+                
+                let stockColor = item.stock > 10 ? 'var(--success)' : item.stock > 0 ? 'var(--warning)' : 'var(--danger)';
+                
+                materialDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <h4 style="color: var(--text-lighter); margin: 0; font-size: 16px;">${item.name}</h4>
+                        <span style="color: ${stockColor}; font-weight: 600; font-size: 13px;">Stock: ${item.stock}</span>
+                    </div>
+                    ${item.description ? `<p style="color: var(--text-light); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
+                    <div>
+                        <span class="category-tag">${item.category || 'Uncategorized'}</span>
+                    </div>
+                    
+                    <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button onclick="updateMaterialStock(${item.id})" style="padding: 6px 10px; font-size: 11px;"><i class="fas fa-edit"></i> Update Stock</button>
+                        <button onclick="editMaterial(${item.id})" style="padding: 6px 10px; font-size: 11px; background: var(--info);"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button onclick="deleteMaterial(${item.id})" style="padding: 6px 10px; font-size: 11px; background: var(--danger);"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                `;
+                materialsList.appendChild(materialDiv);
+            });
+        }
+        
+        function displayAdminUsers() {
+            const usersList = document.getElementById('adminUsersList');
+            usersList.innerHTML = '';
+            
+            const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
+            
+            if (users.length === 0) {
+                usersList.innerHTML = '<p style="text-align: center; padding: 30px; color: var(--text-light);">No users found</p>';
+                return;
+            }
+            
+            users.forEach(user => {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'team-card';
+                userDiv.style.margin = '8px 0';
+                
+                userDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <h4 style="color: var(--text-lighter); margin: 0; font-size: 16px;">${user.name}</h4>
+                        <span style="color: ${user.isAdmin ? 'var(--success)' : 'var(--accent-blue)'}; font-weight: 600; font-size: 12px; padding: 2px 8px; background: ${user.isAdmin ? 'rgba(16, 185, 129, 0.1)' : 'rgba(83, 109, 254, 0.1)'}; border-radius: 10px;">${user.isAdmin ? 'Admin' : 'User'}</span>
+                    </div>
+                    <p style="font-size: 13px; color: var(--text-light);"><strong>Username:</strong> ${user.username}</p>
+                    <p style="font-size: 13px; color: var(--text-light);"><strong>Email:</strong> ${user.email}</p>
+                    <p style="font-size: 13px; color: var(--text-light);"><strong>Joined:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+                    
+                    <div style="margin-top: 10px; display: flex; gap: 6px;">
+                        <button onclick="toggleUserAdmin(${user.id})" style="padding: 6px 10px; font-size: 11px;" ${user.isAdmin ? 'background: var(--danger);' : 'background: var(--success);'}>
+                            <i class="fas fa-user-shield"></i> ${user.isAdmin ? 'Remove Admin' : 'Make Admin'}
+                        </button>
+                    </div>
+                `;
+                usersList.appendChild(userDiv);
+            });
+        }
+        
+        function updateAdminStats() {
+            const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
+            const totalOrders = orders.length;
+            const pendingOrders = orders.filter(o => o.status === 'pending').length;
+            const approvedOrders = orders.filter(o => o.status === 'approved').length;
+            const completedOrders = orders.filter(o => o.status === 'completed').length;
+            
+            document.getElementById('adminTotalOrders').textContent = totalOrders;
+            document.getElementById('adminTotalUsers').textContent = users.length;
+            document.getElementById('adminPendingOrders').textContent = pendingOrders;
+            document.getElementById('adminApprovedOrders').textContent = approvedOrders;
+            document.getElementById('adminCompletedOrders').textContent = completedOrders;
+            document.getElementById('adminTotalMaterials').textContent = items.length;
+        }
+        
+        function updateOrderStatus(orderId, newStatus) {
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = newStatus;
+                orders[orderIndex].updated_at = new Date().toISOString();
+                
+                // Save to localStorage
+                localStorage.setItem('infxOrders', JSON.stringify(orders));
+                
+                // Show notification to user
+                addNotification(
+                    orders[orderIndex].userId,
+                    'Order Status Updated',
+                    `Your request INFX${orderId.toString().padStart(5, '0')} has been ${newStatus}.`,
+                    'status_update'
+                );
+                
+                // Update display
+                displayAdminOrders();
+                showToast('Status Updated', `Order status updated to ${newStatus}`);
+                
+                // If user is viewing their orders, refresh that view too
+                if (document.getElementById('me-tab').classList.contains('active')) {
+                    displayCustomerOrders();
+                }
+            }
+        }
+        
+        function updateMaterialStock(itemId) {
+            const item = items.find(i => i.id == itemId);
+            if (!item) return;
+            
+            const newStock = prompt(`Update stock for ${item.name}\nCurrent stock: ${item.stock}\nEnter new stock amount:`, item.stock);
+            
+            if (newStock !== null && !isNaN(newStock)) {
+                item.stock = parseInt(newStock);
+                
+                // Save to Supabase in real app
+                // For now, save to localStorage
+                localStorage.setItem('infxMaterials', JSON.stringify(items));
+                
+                // Update display
+                displayAdminMaterials();
+                displayStoreItems();
+                showToast('Stock Updated', `${item.name} stock updated to ${newStock}`);
+            }
+        }
+        
+        function toggleUserAdmin(userId) {
+            const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
+            const userIndex = users.findIndex(u => u.id == userId);
+            
+            if (userIndex !== -1) {
+                users[userIndex].isAdmin = !users[userIndex].isAdmin;
+                localStorage.setItem('infxUsers', JSON.stringify(users));
+                
+                // If toggling current user
+                if (currentUser.id == userId) {
+                    currentUser.isAdmin = users[userIndex].isAdmin;
+                    localStorage.setItem('infxIsAdmin', currentUser.isAdmin.toString());
+                    
+                    const userRoleElement = document.querySelector('.user-role');
+                    if (currentUser.isAdmin) {
+                        userRoleElement.textContent = 'Administrator';
+                        userRoleElement.style.color = 'var(--success)';
+                    } else {
+                        userRoleElement.textContent = 'User';
+                        userRoleElement.style.color = 'var(--accent-blue)';
+                    }
+                }
+                
+                displayAdminUsers();
+                showToast('User Updated', `${users[userIndex].name} ${users[userIndex].isAdmin ? 'is now an administrator' : 'is no longer an administrator'}`);
+            }
+        }
+        
+        function searchAdminOrders() {
+            const searchTerm = document.getElementById('adminOrderSearch').value.toLowerCase();
+            const orderDivs = document.querySelectorAll('#adminOrdersList .order-card');
+            
+            orderDivs.forEach(div => {
+                const text = div.textContent.toLowerCase();
+                div.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        }
+        
+        function exportOrdersToExcel() {
+            const worksheet = XLSX.utils.json_to_sheet(orders);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
+            XLSX.writeFile(workbook, "infix_orders.xlsx");
+            showToast('Export Complete', 'Orders exported to Excel file');
+        }
+        
+        function exportMaterialsToExcel() {
+            const worksheet = XLSX.utils.json_to_sheet(items);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Materials");
+            XLSX.writeFile(workbook, "infix_materials.xlsx");
+            showToast('Export Complete', 'Materials exported to Excel file');
+        }
+        
+        function exportUsersToExcel() {
+            const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
+            const worksheet = XLSX.utils.json_to_sheet(users);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
+            XLSX.writeFile(workbook, "infix_users.xlsx");
+            showToast('Export Complete', 'Users exported to Excel file');
+        }
+        
+        function addNotification(userId, title, message, type = 'info') {
+            const notification = {
+                id: 'NOT' + Date.now(),
+                userId: userId,
+                title: title,
+                message: message,
+                type: type,
+                timestamp: new Date().toLocaleString(),
+                read: false
+            };
+            
+            notifications.unshift(notification);
+            localStorage.setItem('infxNotifications', JSON.stringify(notifications));
+            updateNotificationCount();
         }
         
         // ==============================================
@@ -1966,9 +2567,11 @@
             }
             
             // Auto-hide sidebar on mobile
-            if (window.innerWidth <= 768) {
-                toggleSidebar();
-            }
+            closeSidebar();
+            
+            // Close notification panel when switching tabs
+            const notificationPanel = document.getElementById('notificationPanel');
+            notificationPanel.classList.remove('active');
         }
         
         // ==============================================
@@ -2050,6 +2653,9 @@
         }
         
         function showToast(title, message) {
+            // Remove existing toasts
+            document.querySelectorAll('.toast').forEach(toast => toast.remove());
+            
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = `
@@ -2435,11 +3041,10 @@
             
             // Simulate order submission
             try {
-                // For demo purposes, we'll simulate a successful order
                 const orderCounter = parseInt(localStorage.getItem('infxOrderCounter') || '1');
                 const orderNumber = orderCounter.toString().padStart(5, '0');
                 
-                // Update stock (in a real app, this would be in Supabase)
+                // Update stock
                 for (const cartItem of cart) {
                     const item = items.find(i => i.id == cartItem.itemId);
                     if (item) {
@@ -2447,7 +3052,7 @@
                     }
                 }
                 
-                // Save order to localStorage for demo
+                // Save order
                 const newOrder = {
                     id: orderCounter,
                     ...orderData,
@@ -2456,6 +3061,14 @@
                 
                 orders.unshift(newOrder);
                 localStorage.setItem('infxOrderCounter', (orderCounter + 1).toString());
+                
+                // Add notification for admin
+                addNotification(
+                    'all',
+                    'New Order Request',
+                    `New request from ${requestorName} (${shopId})`,
+                    'new_order'
+                );
                 
                 // Clear cart
                 cart = [];
@@ -2667,6 +3280,17 @@
                 document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('userDisplayName').textContent = currentUser.name;
                 document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                
+                // Update user role in sidebar
+                const userRoleElement = document.querySelector('.user-role');
+                if (currentUser.isAdmin) {
+                    userRoleElement.textContent = 'Administrator';
+                    userRoleElement.style.color = 'var(--success)';
+                } else {
+                    userRoleElement.textContent = 'User';
+                    userRoleElement.style.color = 'var(--accent-blue)';
+                }
+                
                 initializeSidebar();
                 initializeApp();
             } else {
