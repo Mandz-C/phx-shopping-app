@@ -11,44 +11,219 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- Add Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add Flatpickr for calendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     
+    <!-- Modern Nike/Adidas Style -->
     <style>
-        /* RESET AND BASE STYLES */
+        /* RESET AND BASE STYLES - MODERNIZED */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         }
         
         :root {
-            --primary-blue: #1a237e;
-            --secondary-blue: #283593;
-            --light-blue: #3949ab;
-            --accent-blue: #536dfe;
-            --dark-blue: #0d1b48;
-            --background-dark: #0f172a;
-            --card-dark: #1e293b;
-            --border-dark: #334155;
-            --text-light: #e2e8f0;
-            --text-lighter: #f8fafc;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
-            --accent-teal: #0d9488;
+            /* Modern color palette - cleaner, more neutral */
+            --primary-color: #111111;
+            --secondary-color: #767676;
+            --accent-color: #111111;
+            --background-color: #ffffff;
+            --surface-color: #f8f8f8;
+            --border-color: #e5e5e5;
+            --light-border: #f0f0f0;
+            --text-primary: #111111;
+            --text-secondary: #767676;
+            --text-light: #8e8e8e;
+            --white: #ffffff;
+            --black: #000000;
+            
+            /* Status colors - more subtle */
+            --success: #0f7b07;
+            --warning: #e6b400;
+            --danger: #d41c1c;
+            --info: #0066cc;
+            --delivery: #8b5cf6;
+            
+            /* Spacing system */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+            
+            /* Shadows - cleaner, more subtle */
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+            
+            /* Border radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            /* Transitions */
+            --transition-fast: 0.2s ease;
+            --transition-base: 0.3s ease;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--background-dark) 0%, #0d1b48 100%);
-            color: var(--text-light);
+            background-color: var(--background-color);
+            color: var(--text-primary);
             min-height: 100vh;
             font-size: 14px;
+            line-height: 1.5;
             overflow-x: hidden;
+        }
+        
+        /* ORDER SUCCESS MODAL - NIKE STYLE */
+        .order-success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 10002;
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .order-success-modal.active {
+            display: flex;
+        }
+        
+        .order-success-container {
+            background: var(--white);
+            padding: var(--space-xl);
+            border-radius: var(--radius-md);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+            animation: fadeIn 0.3s ease;
+            position: relative;
+            text-align: center;
+        }
+        
+        .success-check {
+            width: 80px;
+            height: 80px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-lg);
+            color: var(--white);
+            font-size: 36px;
+            animation: scaleIn 0.5s ease;
+        }
+        
+        .order-success-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .order-success-message {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .countdown-timer {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: var(--space-lg);
+            padding: 10px;
+            background: var(--surface-color);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        
+        .countdown-timer strong {
+            color: var(--success);
+        }
+        
+        .back-to-main-btn {
+            background: var(--black);
+            color: var(--white);
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             width: 100%;
         }
         
-        /* AUTH MODAL STYLES */
+        .back-to-main-btn:hover {
+            background: var(--text-primary);
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        /* QUICK CART ACCESS */
+        .quick-cart-access {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--black);
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-base);
+            border: 2px solid var(--white);
+        }
+        
+        .quick-cart-access:hover {
+            transform: scale(1.1);
+            background: var(--text-primary);
+        }
+        
+        .quick-cart-access .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: var(--white);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            border: 2px solid var(--white);
+        }
+        
+        /* AUTH MODAL - MODERNIZED */
         .auth-modal {
             display: none;
             position: fixed;
@@ -56,9 +231,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.92);
+            background: rgba(0,0,0,0.7);
             z-index: 9999;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(4px);
             align-items: center;
             justify-content: center;
             width: 100%;
@@ -71,39 +246,38 @@
         }
         
         .auth-container {
-            background: var(--card-dark);
-            padding: 30px;
-            border-radius: 12px;
+            background: var(--white);
+            padding: var(--space-xl);
+            border-radius: var(--radius-md);
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            border: 1px solid var(--border-dark);
+            box-shadow: var(--shadow-lg);
             animation: fadeIn 0.3s ease;
             position: relative;
-            margin: 20px;
         }
         
         .auth-tabs {
             display: flex;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--border-dark);
+            margin-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--border-color);
         }
         
         .auth-tab {
             flex: 1;
-            padding: 12px;
+            padding: var(--space-md) 0;
             text-align: center;
             cursor: pointer;
-            font-weight: 600;
-            color: var(--text-light);
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+            border-bottom: 2px solid transparent;
             font-size: 14px;
         }
         
         .auth-tab.active {
-            color: var(--accent-blue);
-            border-bottom-color: var(--accent-blue);
+            color: var(--text-primary);
+            border-bottom-color: var(--black);
+            font-weight: 600;
         }
         
         .auth-content {
@@ -115,40 +289,39 @@
         }
         
         .auth-input-group {
-            margin-bottom: 15px;
+            margin-bottom: var(--space-md);
         }
         
         .auth-input-group label {
             display: block;
-            margin-bottom: 6px;
-            color: var(--text-lighter);
-            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            color: var(--text-primary);
+            font-weight: 500;
             font-size: 13px;
         }
         
         .auth-input-group input {
             width: 100%;
             padding: 12px;
-            background: var(--background-dark);
-            border: 2px solid var(--border-dark);
-            border-radius: 6px;
-            color: var(--text-light);
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
             font-size: 14px;
-            transition: all 0.3s;
+            transition: var(--transition-fast);
         }
         
         .auth-input-group input:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--black);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(83, 109, 254, 0.2);
         }
         
         /* Remember Me Checkbox */
         .remember-me {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin: 12px 0;
+            gap: var(--space-sm);
+            margin: var(--space-md) 0;
         }
         
         .remember-me input[type="checkbox"] {
@@ -160,49 +333,11 @@
         .remember-me label {
             margin: 0;
             font-size: 13px;
-            color: var(--text-light);
+            color: var(--text-secondary);
             cursor: pointer;
         }
         
-        .auth-footer {
-            margin-top: 20px;
-            text-align: center;
-            color: var(--text-light);
-            font-size: 13px;
-        }
-        
-        .auth-footer a {
-            color: var(--accent-blue);
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-        
-        .auth-error {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            display: none;
-        }
-        
-        .auth-success {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            display: none;
-        }
-        
-        /* RESET PASSWORD MODAL - SEPARATE */
+        /* RESET PASSWORD MODAL */
         .reset-password-modal {
             display: none;
             position: fixed;
@@ -210,14 +345,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.92);
+            background: rgba(0,0,0,0.7);
             z-index: 10000;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(4px);
             align-items: center;
             justify-content: center;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
         }
         
         .reset-password-modal.active {
@@ -225,35 +357,34 @@
         }
         
         .reset-password-container {
-            background: var(--card-dark);
-            padding: 30px;
-            border-radius: 12px;
+            background: var(--white);
+            padding: var(--space-xl);
+            border-radius: var(--radius-md);
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            border: 1px solid var(--border-dark);
+            box-shadow: var(--shadow-lg);
             animation: fadeIn 0.3s ease;
-            margin: 20px;
         }
         
         .reset-password-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: var(--space-lg);
         }
         
         .reset-password-header h3 {
             margin: 0;
-            color: var(--text-lighter);
+            color: var(--text-primary);
             font-size: 18px;
+            font-weight: 600;
         }
         
         .close-reset {
             background: transparent;
             border: none;
-            color: var(--text-light);
-            font-size: 22px;
+            color: var(--text-secondary);
+            font-size: 20px;
             cursor: pointer;
             width: 32px;
             height: 32px;
@@ -261,12 +392,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition-fast);
         }
         
         .close-reset:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
+            background: var(--surface-color);
+            color: var(--text-primary);
         }
         
         /* MAIN LAYOUT CONTAINER */
@@ -277,11 +408,11 @@
             overflow: hidden;
         }
         
-        /* SIDEBAR */
+        /* SIDEBAR - MINIMALIST DESIGN */
         .sidebar {
             width: 240px;
-            background: var(--card-dark);
-            border-right: 1px solid var(--border-dark);
+            background: var(--white);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             height: 100vh;
@@ -291,7 +422,8 @@
             z-index: 100;
             overflow-y: auto;
             overflow-x: hidden;
-            transition: all 0.3s ease;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
         }
         
         .sidebar.collapsed {
@@ -299,15 +431,15 @@
             width: 0;
         }
         
-        /* SIDEBAR TOGGLE BUTTON - FIXED ALIGNMENT */
+        /* SIDEBAR TOGGLE BUTTON */
         .sidebar-toggle {
             position: fixed;
             top: 20px;
             left: 20px;
-            background: var(--accent-blue);
-            color: var(--text-lighter);
-            border: none;
-            border-radius: 6px;
+            background: var(--white);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
             width: 40px;
             height: 40px;
             display: flex;
@@ -315,16 +447,16 @@
             justify-content: center;
             cursor: pointer;
             z-index: 101;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(83, 109, 254, 0.3);
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
         }
         
         .sidebar-toggle:hover {
-            background: var(--light-blue);
-            transform: scale(1.1);
+            background: var(--surface-color);
+            border-color: var(--text-primary);
         }
         
-        /* SIDEBAR OVERLAY FOR CLICK OUTSIDE */
+        /* SIDEBAR OVERLAY */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -332,7 +464,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.3);
             z-index: 99;
         }
         
@@ -341,51 +473,47 @@
         }
         
         .sidebar-header {
-            padding: 20px 15px;
-            border-bottom: 1px solid var(--border-dark);
-            text-align: center;
-            margin-top: 20px;
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+            margin-top: 0;
         }
         
         .logo {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%);
-            color: var(--text-lighter);
-            padding: 8px 20px;
-            border-radius: 8px;
+            color: var(--text-primary);
             font-weight: 800;
-            font-size: 22px;
-            box-shadow: 0 3px 10px rgba(83, 109, 254, 0.3);
-            letter-spacing: 1px;
-            display: inline-block;
-            margin-bottom: 8px;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+            margin-bottom: var(--space-xs);
         }
         
         .sidebar-header p {
             font-size: 11px;
-            opacity: 0.8;
             color: var(--text-light);
-            margin: 5px 0 0 0;
+            margin: 0;
+            font-weight: 400;
         }
         
         .user-info {
-            padding: 15px;
-            border-bottom: 1px solid var(--border-dark);
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--space-md);
         }
         
         .user-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%);
+            background: var(--surface-color);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            font-weight: 700;
-            color: var(--text-lighter);
+            font-weight: 600;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
         }
         
         .user-details {
@@ -395,18 +523,17 @@
         }
         
         .user-name {
-            font-weight: 700;
-            color: var(--text-lighter);
-            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
         .user-role {
-            font-size: 11px;
-            color: var(--accent-blue);
-            opacity: 0.9;
+            font-size: 12px;
+            color: var(--text-light);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -414,36 +541,34 @@
         
         .nav-menu {
             flex: 1;
-            padding: 10px 0;
+            padding: var(--space-md) 0;
             overflow-y: auto;
-            overflow-x: hidden;
         }
         
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 15px;
-            color: var(--text-light);
+            gap: var(--space-md);
+            padding: 12px var(--space-md);
+            color: var(--text-secondary);
             text-decoration: none;
-            transition: all 0.3s;
+            transition: var(--transition-fast);
             cursor: pointer;
-            border-left: 3px solid transparent;
             font-size: 13px;
             font-weight: 500;
             white-space: nowrap;
+            border-left: 3px solid transparent;
         }
         
         .nav-item:hover {
-            background: rgba(83, 109, 254, 0.1);
-            color: var(--text-lighter);
-            border-left-color: var(--accent-blue);
+            background: var(--surface-color);
+            color: var(--text-primary);
         }
         
         .nav-item.active {
-            background: rgba(83, 109, 254, 0.2);
-            color: var(--text-lighter);
-            border-left-color: var(--accent-blue);
+            background: var(--surface-color);
+            color: var(--text-primary);
+            border-left-color: var(--black);
             font-weight: 600;
         }
         
@@ -451,15 +576,20 @@
             width: 18px;
             text-align: center;
             font-size: 15px;
+            color: var(--text-light);
+        }
+        
+        .nav-item.active i {
+            color: var(--text-primary);
         }
         
         .nav-item .badge {
-            background: var(--accent-blue);
-            color: var(--text-lighter);
+            background: var(--text-primary);
+            color: var(--white);
             border-radius: 10px;
-            padding: 2px 6px;
-            font-size: 10px;
-            font-weight: 700;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
             margin-left: auto;
             min-width: 20px;
             text-align: center;
@@ -468,21 +598,20 @@
         .logout-btn {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 15px;
-            color: var(--text-light);
+            gap: var(--space-md);
+            padding: var(--space-md);
+            color: var(--text-secondary);
             text-decoration: none;
-            transition: all 0.3s;
+            transition: var(--transition-fast);
             cursor: pointer;
-            border-top: 1px solid var(--border-dark);
+            border-top: 1px solid var(--border-color);
             font-size: 13px;
             font-weight: 500;
             margin-top: auto;
-            white-space: nowrap;
         }
         
         .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
+            background: var(--surface-color);
             color: var(--danger);
         }
         
@@ -496,10 +625,9 @@
         .main-content {
             flex: 1;
             margin-left: 240px;
-            padding: 20px;
-            padding-left: 70px; /* Extra padding when sidebar is hidden */
+            padding: var(--space-lg);
             width: 100%;
-            transition: all 0.3s ease;
+            transition: var(--transition-base);
             box-sizing: border-box;
         }
         
@@ -508,183 +636,172 @@
             padding-left: 70px;
         }
         
-        /* HEADER - FIXED ALIGNMENT */
+        /* HEADER - CLEAN DESIGN */
         .header {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            padding: 15px 25px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: var(--white);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
             position: relative;
-            border: 1px solid var(--light-blue);
-            text-align: center;
+            text-align: left;
             display: flex;
             align-items: center;
-            justify-content: center;
-            min-height: 80px;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            min-height: auto;
+            border-radius: 0;
+            box-shadow: none;
         }
         
         .header-content {
             position: relative;
-            padding: 8px 0;
-            text-align: center;
+            padding: 0;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
         }
         
         .header h1 {
             margin: 0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
+            gap: var(--space-md);
             flex-wrap: wrap;
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 600;
         }
         
         .logo-header {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%);
-            color: var(--text-lighter);
-            padding: 8px 20px;
-            border-radius: 6px;
+            color: var(--text-primary);
             font-weight: 800;
             font-size: 20px;
-            box-shadow: 0 3px 10px rgba(83, 109, 254, 0.3);
-            letter-spacing: 1px;
+            letter-spacing: -0.5px;
+            margin-right: var(--space-md);
         }
         
         /* HEADER TOP RIGHT NOTIFICATION */
         .header-top-right {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            position: static;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--space-md);
         }
         
-        /* NOTIFICATION BELL - FIXED CLICK AREA */
+        /* NOTIFICATION BELL */
         .notification-bell {
             position: relative;
             cursor: pointer;
-            font-size: 20px;
-            color: var(--text-lighter);
-            background: var(--light-blue);
+            font-size: 18px;
+            color: var(--text-secondary);
+            background: var(--white);
             width: 40px;
             height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
-            border: 1px solid var(--accent-blue);
-            z-index: 1;
+            transition: var(--transition-fast);
+            border: 1px solid var(--border-color);
         }
         
         .notification-bell:hover {
-            background: var(--accent-blue);
-            transform: rotate(15deg) scale(1.05);
+            background: var(--surface-color);
+            color: var(--text-primary);
+            border-color: var(--text-primary);
         }
         
         .notification-count {
             position: absolute;
-            top: -4px;
-            right: -4px;
+            top: -2px;
+            right: -2px;
             background: var(--danger);
-            color: var(--text-lighter);
+            color: var(--white);
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 11px;
+            width: 16px;
+            height: 16px;
+            font-size: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
-            z-index: 2;
-            pointer-events: none;
+            font-weight: 600;
+            border: 1px solid var(--white);
         }
         
         /* PAGE TITLE */
         .page-title {
-            color: var(--text-lighter);
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--accent-blue);
+            color: var(--text-primary);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: none;
         }
         
         .page-title i {
-            color: var(--accent-blue);
-            margin-right: 10px;
+            color: var(--text-primary);
+            margin-right: var(--space-sm);
         }
         
-        /* BANNER */
-        .banner-container {
-            overflow: hidden;
-            white-space: nowrap;
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%);
-            padding: 15px 0;
-            margin: 20px 0;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 6px 20px rgba(83, 109, 254, 0.4);
+        /* ANNOUNCEMENT BANNER - MODERNIZED */
+        .announcement-container {
+            background: var(--surface-color);
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            text-align: center;
             width: 100%;
-        }
-        
-        .banner-scroll {
-            display: inline-block;
-            animation: bannerScroll 45s linear infinite;
-            color: var(--text-lighter);
-            font-weight: 800;
-            font-size: 16px;
-            padding: 0 20px;
-            letter-spacing: 0.5px;
-        }
-        
-        .banner-scroll span {
-            display: inline-block;
-            margin: 0 30px;
-            padding: 4px 8px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 5px;
-        }
-        
-        @keyframes bannerScroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        /* SECTION STYLES */
-        .section {
-            background: var(--card-dark);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-            border: 1px solid var(--border-dark);
-            width: 100%;
-            max-width: 100%;
-            overflow: hidden;
             box-sizing: border-box;
         }
         
+        .announcement-content {
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .announcement-empty {
+            color: var(--text-light);
+            font-style: italic;
+            padding: var(--space-xl);
+        }
+        
+        .announcement-admin {
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* SECTION STYLES - CLEAN CARDS */
+        .section {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: var(--shadow-sm);
+        }
+        
         h2 {
-            color: var(--text-lighter);
-            border-bottom: 2px solid var(--accent-blue);
-            padding-bottom: 10px;
+            color: var(--text-primary);
+            padding-bottom: var(--space-sm);
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: var(--space-lg);
             font-size: 18px;
             font-weight: 600;
             word-wrap: break-word;
+            border-bottom: 1px solid var(--border-color);
         }
         
         h3 {
-            color: var(--text-lighter);
-            margin: 15px 0;
+            color: var(--text-primary);
+            margin: var(--space-md) 0;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             word-wrap: break-word;
         }
         
@@ -693,7 +810,6 @@
             display: none;
             animation: fadeIn 0.4s ease;
             width: 100%;
-            max-width: 100%;
         }
         
         @keyframes fadeIn {
@@ -705,49 +821,47 @@
             display: block;
         }
         
-        /* FORM ELEMENTS */
+        /* FORM ELEMENTS - MODERN */
         input, select, textarea {
             width: 100%;
             padding: 10px;
-            margin: 8px 0;
-            background: var(--background-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 6px;
+            margin: var(--space-sm) 0;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
             font-size: 13px;
-            color: var(--text-light);
-            transition: all 0.3s;
+            color: var(--text-primary);
+            transition: var(--transition-fast);
             box-sizing: border-box;
-            max-width: 100%;
         }
         
         input:focus, select:focus, textarea:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--black);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(83, 109, 254, 0.2);
+            box-shadow: 0 0 0 1px var(--black);
         }
         
-        /* BUTTONS */
+        /* BUTTONS - MINIMALIST */
         button {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%);
-            color: var(--text-lighter);
+            background: var(--black);
+            color: var(--white);
             padding: 10px 16px;
-            border: none;
-            border-radius: 6px;
+            border: 1px solid var(--black);
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            margin: 4px;
+            margin: var(--space-xs);
             font-size: 13px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: var(--transition-fast);
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 3px 8px rgba(83, 109, 254, 0.2);
             white-space: nowrap;
         }
         
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(83, 109, 254, 0.3);
+            background: var(--text-primary);
+            border-color: var(--text-primary);
         }
         
         button:active {
@@ -761,92 +875,104 @@
         }
         
         button.cancel {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            background: var(--white);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+        
+        button.cancel:hover {
+            background: var(--surface-color);
+            border-color: var(--text-primary);
         }
         
         button.success {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            background: var(--success);
+            color: var(--white);
+            border-color: var(--success);
         }
         
         button.info {
-            background: linear-gradient(135deg, var(--info) 0%, #2563eb 100%);
+            background: var(--info);
+            color: var(--white);
+            border-color: var(--info);
         }
         
         button.warning {
-            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+            background: var(--warning);
+            color: var(--black);
+            border-color: var(--warning);
         }
         
-        /* CARDS */
+        /* CARDS - MINIMALIST */
         .item-card, .order-card, .category-card, .team-card {
-            background: var(--background-dark);
-            border: 1px solid var(--border-dark);
-            padding: 15px;
-            margin: 12px 0;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            padding: var(--space-md);
+            margin: var(--space-sm) 0;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
             width: 100%;
             box-sizing: border-box;
         }
         
         .item-card:hover, .order-card:hover, .category-card:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 4px 12px rgba(83, 109, 254, 0.2);
-            transform: translateY(-2px);
+            border-color: var(--black);
+            box-shadow: var(--shadow-md);
         }
         
-        /* STATUS BADGES */
+        /* STATUS BADGES - SUBTLE */
         .status {
             display: inline-block;
-            padding: 6px 10px;
-            border-radius: 15px;
-            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
             font-weight: 600;
-            margin: 3px;
-            min-width: 80px;
+            margin: 2px;
+            min-width: 70px;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--text-lighter);
+            color: var(--white);
         }
         
         .status.pending { 
-            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+            background: var(--warning);
         }
         
         .status.approved { 
-            background: linear-gradient(135deg, var(--info) 0%, #2563eb 100%);
+            background: var(--info);
         }
         
-        .status.released { 
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        .status.out-for-delivery { 
+            background: var(--delivery);
         }
         
         .status.completed { 
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            background: var(--success);
         }
         
         .status.cancelled { 
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            background: var(--danger);
         }
         
         .status.rejected { 
-            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            background: var(--text-secondary);
         }
         
-        /* NOTIFICATION PANEL */
+        /* NOTIFICATION PANEL - MODERN */
         .notification-panel {
             position: fixed;
             top: 100px;
             right: 20px;
             width: 320px;
             max-height: 400px;
-            background: var(--card-dark);
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            background: var(--white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
             z-index: 1002;
             display: none;
             overflow: hidden;
-            border: 1px solid var(--border-dark);
+            border: 1px solid var(--border-color);
         }
         
         .notification-panel.active {
@@ -855,56 +981,57 @@
         }
         
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-15px) translateX(15px); }
-            to { opacity: 1; transform: translateY(0) translateX(0); }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .notification-header {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            color: var(--text-lighter);
-            padding: 15px;
+            background: var(--white);
+            color: var(--text-primary);
+            padding: var(--space-md);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-color);
         }
         
         .notification-header h3 {
-            color: var(--text-lighter);
+            color: var(--text-primary);
             margin: 0;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .notification-content {
             max-height: 320px;
             overflow-y: auto;
-            padding: 12px;
+            padding: var(--space-sm);
         }
         
-        /* ADMIN PANEL */
+        /* ADMIN PANEL - CLEAN */
         .admin-key {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%);
-            color: var(--text-lighter);
+            right: 90px;
+            background: var(--black);
+            color: var(--white);
             padding: 10px 16px;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(83, 109, 254, 0.4);
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
             z-index: 1000;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.1);
+            transition: var(--transition-base);
+            border: 1px solid var(--black);
             font-size: 12px;
         }
         
         .admin-key:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 20px rgba(83, 109, 254, 0.6);
+            background: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
         
         /* ADMIN MODAL */
@@ -915,14 +1042,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.92);
+            background: rgba(0,0,0,0.7);
             z-index: 10001;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(4px);
             align-items: center;
             justify-content: center;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
         }
         
         .admin-modal.active {
@@ -930,16 +1054,14 @@
         }
         
         .admin-container {
-            background: var(--card-dark);
-            padding: 30px;
-            border-radius: 12px;
+            background: var(--white);
+            padding: var(--space-xl);
+            border-radius: var(--radius-md);
             width: 90%;
             max-width: 800px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            border: 1px solid var(--border-dark);
+            box-shadow: var(--shadow-lg);
             animation: fadeIn 0.3s ease;
             position: relative;
-            margin: 20px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -948,23 +1070,24 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--accent-blue);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
         }
         
         .admin-header h2 {
-            color: var(--text-lighter);
+            color: var(--text-primary);
             margin: 0;
-            font-size: 22px;
+            font-size: 20px;
             border: none;
+            font-weight: 600;
         }
         
         .close-admin {
             background: transparent;
             border: none;
-            color: var(--text-light);
-            font-size: 22px;
+            color: var(--text-secondary);
+            font-size: 20px;
             cursor: pointer;
             width: 32px;
             height: 32px;
@@ -972,38 +1095,38 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition-fast);
         }
         
         .close-admin:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
+            background: var(--surface-color);
+            color: var(--text-primary);
         }
         
-        /* ADMIN TABS */
+        /* ADMIN TABS - MINIMALIST */
         .admin-tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
             flex-wrap: wrap;
         }
         
         .admin-tab {
-            padding: 10px 16px;
-            background: var(--background-dark);
-            border: 1px solid var(--border-dark);
-            color: var(--text-light);
+            padding: 8px 12px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
             cursor: pointer;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+            transition: var(--transition-fast);
         }
         
         .admin-tab.active {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%);
-            color: var(--text-lighter);
-            border-color: var(--accent-blue);
+            background: var(--black);
+            color: var(--white);
+            border-color: var(--black);
         }
         
         .admin-content {
@@ -1019,16 +1142,17 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: var(--card-dark);
-            color: var(--text-lighter);
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            background: var(--white);
+            color: var(--text-primary);
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
             z-index: 1003;
             max-width: 350px;
-            border-left: 4px solid var(--accent-blue);
+            border-left: 3px solid var(--black);
             animation: slideInRight 0.3s ease;
-            transition: all 0.3s;
+            transition: var(--transition-base);
+            border: 1px solid var(--border-color);
         }
         
         @keyframes slideInRight {
@@ -1036,63 +1160,56 @@
             to { opacity: 1; transform: translateX(0); }
         }
         
-        @keyframes slideOutRight {
-            from { opacity: 1; transform: translateX(0); }
-            to { opacity: 0; transform: translateX(100%); }
-        }
-        
         /* GRID LAYOUTS */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: var(--space-md);
             width: 100%;
         }
         
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            gap: var(--space-md);
             width: 100%;
         }
         
         .grid-4 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
+            gap: var(--space-md);
             width: 100%;
         }
         
-        /* STAT CARDS */
+        /* STAT CARDS - MINIMALIST */
         .stat-card {
-            background: linear-gradient(135deg, var(--background-dark) 0%, var(--border-dark) 100%);
-            padding: 18px;
-            border-radius: 8px;
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-sm);
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            border: 1px solid var(--border-dark);
-            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-fast);
             width: 100%;
             box-sizing: border-box;
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border-color: var(--black);
+            box-shadow: var(--shadow-md);
         }
         
         .stat-number {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--accent-blue);
-            margin: 10px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: var(--space-sm) 0;
         }
         
         .stat-label {
             color: var(--text-light);
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -1100,19 +1217,29 @@
         /* CATEGORY TAGS */
         .category-tag {
             display: inline-block;
-            background: linear-gradient(135deg, var(--border-dark) 0%, #475569 100%);
-            color: var(--text-lighter);
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-right: 6px;
-            margin-bottom: 6px;
-            border: 1px solid var(--border-dark);
+            background: var(--surface-color);
+            color: var(--text-primary);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-right: var(--space-xs);
+            margin-bottom: var(--space-xs);
+            border: 1px solid var(--border-color);
             white-space: nowrap;
         }
         
-        /* RESPONSIVE */
+        /* HOME HERO */
+        .home-hero {
+            text-align: center;
+            padding: var(--space-xl);
+            background: var(--surface-color);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            border: 1px solid var(--border-color);
+        }
+        
+        /* RESPONSIVE DESIGN */
         @media (max-width: 1024px) {
             .sidebar {
                 width: 220px;
@@ -1120,7 +1247,7 @@
             
             .main-content {
                 margin-left: 220px;
-                padding-left: 70px;
+                padding-left: var(--space-lg);
             }
             
             .grid-2 {
@@ -1153,23 +1280,11 @@
             
             .main-content {
                 margin-left: 0;
-                padding: 20px;
-                padding-top: 20px;
+                padding: var(--space-md);
             }
             
             .main-content.expanded {
-                padding-left: 20px;
-            }
-            
-            .nav-menu {
-                display: flex;
-                flex-direction: column;
-                padding: 10px 0;
-            }
-            
-            .nav-item {
-                width: 100%;
-                justify-content: flex-start;
+                padding-left: var(--space-md);
             }
             
             .notification-panel {
@@ -1180,16 +1295,11 @@
             }
             
             .banner-scroll {
-                font-size: 14px;
-                padding: 0 15px;
-            }
-            
-            .banner-scroll span {
-                margin: 0 15px;
+                font-size: 12px;
             }
             
             .section {
-                padding: 15px;
+                padding: var(--space-md);
             }
             
             .page-title {
@@ -1197,52 +1307,55 @@
             }
             
             .header {
-                padding: 15px;
-                min-height: 70px;
+                padding: var(--space-md);
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-md);
             }
             
             .header h1 {
                 flex-direction: column;
-                gap: 8px;
-                font-size: 18px;
+                align-items: flex-start;
+                gap: var(--space-xs);
+                font-size: 16px;
             }
             
             .header-top-right {
-                position: static;
-                margin-top: 10px;
-                justify-content: center;
+                align-self: flex-end;
             }
             
-            .admin-container {
-                padding: 20px;
-                margin: 10px;
+            .admin-key {
+                bottom: 90px;
+                right: 20px;
+            }
+            
+            .quick-cart-access {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            /* Mobile-specific improvements */
+            .delivery-options {
+                flex-direction: column;
+            }
+            
+            .delivery-option {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
             }
         }
         
         @media (max-width: 480px) {
-            .main-header {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-            
-            .notification-bell {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-            
-            .banner-scroll {
-                font-size: 12px;
-            }
-            
             .grid-4 {
                 grid-template-columns: 1fr;
             }
             
-            .auth-container, .reset-password-container {
-                padding: 20px;
-                margin: 10px;
+            .banner-container {
+                padding: var(--space-sm);
             }
             
             button {
@@ -1250,9 +1363,9 @@
                 font-size: 12px;
             }
             
-            .sidebar-toggle {
-                top: 20px;
-                left: 15px;
+            .auth-container, .reset-password-container, .admin-container {
+                padding: var(--space-lg);
+                margin: var(--space-sm);
             }
             
             .toast {
@@ -1264,13 +1377,23 @@
             .admin-tabs {
                 flex-direction: column;
             }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-sm);
+            }
+            
+            .logo-header {
+                margin-right: 0;
+            }
         }
         
         /* LOADING STATE */
         .loading {
             text-align: center;
-            padding: 30px;
-            color: var(--accent-blue);
+            padding: var(--space-xl);
+            color: var(--text-light);
         }
         
         .loading:after {
@@ -1283,10 +1406,166 @@
             40% { content: '..'; }
             60%, 100% { content: '...'; }
         }
+        
+        /* FORM GROUP STYLES */
+        .form-group {
+            margin-bottom: var(--space-md);
+        }
+        
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-xs);
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 13px;
+        }
+        
+        .form-label i {
+            color: var(--text-light);
+        }
+        
+        .required-field {
+            color: var(--danger);
+            margin-left: var(--space-xs);
+        }
+        
+        /* ORDER FILTER TABS */
+        .order-filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .order-filter-btn {
+            padding: 6px 12px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+        
+        .order-filter-btn.active {
+            background: var(--black);
+            color: var(--white);
+            border-color: var(--black);
+        }
+        
+        .order-filter-btn:hover:not(.active) {
+            background: var(--surface-color);
+            border-color: var(--text-primary);
+        }
+        
+        /* CHECKOUT FORM - NIKE STYLE */
+        .checkout-form {
+            background: var(--white);
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            margin: var(--space-md) 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* DELIVERY OPTIONS - NIKE STYLE */
+        .delivery-options {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: var(--white);
+        }
+        
+        .delivery-option {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            background-color: var(--white);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .delivery-option.active {
+            background-color: var(--black);
+            color: var(--white);
+        }
+        
+        .delivery-option:hover:not(.active) {
+            background-color: var(--surface-color);
+        }
+        
+        /* TEAM CARDS */
+        .team-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
+        }
+        
+        .team-card:hover {
+            border-color: var(--black);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .team-card h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .position {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+            font-size: 13px;
+        }
+        
+        .nickname {
+            background: var(--surface-color);
+            color: var(--text-primary);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+            margin-top: var(--space-sm);
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
     </style>
 </head>
 <body>
-    <!-- AUTH MODAL - LOGIN/SIGNUP ONLY -->
+    <!-- ORDER SUCCESS MODAL -->
+    <div class="order-success-modal" id="orderSuccessModal">
+        <div class="order-success-container">
+            <div class="success-check">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 class="order-success-title">Your order has been placed</h2>
+            <div class="order-success-message">
+                You can check the status of your order in "My Material Request"
+            </div>
+            <div class="countdown-timer" id="countdownTimer">
+                Returning to main page in <strong id="countdown">10</strong> seconds
+            </div>
+            <button class="back-to-main-btn" onclick="goToMainPage()">
+                <i class="fas fa-arrow-left"></i> Back to Main Page
+            </button>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
     <div class="auth-modal" id="authModal">
         <div class="auth-container">
             <div class="auth-tabs">
@@ -1349,7 +1628,7 @@
         </div>
     </div>
 
-    <!-- FORGOT PASSWORD MODAL - SEPARATE -->
+    <!-- Forgot Password Modal -->
     <div class="reset-password-modal" id="resetPasswordModal">
         <div class="reset-password-container">
             <div class="reset-password-header">
@@ -1375,7 +1654,7 @@
         </div>
     </div>
 
-    <!-- ADMIN MODAL -->
+    <!-- Admin Modal -->
     <div class="admin-modal" id="adminModal">
         <div class="admin-container">
             <div class="admin-header">
@@ -1386,6 +1665,7 @@
             <div class="admin-tabs">
                 <div class="admin-tab active" onclick="switchAdminTab('orders')">Orders</div>
                 <div class="admin-tab" onclick="switchAdminTab('materials')">Materials</div>
+                <div class="admin-tab" onclick="switchAdminTab('announcement')">Announcement</div>
                 <div class="admin-tab" onclick="switchAdminTab('stats')">Statistics</div>
                 <div class="admin-tab" onclick="switchAdminTab('users')">Users</div>
             </div>
@@ -1409,6 +1689,39 @@
                 </div>
                 <div id="adminMaterialsList" style="max-height: 400px; overflow-y: auto;">
                     <div class="loading">Loading materials...</div>
+                </div>
+            </div>
+            
+            <!-- ANNOUNCEMENT ADMIN TAB -->
+            <div class="admin-content" id="adminAnnouncementTab">
+                <h3>Manage Announcement</h3>
+                <div class="form-group">
+                    <div class="form-label">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Announcement Title</span>
+                    </div>
+                    <input type="text" id="announcementTitle" placeholder="Enter announcement title">
+                </div>
+                <div class="form-group">
+                    <div class="form-label">
+                        <i class="fas fa-edit"></i>
+                        <span>Announcement Content</span>
+                    </div>
+                    <textarea id="announcementContent" placeholder="Enter announcement message" rows="6"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="success" onclick="saveAnnouncement()">
+                        <i class="fas fa-save"></i> Save Announcement
+                    </button>
+                    <button class="cancel" onclick="clearAnnouncement()">
+                        <i class="fas fa-trash"></i> Clear Announcement
+                    </button>
+                </div>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                    <h4><i class="fas fa-history"></i> Current Announcement</h4>
+                    <div id="currentAnnouncementPreview" style="background: var(--surface-color); padding: 15px; border-radius: var(--radius-sm); margin-top: 10px; border: 1px solid var(--border-color);">
+                        <p style="color: var(--text-light); font-style: italic;">No announcement set</p>
+                    </div>
                 </div>
             </div>
             
@@ -1458,6 +1771,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- QUICK CART ACCESS -->
+    <div class="quick-cart-access" onclick="switchTab('cart')">
+        <i class="fas fa-shopping-cart"></i>
+        <div class="cart-count" id="quickCartCount">0</div>
     </div>
 
     <!-- MAIN CONTENT (Hidden until logged in) -->
@@ -1523,16 +1842,16 @@
         <div class="main-content" id="mainContentArea">
             <!-- HEADER -->
             <div class="header">
+                <div class="header-content">
+                    <span class="logo-header">INFINIX</span>
+                    <h1>BTL Material Management System</h1>
+                </div>
+                
                 <div class="header-top-right">
                     <div class="notification-bell" id="notificationBell" onclick="toggleNotifications()">
                         <i class="fas fa-bell"></i>
                         <span class="notification-count" id="notificationCount" style="display: none;">0</span>
                     </div>
-                </div>
-                
-                <div class="header-content">
-                    <h1><span class="logo-header">INFINIX</span> | BTL Material Management</h1>
-                    <p style="font-size: 12px; opacity: 0.9; margin-top: 5px;">Efficient Material Request & Tracking System</p>
                 </div>
             </div>
 
@@ -1540,21 +1859,17 @@
             <div class="notification-panel" id="notificationPanel">
                 <div class="notification-header">
                     <h3><i class="fas fa-bell"></i> Notifications</h3>
-                    <button onclick="clearAllNotifications()" style="background: transparent; padding: 6px 12px; font-size: 12px; border: none; color: var(--text-light); cursor: pointer;">Clear All</button>
+                    <button onclick="clearAllNotifications()" style="background: transparent; padding: 6px 12px; font-size: 12px; border: none; color: var(--text-secondary); cursor: pointer;">Clear All</button>
                 </div>
                 <div class="notification-content" id="notificationList">
                     <!-- Notifications will appear here -->
                 </div>
             </div>
 
-            <!-- BANNER -->
-            <div class="banner-container">
-                <div class="banner-scroll">
-                    <span>🚀 Together We Grow. Together We Win. Infinix 2026!</span>
-                    <span>📦 BTL Material Management System</span>
-                    <span>⚡ Efficient • Organized • Professional</span>
-                    <span>👥 Serving Teams Nationwide</span>
-                    <span>🏆 Excellence in Material Management</span>
+            <!-- ANNOUNCEMENT SECTION -->
+            <div class="announcement-container" id="announcementContainer">
+                <div class="announcement-content" id="announcementContent">
+                    <div class="announcement-empty">No announcements at the moment</div>
                 </div>
             </div>
 
@@ -1562,9 +1877,9 @@
             <!-- HOME TAB -->
             <div id="home-tab" class="tab-content active">
                 <div class="section">
-                    <div class="home-hero" style="text-align: center; padding: 25px 15px; background: linear-gradient(135deg, rgba(83, 109, 254, 0.1) 0%, rgba(57, 73, 171, 0.1) 100%); border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(83, 109, 254, 0.2);">
-                        <h2 style="color: var(--text-lighter); font-size: 22px; margin-bottom: 12px; border: none;">Welcome to the BTL Material Management System</h2>
-                        <p style="color: var(--text-light); font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.5;">Streamline your material requests with our efficient system. Request, track, and manage all your BTL materials in one place.</p>
+                    <div class="home-hero">
+                        <h2 style="color: var(--text-primary); font-size: 20px; margin-bottom: 12px;">Welcome to the BTL Material Management System</h2>
+                        <p style="color: var(--text-secondary); font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.5;">Streamline your material requests with our efficient system. Request, track, and manage all your BTL materials in one place.</p>
                         <button class="success" onclick="switchTab('store')"><i class="fas fa-boxes"></i> Browse Materials →</button>
                     </div>
                     
@@ -1604,8 +1919,8 @@
             <div id="store-tab" class="tab-content">
                 <div class="section">
                     <h2><i class="fas fa-boxes"></i> Available Materials</h2>
-                    <div class="category-select" style="display: flex; align-items: center; gap: 8px; margin: 15px 0; padding: 12px; background: var(--background-dark); border-radius: 8px; border: 1px solid var(--border-dark);">
-                        <label for="categoryFilter" style="font-weight: 600; color: var(--text-lighter); font-size: 13px;">Filter by Category:</label>
+                    <div class="category-select" style="display: flex; align-items: center; gap: 8px; margin: 15px 0; padding: 12px; background: var(--surface-color); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                        <label for="categoryFilter" style="font-weight: 500; color: var(--text-primary); font-size: 13px;">Filter by Category:</label>
                         <select id="categoryFilter" onchange="filterCategory()" style="flex: 1;">
                             <option value="all">All Categories</option>
                         </select>
@@ -1619,19 +1934,31 @@
             <!-- CART TAB -->
             <div id="cart-tab" class="tab-content">
                 <div class="section">
-                    <button class="back-button" onclick="switchTab('store')" style="background: var(--border-dark); margin-bottom: 15px;"><i class="fas fa-arrow-left"></i> Back to Materials</button>
+                    <button class="back-button" onclick="switchTab('store')" style="background: var(--surface-color); color: var(--text-secondary); margin-bottom: 15px;"><i class="fas fa-arrow-left"></i> Back to Materials</button>
                     <h2><i class="fas fa-shopping-cart"></i> My Cart</h2>
                     <div id="cartItems"></div>
-                    <div class="cart-summary" style="background: var(--background-dark); padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid var(--border-dark);">
-                        <div class="summary-total" id="cartTotal" style="display: flex; justify-content: space-between; padding: 12px 0; font-size: 16px; font-weight: 700; color: var(--accent-blue); border-top: 2px solid var(--accent-blue); margin-top: 10px;">Total Items: 0</div>
+                    <div class="cart-summary" style="background: var(--surface-color); padding: 15px; border-radius: var(--radius-sm); margin: 15px 0; border: 1px solid var(--border-color);">
+                        <div class="summary-total" id="cartTotal" style="display: flex; justify-content: space-between; padding: 12px 0; font-size: 16px; font-weight: 600; color: var(--text-primary); border-top: 1px solid var(--border-color); margin-top: 10px;">Total Items: 0</div>
                     </div>
                     
                     <div style="margin-top: 20px; display: none;" id="checkoutSection">
                         <h3><i class="fas fa-file-alt"></i> Submit Request</h3>
-                        <div class="checkout-form" style="background: var(--background-dark); padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid var(--border-dark);">
+                        
+                        <!-- Delivery Options -->
+                        <div class="delivery-options">
+                            <div class="delivery-option active" id="deliver-option" onclick="selectDeliveryOption('deliver')">
+                                DELIVER IT
+                            </div>
+                            <div class="delivery-option" id="pickup-option" onclick="selectDeliveryOption('pickup')">
+                                PICK-UP
+                            </div>
+                        </div>
+                        
+                        <!-- Common Form Fields -->
+                        <div class="checkout-form">
                             <div class="form-group">
                                 <div class="form-label">
-                                    <i class="fas fa-user" style="color: var(--text-lighter);"></i>
+                                    <i class="fas fa-user"></i>
                                     <span>Requestor's Full Name</span>
                                     <span class="required-field">*</span>
                                 </div>
@@ -1641,7 +1968,7 @@
                             <div class="grid-2">
                                 <div class="form-group">
                                     <div class="form-label">
-                                        <i class="fas fa-id-card" style="color: var(--text-lighter);"></i>
+                                        <i class="fas fa-id-card"></i>
                                         <span>User ID #</span>
                                         <span class="required-field">*</span>
                                     </div>
@@ -1649,7 +1976,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="form-label">
-                                        <i class="fas fa-store" style="color: var(--text-lighter);"></i>
+                                        <i class="fas fa-store"></i>
                                         <span>Shop ID</span>
                                         <span class="required-field">*</span>
                                     </div>
@@ -1660,7 +1987,7 @@
                             <div class="grid-2">
                                 <div class="form-group">
                                     <div class="form-label">
-                                        <i class="fas fa-phone" style="color: var(--text-lighter);"></i>
+                                        <i class="fas fa-phone"></i>
                                         <span>Contact Number</span>
                                         <span class="required-field">*</span>
                                     </div>
@@ -1668,7 +1995,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="form-label">
-                                        <i class="fas fa-store-alt" style="color: var(--text-lighter);"></i>
+                                        <i class="fas fa-store-alt"></i>
                                         <span>Store Status</span>
                                         <span class="required-field">*</span>
                                     </div>
@@ -1680,19 +2007,22 @@
                                 </div>
                             </div>
                             
-                            <div class="form-group">
-                                <div class="form-label">
-                                    <i class="fas fa-map-marker-alt" style="color: var(--text-lighter);"></i>
-                                    <span>Address</span>
-                                    <span class="required-field">*</span>
+                            <!-- Deliver It Fields -->
+                            <div id="deliver-fields">
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Address</span>
+                                        <span class="required-field">*</span>
+                                    </div>
+                                    <textarea id="address" placeholder="Enter complete address" rows="2" required></textarea>
                                 </div>
-                                <textarea id="address" placeholder="Enter complete address" rows="2" required></textarea>
                             </div>
                             
                             <div class="grid-2">
                                 <div class="form-group">
                                     <div class="form-label">
-                                        <i class="fas fa-globe" style="color: var(--text-lighter);"></i>
+                                        <i class="fas fa-globe"></i>
                                         <span>Region</span>
                                         <span class="required-field">*</span>
                                     </div>
@@ -1708,17 +2038,17 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="form-label">
-                                        <i class="fas fa-calendar-day" style="color: var(--text-lighter);"></i>
+                                        <i class="fas fa-calendar-day"></i>
                                         <span>Date Needed</span>
                                         <span class="required-field">*</span>
                                     </div>
-                                    <input type="date" id="dateNeeded" required>
+                                    <input type="text" id="dateNeeded" placeholder="Select date" required>
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <div class="form-label">
-                                    <i class="fas fa-sticky-note" style="color: var(--text-lighter);"></i>
+                                    <i class="fas fa-sticky-note"></i>
                                     <span>Additional Notes (Optional)</span>
                                 </div>
                                 <textarea id="requestNotes" placeholder="Any additional information..." rows="2"></textarea>
@@ -1744,14 +2074,14 @@
                     <h2><i class="fas fa-user"></i> My Requests</h2>
                     
                     <!-- Order Status Filter Tabs -->
-                    <div class="order-filter-tabs" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid var(--border-dark);">
-                        <button class="order-filter-btn active" onclick="filterOrders('all')" style="padding: 6px 12px; background: var(--background-dark); border: 1px solid var(--border-dark); cursor: pointer; border-radius: 6px; font-size: 12px; color: var(--text-light); transition: all 0.3s; font-weight: 500;">All</button>
-                        <button class="order-filter-btn" onclick="filterOrders('pending')" style="padding: 6px 12px; background: var(--background-dark); border: 1px solid var(--border-dark); cursor: pointer; border-radius: 6px; font-size: 12px; color: var(--text-light); transition: all 0.3s; font-weight: 500;">Pending</button>
-                        <button class="order-filter-btn" onclick="filterOrders('approved')" style="padding: 6px 12px; background: var(--background-dark); border: 1px solid var(--border-dark); cursor: pointer; border-radius: 6px; font-size: 12px; color: var(--text-light); transition: all 0.3s; font-weight: 500;">Approved</button>
-                        <button class="order-filter-btn" onclick="filterOrders('released')" style="padding: 6px 12px; background: var(--background-dark); border: 1px solid var(--border-dark); cursor: pointer; border-radius: 6px; font-size: 12px; color: var(--text-light); transition: all 0.3s; font-weight: 500;">Released</button>
-                        <button class="order-filter-btn" onclick="filterOrders('completed')" style="padding: 6px 12px; background: var(--background-dark); border: 1px solid var(--border-dark); cursor: pointer; border-radius: 6px; font-size: 12px; color: var(--text-light); transition: all 0.3s; font-weight: 500;">Completed</button>
-                        <button class="order-filter-btn" onclick="filterOrders('cancelled')" style="padding: 6px 12px; background: var(--background-dark); border: 1px solid var(--border-dark); cursor: pointer; border-radius: 6px; font-size: 12px; color: var(--text-light); transition: all 0.3s; font-weight: 500;">Cancelled</button>
-                        <button class="order-filter-btn" onclick="filterOrders('rejected')" style="padding: 6px 12px; background: var(--background-dark); border: 1px solid var(--border-dark); cursor: pointer; border-radius: 6px; font-size: 12px; color: var(--text-light); transition: all 0.3s; font-weight: 500;">Rejected</button>
+                    <div class="order-filter-tabs">
+                        <button class="order-filter-btn active" onclick="filterOrders('all')">All</button>
+                        <button class="order-filter-btn" onclick="filterOrders('pending')">Pending</button>
+                        <button class="order-filter-btn" onclick="filterOrders('approved')">Approved</button>
+                        <button class="order-filter-btn" onclick="filterOrders('out-for-delivery')">Out for Delivery</button>
+                        <button class="order-filter-btn" onclick="filterOrders('completed')">Completed</button>
+                        <button class="order-filter-btn" onclick="filterOrders('cancelled')">Cancelled</button>
+                        <button class="order-filter-btn" onclick="filterOrders('rejected')">Rejected</button>
                     </div>
                     
                     <div style="margin-bottom: 15px;">
@@ -1768,36 +2098,36 @@
             <div id="about-tab" class="tab-content">
                 <div class="section">
                     <h2><i class="fas fa-users"></i> BTL Team</h2>
-                    <p style="margin-bottom: 20px; color: var(--text-light); font-size: 13px;">Meet the team behind the BTL Material Management System</p>
+                    <p style="margin-bottom: 20px; color: var(--text-secondary); font-size: 13px;">Meet the team behind the BTL Material Management System</p>
                     
                     <div class="grid-2">
                         <div class="team-card">
-                            <h4 style="color: var(--text-lighter); margin-bottom: 8px; font-size: 16px;">King Rey Calinawan Mateo</h4>
-                            <div class="position" style="color: var(--accent-blue); font-weight: 600; margin-bottom: 10px; font-size: 14px;">BTL Supervisor</div>
-                            <div class="nickname" style="background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%); color: var(--text-lighter); padding: 4px 12px; border-radius: 15px; font-size: 13px; display: inline-block; margin-top: 10px; font-weight: 600;">King</div>
-                            <p style="margin-top: 10px; color: var(--text-light); font-size: 13px;">Oversees all BTL operations and material management.</p>
+                            <h4>King Rey Calinawan Mateo</h4>
+                            <div class="position">BTL Supervisor</div>
+                            <div class="nickname">King</div>
+                            <p style="margin-top: 10px; color: var(--text-secondary); font-size: 13px;">Oversees all BTL operations and material management.</p>
                         </div>
                         
                         <div class="team-card">
-                            <h4 style="color: var(--text-lighter); margin-bottom: 8px; font-size: 16px;">Jover Cruz Peña</h4>
-                            <div class="position" style="color: var(--accent-blue); font-weight: 600; margin-bottom: 10px; font-size: 14px;">BTL Specialist</div>
-                            <div class="nickname" style="background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%); color: var(--text-lighter); padding: 4px 12px; border-radius: 15px; font-size: 13px; display: inline-block; margin-top: 10px; font-weight: 600;">Ethan</div>
-                            <p style="margin-top: 10px; color: var(--text-light); font-size: 13px;">Handles material coordination and deployment.</p>
+                            <h4>Jover Cruz Peña</h4>
+                            <div class="position">BTL Specialist</div>
+                            <div class="nickname">Ethan</div>
+                            <p style="margin-top: 10px; color: var(--text-secondary); font-size: 13px;">Handles material coordination and deployment.</p>
                         </div>
                         
                         <div class="team-card">
-                            <h4 style="color: var(--text-lighter); margin-bottom: 8px; font-size: 16px;">Armando Cristobal Jr</h4>
-                            <div class="position" style="color: var(--accent-blue); font-weight: 600; margin-bottom: 10px; font-size: 14px;">Data Analyst</div>
-                            <div class="nickname" style="background: linear-gradient(135deg, var(--accent-blue) 0%, var(--light-blue) 100%); color: var(--text-lighter); padding: 4px 12px; border-radius: 15px; font-size: 13px; display: inline-block; margin-top: 10px; font-weight: 600;">Mandz</div>
-                            <p style="margin-top: 10px; color: var(--text-light); font-size: 13px;">Manages data analysis and system optimization.</p>
+                            <h4>Armando Cristobal Jr</h4>
+                            <div class="position">Owner/Administrator</div>
+                            <div class="nickname">Mandz</div>
+                            <p style="margin-top: 10px; color: var(--text-secondary); font-size: 13px;">Manages system administration and user management.</p>
                         </div>
                     </div>
 
-                    <div style="margin-top: 30px; padding-top: 15px; border-top: 2px solid var(--border-dark);">
+                    <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--border-color);">
                         <h3><i class="fas fa-share-alt"></i> Share This System</h3>
-                        <div style="background: var(--background-dark); padding: 15px; border-radius: 8px; border: 1px solid var(--border-dark);">
-                            <p style="margin-bottom: 10px; font-size: 13px;">Share this link with team members:</p>
-                            <input type="text" id="storeLink" readonly style="width: 100%; margin: 10px 0; padding: 8px; background: var(--card-dark); border: 1px solid var(--border-dark); border-radius: 6px; color: var(--text-light); font-size: 12px;">
+                        <div style="background: var(--surface-color); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                            <p style="margin-bottom: 10px; font-size: 13px; color: var(--text-secondary);">Share this link with team members:</p>
+                            <input type="text" id="storeLink" readonly style="width: 100%; margin: 10px 0; padding: 8px; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 12px;">
                             <button onclick="copyStoreLink()"><i class="fas fa-copy"></i> Copy Link</button>
                         </div>
                     </div>
@@ -1832,6 +2162,9 @@
         let currentOrderFilter = 'all';
         const ADMIN_PASSWORD = "INFINIXBTL123";
         let isAdminMode = false;
+        let currentDeliveryOption = 'deliver';
+        let countdownInterval = null;
+        let announcement = JSON.parse(localStorage.getItem('infxAnnouncement')) || { title: '', content: '' };
         
         // USER AUTHENTICATION
         let currentUser = {
@@ -1846,6 +2179,159 @@
         
         // SIDEBAR STATE
         let sidebarCollapsed = localStorage.getItem('infxSidebarCollapsed') === 'true' || false;
+        
+        // ==============================================
+        // ANNOUNCEMENT FUNCTIONS
+        // ==============================================
+        function loadAnnouncement() {
+            const announcementContent = document.getElementById('announcementContent');
+            
+            if (announcement.content) {
+                announcementContent.innerHTML = `
+                    <h3 style="color: var(--text-primary); margin-bottom: 10px; font-size: 16px;">${announcement.title}</h3>
+                    <div style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+                        ${announcement.content.replace(/\n/g, '<br>')}
+                    </div>
+                    ${currentUser.isAdmin ? `
+                        <div class="announcement-admin">
+                            <button onclick="editAnnouncement()" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-edit"></i> Edit Announcement
+                            </button>
+                        </div>
+                    ` : ''}
+                `;
+            } else {
+                announcementContent.innerHTML = '<div class="announcement-empty">No announcements at the moment</div>';
+            }
+        }
+        
+        function saveAnnouncement() {
+            const title = document.getElementById('announcementTitle').value.trim();
+            const content = document.getElementById('announcementContent').value.trim();
+            
+            if (!title && !content) {
+                alert('Please enter announcement title or content');
+                return;
+            }
+            
+            announcement = {
+                title: title || 'Announcement',
+                content: content,
+                updated_at: new Date().toISOString(),
+                updated_by: currentUser.name || currentUser.username
+            };
+            
+            localStorage.setItem('infxAnnouncement', JSON.stringify(announcement));
+            
+            // Update preview
+            document.getElementById('currentAnnouncementPreview').innerHTML = `
+                <strong style="color: var(--text-primary);">${announcement.title}</strong>
+                <p style="color: var(--text-secondary); margin-top: 8px;">${announcement.content}</p>
+                <p style="color: var(--text-light); font-size: 11px; margin-top: 10px;">
+                    Last updated: ${new Date(announcement.updated_at).toLocaleString()} by ${announcement.updated_by}
+                </p>
+            `;
+            
+            // Update main page announcement
+            loadAnnouncement();
+            
+            // Add notification for all users
+            addNotification(
+                'all',
+                'New Announcement',
+                announcement.title,
+                'announcement'
+            );
+            
+            showToast('Announcement Saved', 'Announcement has been updated and broadcast to all users');
+            
+            // Clear form
+            document.getElementById('announcementTitle').value = '';
+            document.getElementById('announcementContent').value = '';
+        }
+        
+        function clearAnnouncement() {
+            if (confirm('Clear the current announcement?')) {
+                announcement = { title: '', content: '' };
+                localStorage.removeItem('infxAnnouncement');
+                
+                document.getElementById('currentAnnouncementPreview').innerHTML = 
+                    '<p style="color: var(--text-light); font-style: italic;">No announcement set</p>';
+                
+                loadAnnouncement();
+                showToast('Announcement Cleared', 'Current announcement has been removed');
+            }
+        }
+        
+        function editAnnouncement() {
+            showAdminPanel();
+            switchAdminTab('announcement');
+            
+            document.getElementById('announcementTitle').value = announcement.title || '';
+            document.getElementById('announcementContent').value = announcement.content || '';
+        }
+        
+        // ==============================================
+        // ORDER SUCCESS MODAL FUNCTIONS
+        // ==============================================
+        function showOrderSuccessModal() {
+            const modal = document.getElementById('orderSuccessModal');
+            modal.classList.add('active');
+            
+            // Start countdown
+            let countdown = 10;
+            const countdownElement = document.getElementById('countdown');
+            countdownElement.textContent = countdown;
+            
+            countdownInterval = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    goToMainPage();
+                }
+            }, 1000);
+        }
+        
+        function hideOrderSuccessModal() {
+            const modal = document.getElementById('orderSuccessModal');
+            modal.classList.remove('active');
+            
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+        
+        function goToMainPage() {
+            hideOrderSuccessModal();
+            switchTab('home');
+        }
+        
+        // ==============================================
+        // DELIVERY OPTION FUNCTIONS
+        // ==============================================
+        function selectDeliveryOption(option) {
+            currentDeliveryOption = option;
+            
+            const deliverOption = document.getElementById('deliver-option');
+            const pickupOption = document.getElementById('pickup-option');
+            const deliverFields = document.getElementById('deliver-fields');
+            const addressField = document.getElementById('address');
+            
+            if (option === 'deliver') {
+                deliverOption.classList.add('active');
+                pickupOption.classList.remove('active');
+                deliverFields.style.display = 'block';
+                addressField.required = true;
+            } else {
+                pickupOption.classList.add('active');
+                deliverOption.classList.remove('active');
+                deliverFields.style.display = 'none';
+                addressField.required = false;
+            }
+        }
         
         // ==============================================
         // SIDEBAR FUNCTIONS
@@ -2018,7 +2504,7 @@
                         userRoleElement.style.color = 'var(--success)';
                     } else {
                         userRoleElement.textContent = 'User';
-                        userRoleElement.style.color = 'var(--accent-blue)';
+                        userRoleElement.style.color = 'var(--text-light)';
                     }
                     
                     initializeSidebar();
@@ -2262,6 +2748,8 @@
                 displayAdminOrders();
             } else if (tabName === 'materials') {
                 displayAdminMaterials();
+            } else if (tabName === 'announcement') {
+                displayAdminAnnouncement();
             } else if (tabName === 'stats') {
                 updateAdminStats();
             } else if (tabName === 'users') {
@@ -2272,8 +2760,30 @@
         function loadAdminData() {
             displayAdminOrders();
             displayAdminMaterials();
+            displayAdminAnnouncement();
             updateAdminStats();
             displayAdminUsers();
+        }
+        
+        function displayAdminAnnouncement() {
+            const previewElement = document.getElementById('currentAnnouncementPreview');
+            
+            if (announcement.content) {
+                previewElement.innerHTML = `
+                    <strong style="color: var(--text-primary);">${announcement.title}</strong>
+                    <p style="color: var(--text-secondary); margin-top: 8px;">${announcement.content}</p>
+                    <p style="color: var(--text-light); font-size: 11px; margin-top: 10px;">
+                        Last updated: ${announcement.updated_at ? new Date(announcement.updated_at).toLocaleString() : 'N/A'} 
+                        ${announcement.updated_by ? 'by ' + announcement.updated_by : ''}
+                    </p>
+                `;
+            } else {
+                previewElement.innerHTML = '<p style="color: var(--text-light); font-style: italic;">No announcement set</p>';
+            }
+            
+            // Populate form fields
+            document.getElementById('announcementTitle').value = announcement.title || '';
+            document.getElementById('announcementContent').value = announcement.content || '';
         }
         
         function displayAdminOrders() {
@@ -2295,19 +2805,19 @@
                 
                 orderDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <div class="order-id" style="background: linear-gradient(135deg, var(--background-dark) 0%, var(--card-dark) 100%); color: var(--accent-blue); padding: 6px 12px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 700; font-size: 14px; letter-spacing: 1px; border: 1px solid var(--accent-blue);">INFX${orderNumber}</div>
-                        <span class="status ${order.status}">${order.status.toUpperCase()}</span>
+                        <div class="order-id" style="background: var(--surface-color); color: var(--text-primary); padding: 6px 12px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 600; font-size: 14px; letter-spacing: 1px; border: 1px solid var(--border-color);">INFX${orderNumber}</div>
+                        <span class="status ${order.status}">${order.status.replace('-', ' ').toUpperCase()}</span>
                     </div>
-                    <p style="font-size: 13px;"><strong>Requestor:</strong> ${order.requestorName}</p>
-                    <p style="font-size: 13px;"><strong>Shop:</strong> ${order.shopId} • ${order.region}</p>
-                    <p style="font-size: 13px;"><strong>Items:</strong> ${totalItems} items</p>
-                    <p style="font-size: 13px;"><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Requestor:</strong> ${order.requestorName}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Shop:</strong> ${order.shopId} • ${order.region}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Items:</strong> ${totalItems} items</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</p>
                     
                     <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
                         <button onclick="updateOrderStatus(${order.id}, 'approved')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'approved' ? 'disabled' : ''}><i class="fas fa-check"></i> Approve</button>
-                        <button onclick="updateOrderStatus(${order.id}, 'released')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'released' ? 'disabled' : ''}><i class="fas fa-truck"></i> Release</button>
+                        <button onclick="updateOrderStatus(${order.id}, 'out-for-delivery')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'out-for-delivery' ? 'disabled' : ''}><i class="fas fa-truck"></i> Out for Delivery</button>
                         <button onclick="updateOrderStatus(${order.id}, 'completed')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'completed' ? 'disabled' : ''}><i class="fas fa-check-circle"></i> Complete</button>
-                        <button onclick="updateOrderStatus(${order.id}, 'cancelled')" style="padding: 6px 10px; font-size: 11px; background: var(--danger);" ${order.status === 'cancelled' ? 'disabled' : ''}><i class="fas fa-times"></i> Cancel</button>
+                        <button onclick="updateOrderStatus(${order.id}, 'cancelled')" style="padding: 6px 10px; font-size: 11px; background: var(--white); color: var(--danger); border-color: var(--danger);" ${order.status === 'cancelled' ? 'disabled' : ''}><i class="fas fa-times"></i> Cancel</button>
                         <button onclick="viewOrderDetails(${order.id})" style="padding: 6px 10px; font-size: 11px; background: var(--info);"><i class="fas fa-eye"></i> View</button>
                     </div>
                 `;
@@ -2333,10 +2843,10 @@
                 
                 materialDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <h4 style="color: var(--text-lighter); margin: 0; font-size: 16px;">${item.name}</h4>
+                        <h4 style="color: var(--text-primary); margin: 0; font-size: 16px;">${item.name}</h4>
                         <span style="color: ${stockColor}; font-weight: 600; font-size: 13px;">Stock: ${item.stock}</span>
                     </div>
-                    ${item.description ? `<p style="color: var(--text-light); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
+                    ${item.description ? `<p style="color: var(--text-secondary); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
                     <div>
                         <span class="category-tag">${item.category || 'Uncategorized'}</span>
                     </div>
@@ -2344,7 +2854,7 @@
                     <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
                         <button onclick="updateMaterialStock(${item.id})" style="padding: 6px 10px; font-size: 11px;"><i class="fas fa-edit"></i> Update Stock</button>
                         <button onclick="editMaterial(${item.id})" style="padding: 6px 10px; font-size: 11px; background: var(--info);"><i class="fas fa-pencil-alt"></i> Edit</button>
-                        <button onclick="deleteMaterial(${item.id})" style="padding: 6px 10px; font-size: 11px; background: var(--danger);"><i class="fas fa-trash"></i> Delete</button>
+                        <button onclick="deleteMaterial(${item.id})" style="padding: 6px 10px; font-size: 11px; background: var(--white); color: var(--danger); border-color: var(--danger);"><i class="fas fa-trash"></i> Delete</button>
                     </div>
                 `;
                 materialsList.appendChild(materialDiv);
@@ -2369,15 +2879,15 @@
                 
                 userDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <h4 style="color: var(--text-lighter); margin: 0; font-size: 16px;">${user.name}</h4>
-                        <span style="color: ${user.isAdmin ? 'var(--success)' : 'var(--accent-blue)'}; font-weight: 600; font-size: 12px; padding: 2px 8px; background: ${user.isAdmin ? 'rgba(16, 185, 129, 0.1)' : 'rgba(83, 109, 254, 0.1)'}; border-radius: 10px;">${user.isAdmin ? 'Admin' : 'User'}</span>
+                        <h4 style="color: var(--text-primary); margin: 0; font-size: 16px;">${user.name}</h4>
+                        <span style="color: ${user.isAdmin ? 'var(--success)' : 'var(--text-secondary)'}; font-weight: 600; font-size: 12px; padding: 2px 8px; background: ${user.isAdmin ? 'rgba(16, 185, 129, 0.1)' : 'var(--surface-color)'}; border-radius: 10px; border: 1px solid ${user.isAdmin ? 'var(--success)' : 'var(--border-color)'};">${user.isAdmin ? 'Admin' : 'User'}</span>
                     </div>
-                    <p style="font-size: 13px; color: var(--text-light);"><strong>Username:</strong> ${user.username}</p>
-                    <p style="font-size: 13px; color: var(--text-light);"><strong>Email:</strong> ${user.email}</p>
-                    <p style="font-size: 13px; color: var(--text-light);"><strong>Joined:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Username:</strong> ${user.username}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Email:</strong> ${user.email}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Joined:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
                     
                     <div style="margin-top: 10px; display: flex; gap: 6px;">
-                        <button onclick="toggleUserAdmin(${user.id})" style="padding: 6px 10px; font-size: 11px;" ${user.isAdmin ? 'background: var(--danger);' : 'background: var(--success);'}>
+                        <button onclick="toggleUserAdmin(${user.id})" style="padding: 6px 10px; font-size: 11px;" ${user.isAdmin ? 'background: var(--white); color: var(--danger); border-color: var(--danger);' : 'background: var(--success);'}>
                             <i class="fas fa-user-shield"></i> ${user.isAdmin ? 'Remove Admin' : 'Make Admin'}
                         </button>
                     </div>
@@ -2414,13 +2924,13 @@
                 addNotification(
                     orders[orderIndex].userId,
                     'Order Status Updated',
-                    `Your request INFX${orderId.toString().padStart(5, '0')} has been ${newStatus}.`,
+                    `Your request INFX${orderId.toString().padStart(5, '0')} has been ${newStatus.replace('-', ' ')}.`,
                     'status_update'
                 );
                 
                 // Update display
                 displayAdminOrders();
-                showToast('Status Updated', `Order status updated to ${newStatus}`);
+                showToast('Status Updated', `Order status updated to ${newStatus.replace('-', ' ')}`);
                 
                 // If user is viewing their orders, refresh that view too
                 if (document.getElementById('me-tab').classList.contains('active')) {
@@ -2438,8 +2948,7 @@
             if (newStock !== null && !isNaN(newStock)) {
                 item.stock = parseInt(newStock);
                 
-                // Save to Supabase in real app
-                // For now, save to localStorage
+                // Save to localStorage
                 localStorage.setItem('infxMaterials', JSON.stringify(items));
                 
                 // Update display
@@ -2468,7 +2977,7 @@
                         userRoleElement.style.color = 'var(--success)';
                     } else {
                         userRoleElement.textContent = 'User';
-                        userRoleElement.style.color = 'var(--accent-blue)';
+                        userRoleElement.style.color = 'var(--text-light)';
                     }
                 }
                 
@@ -2622,13 +3131,13 @@
                 }
                 
                 notificationItem.innerHTML = `
-                    <div style="display: flex; align-items: start; gap: 10px;">
-                        <div style="font-size: 18px; color: var(--accent-blue);">
-                            <i class="fas fa-${notification.type === 'status_update' ? 'sync-alt' : 'bullhorn'}"></i>
+                    <div style="display: flex; align-items: start; gap: 10px; padding: 10px; border-bottom: 1px solid var(--border-color);">
+                        <div style="font-size: 16px; color: var(--text-light);">
+                            <i class="fas fa-${notification.type === 'status_update' ? 'sync-alt' : notification.type === 'announcement' ? 'bullhorn' : 'info-circle'}"></i>
                         </div>
                         <div style="flex: 1;">
-                            <div style="font-weight: 600; margin-bottom: 4px; color: var(--text-lighter); font-size: 13px;">${notification.title}</div>
-                            <div style="font-size: 12px; color: var(--text-light);">${notification.message}</div>
+                            <div style="font-weight: 600; margin-bottom: 4px; color: var(--text-primary); font-size: 13px;">${notification.title}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">${notification.message}</div>
                             <div style="font-size: 11px; color: var(--text-light); margin-top: 6px; opacity: 0.8;">${notification.timestamp}</div>
                         </div>
                     </div>
@@ -2659,10 +3168,10 @@
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = `
-                <div style="font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 600; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; color: var(--text-primary);">
                     <i class="fas fa-bell"></i> ${title}
                 </div>
-                <div style="font-size: 12px; color: var(--text-light);">${message}</div>
+                <div style="font-size: 12px; color: var(--text-secondary);">${message}</div>
             `;
             
             document.body.appendChild(toast);
@@ -2781,14 +3290,14 @@
                 let stockText = item.stock > 10 ? 'In Stock' : item.stock > 0 ? 'Low Stock' : 'Out of Stock';
                 
                 itemDiv.innerHTML = `
-                    <h4 style="color: var(--text-lighter); margin-bottom: 8px; font-size: 16px;">${item.name}</h4>
-                    ${item.description ? `<p style="color: var(--text-light); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
-                    <div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px; font-size: 16px;">${item.name}</h4>
+                    ${item.description ? `<p style="color: var(--text-secondary); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="category-tag">${item.category || 'Uncategorized'}</span>
-                        <span style="color: ${stockColor}; font-weight: 600; font-size: 13px;">${stockText}: ${item.stock}</span>
+                        <span style="color: ${stockColor}; font-weight: 600; font-size: 12px;">${stockText}: ${item.stock}</span>
                     </div>
                     <div style="margin-top: 12px;">
-                        <input type="number" id="qty-${item.id}" min="1" max="${item.stock}" value="1" style="width: 70px; display: inline-block; margin-right: 8px; padding: 6px; font-size: 13px;">
+                        <input type="number" id="qty-${item.id}" min="1" max="${item.stock}" value="1" style="width: 70px; display: inline-block; margin-right: 8px; padding: 6px; font-size: 13px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
                         <button onclick="addToCart(${item.id})" ${item.stock === 0 ? 'disabled' : ''} style="padding: 8px 15px; font-size: 13px;">
                             ${item.stock === 0 ? '<i class="fas fa-times"></i> Out of Stock' : '<i class="fas fa-cart-plus"></i> Add to Cart'}
                         </button>
@@ -2869,25 +3378,25 @@
                     justify-content: space-between;
                     align-items: center;
                     padding: 12px;
-                    border-bottom: 1px solid var(--border-dark);
-                    background: var(--background-dark);
-                    border-radius: 6px;
+                    border-bottom: 1px solid var(--border-color);
+                    background: var(--white);
+                    border-radius: var(--radius-sm);
                     margin: 8px 0;
                     border-left: ${isOutOfStock ? '3px solid var(--danger)' : 'none'};
                 `;
                 
                 cartItemDiv.innerHTML = `
                     <div>
-                        <strong style="color: var(--text-lighter); font-size: 14px;">${cartItem.name}</strong>
+                        <strong style="color: var(--text-primary); font-size: 14px;">${cartItem.name}</strong>
                         ${isOutOfStock ? '<br><span style="color: var(--danger); font-size: 11px;">⚠️ Insufficient stock!</span>' : ''}
                         <br>
                         <span class="category-tag" style="margin-top: 4px;">${cartItem.category || 'Uncategorized'}</span>
-                        <div style="font-size: 13px; color: var(--text-light); margin-top: 4px;">Quantity: ${cartItem.quantity}</div>
-                        ${item ? `<div style="font-size: 11px; color: ${isOutOfStock ? 'var(--danger)' : 'var(--accent-blue)'};">Available: ${availableStock}</div>` : ''}
+                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Quantity: ${cartItem.quantity}</div>
+                        ${item ? `<div style="font-size: 11px; color: ${isOutOfStock ? 'var(--danger)' : 'var(--text-primary)'};">Available: ${availableStock}</div>` : ''}
                     </div>
                     <div style="display: flex; gap: 6px;">
-                        <button onclick="updateCartQuantity(${index}, ${cartItem.quantity - 1})" style="padding: 6px 10px; font-size: 12px;">➖</button>
-                        <button onclick="updateCartQuantity(${index}, ${cartItem.quantity + 1})" style="padding: 6px 10px; font-size: 12px;">➕</button>
+                        <button onclick="updateCartQuantity(${index}, ${cartItem.quantity - 1})" style="padding: 6px 10px; font-size: 12px; background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color);">➖</button>
+                        <button onclick="updateCartQuantity(${index}, ${cartItem.quantity + 1})" style="padding: 6px 10px; font-size: 12px; background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color);">➕</button>
                         <button class="cancel" onclick="removeFromCart(${index})" style="padding: 6px 10px; font-size: 12px;"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
@@ -2930,6 +3439,7 @@
         function updateCartCount() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cartCount').textContent = totalItems;
+            document.getElementById('quickCartCount').textContent = totalItems;
         }
         
         function clearCart() {
@@ -2970,13 +3480,16 @@
             document.getElementById('checkoutSection').style.display = 'block';
             document.getElementById('proceedSection').style.display = 'none';
             
+            // Initialize date picker
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('dateNeeded').min = tomorrow.toISOString().split('T')[0];
             
-            const defaultDate = new Date();
-            defaultDate.setDate(defaultDate.getDate() + 2);
-            document.getElementById('dateNeeded').value = defaultDate.toISOString().split('T')[0];
+            flatpickr("#dateNeeded", {
+                defaultDate: tomorrow,
+                minDate: tomorrow,
+                dateFormat: "d/m/Y",
+                disableMobile: true // To ensure proper mobile experience
+            });
             
             if (currentUser.name && currentUser.name !== currentUser.username) {
                 document.getElementById('requestorName').value = currentUser.name;
@@ -3008,7 +3521,13 @@
             const dateNeeded = document.getElementById('dateNeeded').value;
             const notes = document.getElementById('requestNotes').value.trim();
             
-            if(!requestorName || !userId || !shopId || !contactNumber || !address || !storeStatus || !region || !dateNeeded) {
+            // Validation for deliver option
+            if (currentDeliveryOption === 'deliver' && !address) {
+                alert('Please enter address for delivery!');
+                return;
+            }
+            
+            if(!requestorName || !userId || !shopId || !contactNumber || !storeStatus || !region || !dateNeeded) {
                 alert('Please fill all required fields!');
                 return;
             }
@@ -3030,11 +3549,12 @@
                 userId: userId || currentUser.id,
                 shopId: shopId,
                 contactNumber: contactNumber,
-                address: address,
+                address: currentDeliveryOption === 'deliver' ? address : 'Pickup Request',
                 storeStatus: storeStatus,
                 region: region,
                 dateNeeded: dateNeeded,
                 notes: notes,
+                deliveryOption: currentDeliveryOption,
                 date: new Date().toISOString(),
                 items: [...cart]
             };
@@ -3075,9 +3595,6 @@
                 saveLocalData();
                 updateCartCount();
                 
-                // Show success message
-                alert(`✅ Request Submitted!\n\nRequest ID: INFX${orderNumber}\nName: ${requestorName}\nShop: ${shopId}\n\nYou can track your request in the "My Requests" tab.`);
-                
                 // Clear form
                 document.getElementById('requestorName').value = '';
                 document.getElementById('userId').value = '';
@@ -3090,7 +3607,9 @@
                 document.getElementById('requestNotes').value = '';
                 
                 hideCheckoutForm();
-                switchTab('me');
+                
+                // Show success modal instead of alert
+                showOrderSuccessModal();
                 
             } catch (error) {
                 console.error('Error submitting order:', error);
@@ -3115,7 +3634,7 @@
             if(filteredOrders.length === 0) {
                 let message = 'No requests found';
                 if (currentOrderFilter !== 'all') {
-                    message = `No ${currentOrderFilter} requests`;
+                    message = `No ${currentOrderFilter.replace('-', ' ')} requests`;
                 }
                 
                 customerOrders.innerHTML = `
@@ -3144,15 +3663,16 @@
                 const orderNumber = order.id.toString().padStart(5, '0');
                 
                 orderDiv.innerHTML = `
-                    <div class="order-id" style="background: linear-gradient(135deg, var(--background-dark) 0%, var(--card-dark) 100%); color: var(--accent-blue); padding: 8px 15px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 700; display: inline-block; margin: 4px 0; font-size: 16px; letter-spacing: 1px; border: 1px solid var(--accent-blue);">INFX${orderNumber}</div>
-                    <p style="font-size: 13px;"><strong>Requestor:</strong> ${order.requestorName}</p>
-                    <p style="font-size: 13px;"><strong>Shop:</strong> ${order.shopId} • ${order.storeStatus} • ${order.region}</p>
-                    <p style="font-size: 13px;"><strong>Contact:</strong> ${order.contactNumber}</p>
-                    <p style="font-size: 13px;"><strong>Date Needed:</strong> ${order.dateNeeded}</p>
-                    <p style="font-size: 13px;"><strong>Date Requested:</strong> ${order.date}</p>
-                    <p style="font-size: 13px;"><strong>Materials:</strong> ${order.items.map(item => `${item.name} × ${item.quantity}`).join(', ')}</p>
+                    <div class="order-id" style="background: var(--surface-color); color: var(--text-primary); padding: 8px 15px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 600; display: inline-block; margin: 4px 0; font-size: 16px; letter-spacing: 1px; border: 1px solid var(--border-color);">INFX${orderNumber}</div>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Requestor:</strong> ${order.requestorName}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Shop:</strong> ${order.shopId} • ${order.storeStatus} • ${order.region}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Contact:</strong> ${order.contactNumber}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Needed:</strong> ${order.dateNeeded}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Requested:</strong> ${order.date}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Delivery:</strong> ${order.deliveryOption === 'deliver' ? 'Delivery' : 'Pickup'}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Materials:</strong> ${order.items.map(item => `${item.name} × ${item.quantity}`).join(', ')}</p>
                     <div style="text-align: center; margin-top: 10px;">
-                        <span class="status ${order.status}">${order.status.toUpperCase()}</span>
+                        <span class="status ${order.status}">${order.status.replace('-', ' ').toUpperCase()}</span>
                     </div>
                 `;
                 customerOrders.appendChild(orderDiv);
@@ -3192,7 +3712,7 @@
             document.getElementById('homeTotalProducts').textContent = items.length;
             document.getElementById('homeTotalOrders').textContent = userOrders.length;
             document.getElementById('homeActiveOrders').textContent = userOrders.filter(o => 
-                o.status === 'pending' || o.status === 'approved' || o.status === 'released'
+                o.status === 'pending' || o.status === 'approved' || o.status === 'out-for-delivery'
             ).length;
             document.getElementById('homeDeliveredOrders').textContent = userOrders.filter(o => 
                 o.status === 'completed'
@@ -3214,6 +3734,8 @@
         function saveLocalData() {
             localStorage.setItem('infxCart', JSON.stringify(cart));
             localStorage.setItem('infxNotifications', JSON.stringify(notifications));
+            localStorage.setItem('infxMaterials', JSON.stringify(items));
+            localStorage.setItem('infxOrders', JSON.stringify(orders));
         }
         
         function initializeCategoryDropdown() {
@@ -3262,6 +3784,10 @@
                 localStorage.setItem('infxUsers', JSON.stringify([]));
             }
             
+            if (!localStorage.getItem('infxAnnouncement')) {
+                localStorage.setItem('infxAnnouncement', JSON.stringify({ title: '', content: '' }));
+            }
+            
             await Promise.all([loadItems(), loadCategories(), loadOrders()]);
             
             initializeCategoryDropdown();
@@ -3269,6 +3795,17 @@
             updateHomeStats();
             updateStoreLink();
             updateNotificationCount();
+            loadAnnouncement();
+            
+            // Initialize date picker if on cart page
+            if (document.getElementById('cart-tab').classList.contains('active')) {
+                flatpickr("#dateNeeded", {
+                    defaultDate: new Date(),
+                    minDate: new Date(),
+                    dateFormat: "d/m/Y",
+                    disableMobile: true
+                });
+            }
         }
         
         // ==============================================
@@ -3288,7 +3825,7 @@
                     userRoleElement.style.color = 'var(--success)';
                 } else {
                     userRoleElement.textContent = 'User';
-                    userRoleElement.style.color = 'var(--accent-blue)';
+                    userRoleElement.style.color = 'var(--text-light)';
                 }
                 
                 initializeSidebar();
@@ -3296,6 +3833,9 @@
             } else {
                 showAuthModal();
             }
+            
+            // Set up delivery option defaults
+            selectDeliveryOption('deliver');
         };
     </script>
 </body>
