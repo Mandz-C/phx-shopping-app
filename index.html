@@ -3193,20 +3193,21 @@
                     return;
                 }
                 
-                // NEW USERS ARE ALWAYS REGULAR USERS, NOT ADMINS
+                // FIXED: NEW USERS ARE ALWAYS REGULAR USERS, NOT ADMINS
                 const newUser = {
                     id: 'USER' + Date.now(),
                     username: username,
                     email: email,
                     password: password,
                     name: username,
-                    isAdmin: false, // ALWAYS FALSE FOR NEW USERS
+                    isAdmin: false, // FIX: Always false for new users
                     created_at: new Date().toISOString()
                 };
                 
                 users.push(newUser);
                 localStorage.setItem('infxUsers', JSON.stringify(users));
                 
+                // FIXED: Current user should also NOT be admin
                 currentUser = {
                     id: newUser.id,
                     username: newUser.username,
@@ -3214,7 +3215,7 @@
                     email: newUser.email,
                     isAuthenticated: true,
                     rememberMe: false,
-                    isAdmin: false // ALWAYS FALSE
+                    isAdmin: false // FIX: Always false
                 };
                 
                 localStorage.setItem('infxUserId', currentUser.id);
@@ -3223,12 +3224,16 @@
                 localStorage.setItem('infxUserEmail', currentUser.email);
                 localStorage.setItem('infxIsAuthenticated', 'true');
                 localStorage.setItem('infxRememberMe', 'false');
-                localStorage.setItem('infxIsAdmin', 'false');
+                localStorage.setItem('infxIsAdmin', 'false'); // FIX: Store as false
                 
                 hideAuthModal();
                 document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('userDisplayName').textContent = currentUser.name;
                 document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                
+                const userRoleElement = document.querySelector('.user-role');
+                userRoleElement.textContent = 'User';
+                userRoleElement.style.color = 'var(--text-light)';
                 
                 initializeSidebar();
                 initializeApp();
@@ -4194,10 +4199,11 @@
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             
+            // FIXED: Changed date format from "d/m/Y" to "Y-m-d" for database compatibility
             flatpickr("#dateNeeded", {
                 defaultDate: tomorrow,
                 minDate: tomorrow,
-                dateFormat: "d/m/Y",
+                dateFormat: "Y-m-d", // FIX: Changed to YYYY-MM-DD format for database
                 disableMobile: true
             });
             
@@ -4263,7 +4269,7 @@
                     }
                 }
                 
-                // Create the order object
+                // Create the order object with correct date format
                 const newOrder = {
                     id: orderCounter,
                     requestor_name: requestorName,
@@ -4273,7 +4279,7 @@
                     address: currentDeliveryOption === 'deliver' ? address : 'Pickup Request',
                     store_status: storeStatus,
                     region: region,
-                    date_needed: dateNeeded,
+                    date_needed: dateNeeded, // Now in YYYY-MM-DD format
                     notes: notes,
                     delivery_option: currentDeliveryOption,
                     created_at: new Date().toISOString(),
@@ -4502,10 +4508,11 @@
             updateNotificationCount();
             
             if (document.getElementById('cart-tab').classList.contains('active')) {
+                // FIXED: Changed date format to YYYY-MM-DD for database compatibility
                 flatpickr("#dateNeeded", {
                     defaultDate: new Date(),
                     minDate: new Date(),
-                    dateFormat: "d/m/Y",
+                    dateFormat: "Y-m-d", // FIX: Changed format
                     disableMobile: true
                 });
             }
