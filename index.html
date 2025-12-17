@@ -26,7 +26,7 @@
         }
         
         :root {
-            /* Modern color palette - cleaner, more neutral */
+            /* Light mode variables */
             --primary-color: #111111;
             --secondary-color: #767676;
             --accent-color: #111111;
@@ -70,6 +70,34 @@
             --transition-base: 0.3s ease;
         }
         
+        /* Dark mode variables */
+        .dark-mode {
+            --primary-color: #ffffff;
+            --secondary-color: #a0a0a0;
+            --accent-color: #ffffff;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --border-color: #333333;
+            --light-border: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-light: #666666;
+            --white: #1e1e1e;
+            --black: #ffffff;
+            
+            /* Adjust status colors for dark mode */
+            --success: #2ecc71;
+            --warning: #f1c40f;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --delivery: #9b59b6;
+            
+            /* Shadows for dark mode */
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+            --shadow-md: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-lg: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        
         body {
             background-color: var(--background-color);
             color: var(--text-primary);
@@ -78,6 +106,7 @@
             line-height: 1.5;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent; /* Better mobile touch */
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         /* ORDER SUCCESS MODAL - NIKE STYLE */
@@ -596,7 +625,8 @@
             text-align: center;
         }
         
-        .logout-btn {
+        /* DAY/NIGHT MODE TOGGLE IN SIDEBAR */
+        .theme-toggle {
             display: flex;
             align-items: center;
             gap: var(--space-md);
@@ -609,6 +639,31 @@
             font-size: 13px;
             font-weight: 500;
             margin-top: auto;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .theme-toggle:hover {
+            background: var(--surface-color);
+            color: var(--text-primary);
+        }
+        
+        .theme-toggle i {
+            width: 18px;
+            text-align: center;
+            font-size: 15px;
+        }
+        
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition-fast);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
         }
         
         .logout-btn:hover {
@@ -649,32 +704,31 @@
             box-shadow: none;
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
+            justify-content: space-between;
+            flex-direction: row;
+            text-align: left;
         }
         
         .header-content {
             position: relative;
             padding: 0;
             display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            justify-content: center;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--space-xs);
             width: 100%;
-            flex-wrap: wrap;
         }
         
         .header h1 {
             margin: 0;
             display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--space-xs);
             font-size: 20px;
             font-weight: 600;
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            text-align: left;
         }
         
         .header-logo {
@@ -682,22 +736,17 @@
             font-weight: 800;
             font-size: 28px;
             letter-spacing: -0.5px;
-            margin-right: 15px;
+            margin: 0;
         }
         
         .header-subtitle {
             font-size: 14px;
             color: var(--text-secondary);
-            margin-top: 5px;
             font-weight: 400;
         }
         
         /* HEADER TOP RIGHT NOTIFICATION */
         .header-top-right {
-            position: absolute;
-            right: var(--space-lg);
-            top: 50%;
-            transform: translateY(-50%);
             display: flex;
             align-items: center;
             gap: var(--space-md);
@@ -1070,6 +1119,26 @@
             background-color: rgba(0, 102, 204, 0.1);
         }
         
+        .notification-item.order-notification {
+            border-left: 3px solid var(--success) !important;
+        }
+        
+        .notification-item.admin-notification {
+            border-left: 3px solid var(--danger) !important;
+            background: rgba(220, 38, 38, 0.05) !important;
+        }
+        
+        .notification-item.admin-notification.unread {
+            background: rgba(220, 38, 38, 0.1) !important;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        
         .notification-item-content {
             padding: 10px;
             display: flex;
@@ -1435,41 +1504,40 @@
             .header {
                 padding: var(--space-md);
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
                 gap: var(--space-md);
-                text-align: center;
+                text-align: left;
                 min-height: 80px;
             }
             
             .header h1 {
                 font-size: 16px;
-                text-align: center;
-                justify-content: center;
+                text-align: left;
+                justify-content: flex-start;
                 margin-top: 10px;
                 flex-direction: column;
             }
             
             .header-logo {
                 font-size: 22px;
-                margin-right: 0;
                 margin-bottom: 5px;
             }
             
             .header-content {
                 flex-direction: column;
-                text-align: center;
-                justify-content: center;
+                text-align: left;
+                justify-content: flex-start;
                 gap: var(--space-sm);
             }
             
             .header-top-right {
                 position: static;
                 transform: none;
-                align-self: center;
+                align-self: flex-start;
                 margin-top: var(--space-sm);
                 order: 3;
                 width: 100%;
-                justify-content: center;
+                justify-content: flex-start;
             }
             
             .banner-scroll {
@@ -1581,7 +1649,7 @@
             
             .header-content {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
                 gap: var(--space-sm);
             }
             
@@ -1921,7 +1989,7 @@
                 </div>
                 <div class="auth-input-group">
                     <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" placeholder="Create a password">
+                    <input type="password" id="signupPassword" placeholder="Create a password (min 6 chars, 1 uppercase, 1 number, 1 special)">
                 </div>
                 <div class="auth-input-group">
                     <label for="confirmPassword">Confirm Password</label>
@@ -2100,8 +2168,8 @@
         <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">BTL MATERIALS</div>
-                <p>Management System</p>
+                <div class="logo">INFINIX</div>
+                <p>BTL Materials Management System</p>
             </div>
             
             <div class="user-info">
@@ -2140,6 +2208,13 @@
                 </div>
             </div>
             
+            <!-- DAY/NIGHT MODE TOGGLE -->
+            <div class="theme-toggle" id="themeToggle" onclick="toggleDarkMode()">
+                <i class="fas fa-moon"></i>
+                <span>NIGHT MODE</span>
+            </div>
+            
+            <!-- LOGOUT BUTTON -->
             <div class="logout-btn" onclick="logoutUser()">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>LOGOUT</span>
@@ -2153,11 +2228,9 @@
                 <div class="header-content">
                     <h1>
                         <span class="header-logo">INFINIX</span>
-                        <span>BTL Material Management System</span>
+                        <span class="header-subtitle">BTL Material Management System</span>
                     </h1>
                 </div>
-                
-                <div class="header-subtitle">Streamline your material requests efficiently</div>
                 
                 <div class="header-top-right">
                     <div class="notification-bell" id="notificationBell" onclick="toggleNotifications()">
@@ -2478,6 +2551,7 @@
         let countdownInterval = null;
         let announcement = JSON.parse(localStorage.getItem('infxAnnouncement')) || { content: '' };
         let editingMaterialId = null;
+        let adminRefreshInterval = null;
         
         // USER AUTHENTICATION
         let currentUser = {
@@ -2492,6 +2566,57 @@
         
         // SIDEBAR STATE
         let sidebarCollapsed = localStorage.getItem('infxSidebarCollapsed') === 'true' || false;
+        
+        // ==============================================
+        // FIXED ADMIN USER - ONLY ONE ADMIN ACCOUNT
+        // ==============================================
+        const DEFAULT_ADMIN = {
+            username: "Mandz!",
+            email: "dummmdummn@gmail.com",
+            password: "Infinix!",
+            name: "Mandz!",
+            isAdmin: true,
+            isDefaultAdmin: true // Flag to identify default admin
+        };
+        
+        // ==============================================
+        // DARK MODE FUNCTIONALITY
+        // ==============================================
+        function toggleDarkMode() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            const text = themeToggle.querySelector('span');
+            
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                icon.className = 'fas fa-moon';
+                text.textContent = 'NIGHT MODE';
+                localStorage.setItem('infxDarkMode', 'false');
+            } else {
+                body.classList.add('dark-mode');
+                icon.className = 'fas fa-sun';
+                text.textContent = 'DAY MODE';
+                localStorage.setItem('infxDarkMode', 'true');
+            }
+        }
+        
+        function initializeDarkMode() {
+            const darkMode = localStorage.getItem('infxDarkMode') === 'true';
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            const text = themeToggle.querySelector('span');
+            
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                icon.className = 'fas fa-sun';
+                text.textContent = 'DAY MODE';
+            } else {
+                document.body.classList.remove('dark-mode');
+                icon.className = 'fas fa-moon';
+                text.textContent = 'NIGHT MODE';
+            }
+        }
         
         // ==============================================
         // INITIALIZE ANNOUNCEMENT
@@ -2545,6 +2670,12 @@
             userNotifications.forEach(notification => {
                 const notificationItem = document.createElement('div');
                 notificationItem.className = 'notification-item';
+                if (notification.type === 'new_order') {
+                    notificationItem.classList.add('order-notification');
+                }
+                if (notification.type === 'new_order' && currentUser.isAdmin) {
+                    notificationItem.classList.add('admin-notification');
+                }
                 if (!notification.read) {
                     notificationItem.classList.add('unread');
                 }
@@ -2556,7 +2687,7 @@
                 notificationItem.innerHTML = `
                     <div class="notification-item-content">
                         <div style="font-size: 16px; color: var(--text-light);">
-                            <i class="fas fa-${notification.type === 'status_update' ? 'sync-alt' : notification.type === 'announcement' ? 'bullhorn' : 'info-circle'}"></i>
+                            <i class="fas fa-${notification.type === 'status_update' ? 'sync-alt' : notification.type === 'new_order' ? 'shopping-cart' : notification.type === 'announcement' ? 'bullhorn' : 'info-circle'}"></i>
                         </div>
                         <div style="flex: 1;">
                             <div style="font-weight: 600; margin-bottom: 4px; color: var(--text-primary); font-size: 13px;">${notification.title}</div>
@@ -2608,6 +2739,86 @@
         function closeNotifications() {
             document.getElementById('notificationPanel').classList.remove('active');
             document.getElementById('notificationOverlay').classList.remove('active');
+        }
+        
+        // ==============================================
+        // NOTIFY ADMINS ABOUT NEW ORDERS
+        // ==============================================
+        function notifyAdminsAboutNewOrder(orderId, requestorName, shopId) {
+            const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
+            const adminUsers = users.filter(user => user.isAdmin);
+            
+            const orderNumber = orderId.toString().padStart(5, '0');
+            
+            adminUsers.forEach(admin => {
+                addNotification(
+                    admin.id,
+                    '📦 New Order Received',
+                    `Order INFX${orderNumber} from ${requestorName} (${shopId}) requires your attention.`,
+                    'new_order'
+                );
+            });
+            
+            // If no admins found, notify all users
+            if (adminUsers.length === 0) {
+                addNotification(
+                    'all',
+                    '📦 New Order Received',
+                    `Order INFX${orderNumber} from ${requestorName} (${shopId}) has been placed.`,
+                    'new_order'
+                );
+            }
+            
+            // Force refresh notification count for admin users
+            if (currentUser.isAdmin) {
+                setTimeout(updateNotificationCount, 500);
+            }
+        }
+        
+        // ==============================================
+        // ADD NOTIFICATION FUNCTION
+        // ==============================================
+        function addNotification(userId, title, message, type = 'info') {
+            const notification = {
+                id: 'NOT' + Date.now(),
+                userId: userId,
+                title: title,
+                message: message,
+                type: type,
+                timestamp: new Date().toLocaleString(),
+                read: false
+            };
+            
+            notifications.unshift(notification);
+            localStorage.setItem('infxNotifications', JSON.stringify(notifications));
+            updateNotificationCount();
+            
+            // Force refresh notification bell for admin users
+            if (userId !== currentUser.id && currentUser.isAdmin) {
+                setTimeout(updateNotificationCount, 500);
+            }
+        }
+        
+        function updateNotificationCount() {
+            const unreadCount = notifications.filter(n => !n.read && (n.userId === currentUser.id || n.userId === 'all')).length;
+            const countElement = document.getElementById('notificationCount');
+            countElement.textContent = unreadCount;
+            countElement.style.display = unreadCount > 0 ? 'flex' : 'none';
+        }
+        
+        function clearAllNotifications() {
+            if (notifications.length === 0) {
+                alert('No notifications to clear!');
+                return;
+            }
+            
+            if (confirm('Clear all notifications?')) {
+                notifications = [];
+                localStorage.setItem('infxNotifications', JSON.stringify(notifications));
+                updateNotificationCount();
+                displayNotifications();
+                alert('All notifications cleared!');
+            }
         }
         
         // ==============================================
@@ -2774,6 +2985,33 @@
         }
         
         // ==============================================
+        // PASSWORD VALIDATION FUNCTION
+        // ==============================================
+        function validatePassword(password) {
+            // Minimum 6 characters
+            if (password.length < 6) {
+                return "Password must be at least 6 characters long";
+            }
+            
+            // At least 1 uppercase letter
+            if (!/[A-Z]/.test(password)) {
+                return "Password must contain at least 1 uppercase letter";
+            }
+            
+            // At least 1 number
+            if (!/\d/.test(password)) {
+                return "Password must contain at least 1 number";
+            }
+            
+            // At least 1 special character
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                return "Password must contain at least 1 special character (!@#$%^&* etc.)";
+            }
+            
+            return null; // Password is valid
+        }
+        
+        // ==============================================
         // AUTHENTICATION FUNCTIONS
         // ==============================================
         function showAuthModal() {
@@ -2840,10 +3078,27 @@
             }
             
             try {
-                const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
-                const user = users.find(u => u.username === username && u.password === password);
-                
-                if (user) {
+                // First check if it's the default admin
+                if (username === DEFAULT_ADMIN.username && password === DEFAULT_ADMIN.password) {
+                    currentUser = {
+                        id: 'ADMIN001',
+                        username: DEFAULT_ADMIN.username,
+                        name: DEFAULT_ADMIN.name,
+                        email: DEFAULT_ADMIN.email,
+                        isAuthenticated: true,
+                        rememberMe: rememberMe,
+                        isAdmin: true
+                    };
+                } else {
+                    // Check regular users
+                    const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
+                    const user = users.find(u => u.username === username && u.password === password);
+                    
+                    if (!user) {
+                        showAuthError('Invalid username or password');
+                        return;
+                    }
+                    
                     currentUser = {
                         id: user.id || 'USER' + Date.now(),
                         username: user.username,
@@ -2853,46 +3108,44 @@
                         rememberMe: rememberMe,
                         isAdmin: user.isAdmin || false
                     };
-                    
-                    localStorage.setItem('infxUserId', currentUser.id);
-                    localStorage.setItem('infxUsername', currentUser.username);
-                    localStorage.setItem('infxUserName', currentUser.name);
-                    localStorage.setItem('infxUserEmail', currentUser.email);
-                    localStorage.setItem('infxIsAuthenticated', 'true');
-                    localStorage.setItem('infxRememberMe', rememberMe.toString());
-                    localStorage.setItem('infxIsAdmin', currentUser.isAdmin.toString());
-                    
-                    if (rememberMe) {
-                        const rememberedUser = {
-                            username: username,
-                            timestamp: new Date().getTime()
-                        };
-                        localStorage.setItem('infxRememberedUser', JSON.stringify(rememberedUser));
-                    } else {
-                        localStorage.removeItem('infxRememberedUser');
-                    }
-                    
-                    hideAuthModal();
-                    document.getElementById('mainContent').style.display = 'block';
-                    document.getElementById('userDisplayName').textContent = currentUser.name;
-                    document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
-                    
-                    const userRoleElement = document.querySelector('.user-role');
-                    if (currentUser.isAdmin) {
-                        userRoleElement.textContent = 'Administrator';
-                        userRoleElement.style.color = 'var(--success)';
-                    } else {
-                        userRoleElement.textContent = 'User';
-                        userRoleElement.style.color = 'var(--text-light)';
-                    }
-                    
-                    initializeSidebar();
-                    initializeApp();
-                    showToast('Welcome Back!', `Hello ${currentUser.name}!`);
-                    
-                } else {
-                    showAuthError('Invalid username or password');
                 }
+                
+                localStorage.setItem('infxUserId', currentUser.id);
+                localStorage.setItem('infxUsername', currentUser.username);
+                localStorage.setItem('infxUserName', currentUser.name);
+                localStorage.setItem('infxUserEmail', currentUser.email);
+                localStorage.setItem('infxIsAuthenticated', 'true');
+                localStorage.setItem('infxRememberMe', rememberMe.toString());
+                localStorage.setItem('infxIsAdmin', currentUser.isAdmin.toString());
+                
+                if (rememberMe) {
+                    const rememberedUser = {
+                        username: username,
+                        timestamp: new Date().getTime()
+                    };
+                    localStorage.setItem('infxRememberedUser', JSON.stringify(rememberedUser));
+                } else {
+                    localStorage.removeItem('infxRememberedUser');
+                }
+                
+                hideAuthModal();
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('userDisplayName').textContent = currentUser.name;
+                document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                
+                const userRoleElement = document.querySelector('.user-role');
+                if (currentUser.isAdmin) {
+                    userRoleElement.textContent = 'Administrator';
+                    userRoleElement.style.color = 'var(--success)';
+                } else {
+                    userRoleElement.textContent = 'User';
+                    userRoleElement.style.color = 'var(--text-light)';
+                }
+                
+                initializeSidebar();
+                initializeApp();
+                showToast('Welcome Back!', `Hello ${currentUser.name}!`);
+                
             } catch (error) {
                 console.error('Login error:', error);
                 showAuthError('Login failed. Please try again.');
@@ -2915,8 +3168,10 @@
                 return;
             }
             
-            if (password.length < 6) {
-                showAuthError('Password must be at least 6 characters');
+            // Validate password strength
+            const passwordError = validatePassword(password);
+            if (passwordError) {
+                showAuthError(passwordError);
                 return;
             }
             
@@ -2938,13 +3193,14 @@
                     return;
                 }
                 
+                // NEW USERS ARE ALWAYS REGULAR USERS, NOT ADMINS
                 const newUser = {
                     id: 'USER' + Date.now(),
                     username: username,
                     email: email,
                     password: password,
                     name: username,
-                    isAdmin: false,
+                    isAdmin: false, // ALWAYS FALSE FOR NEW USERS
                     created_at: new Date().toISOString()
                 };
                 
@@ -2958,7 +3214,7 @@
                     email: newUser.email,
                     isAuthenticated: true,
                     rememberMe: false,
-                    isAdmin: false
+                    isAdmin: false // ALWAYS FALSE
                 };
                 
                 localStorage.setItem('infxUserId', currentUser.id);
@@ -3206,26 +3462,33 @@
         }
         
         // ==============================================
-        // ADMIN PANEL FUNCTIONS
+        // ADMIN PANEL FUNCTIONS WITH AUTO-REFRESH
         // ==============================================
         function showAdminPanel() {
             if (currentUser.isAdmin) {
                 document.getElementById('adminModal').classList.add('active');
                 loadAdminData();
                 switchAdminTab('orders');
+                startAdminAutoRefresh();
             } else {
                 const password = prompt('Enter Admin Password:');
                 if (password === ADMIN_PASSWORD) {
-                    currentUser.isAdmin = true;
-                    localStorage.setItem('infxIsAdmin', 'true');
-                    
-                    document.querySelector('.user-role').textContent = 'Administrator';
-                    document.querySelector('.user-role').style.color = 'var(--success)';
-                    
-                    document.getElementById('adminModal').classList.add('active');
-                    loadAdminData();
-                    switchAdminTab('orders');
-                    showToast('Admin Access Granted', 'You now have administrator privileges!');
+                    // Only allow admin access via password for default admin
+                    if (currentUser.username === DEFAULT_ADMIN.username) {
+                        currentUser.isAdmin = true;
+                        localStorage.setItem('infxIsAdmin', 'true');
+                        
+                        document.querySelector('.user-role').textContent = 'Administrator';
+                        document.querySelector('.user-role').style.color = 'var(--success)';
+                        
+                        document.getElementById('adminModal').classList.add('active');
+                        loadAdminData();
+                        switchAdminTab('orders');
+                        startAdminAutoRefresh();
+                        showToast('Admin Access Granted', 'You now have administrator privileges!');
+                    } else {
+                        alert('Only the default admin can access via password!');
+                    }
                 } else if (password !== null) {
                     alert('Incorrect password!');
                 }
@@ -3233,7 +3496,38 @@
         }
         
         function hideAdminPanel() {
+            if (adminRefreshInterval) {
+                clearInterval(adminRefreshInterval);
+                adminRefreshInterval = null;
+            }
             document.getElementById('adminModal').classList.remove('active');
+        }
+        
+        function startAdminAutoRefresh() {
+            if (currentUser.isAdmin) {
+                // Clear existing interval
+                if (adminRefreshInterval) {
+                    clearInterval(adminRefreshInterval);
+                }
+                
+                // Check for new orders every 30 seconds when admin panel is open
+                adminRefreshInterval = setInterval(() => {
+                    if (document.getElementById('adminModal').classList.contains('active')) {
+                        refreshAdminData();
+                    }
+                }, 30000); // 30 seconds
+            }
+        }
+        
+        function refreshAdminData() {
+            if (currentUser.isAdmin) {
+                loadOrders().then(() => {
+                    if (document.getElementById('adminOrdersTab').classList.contains('active')) {
+                        displayAdminOrders();
+                        updateAdminStats();
+                    }
+                });
+            }
         }
         
         function switchAdminTab(tabName) {
@@ -3379,36 +3673,58 @@
             
             const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
             
-            if (users.length === 0) {
+            // Include default admin in the list
+            const allUsers = [
+                {
+                    id: 'ADMIN001',
+                    username: DEFAULT_ADMIN.username,
+                    email: DEFAULT_ADMIN.email,
+                    name: DEFAULT_ADMIN.name,
+                    isAdmin: true,
+                    isDefaultAdmin: true,
+                    created_at: new Date().toISOString()
+                },
+                ...users
+            ];
+            
+            if (allUsers.length === 0) {
                 usersList.innerHTML = '<p style="text-align: center; padding: 30px; color: var(--text-light);">No users found</p>';
                 return;
             }
             
-            users.forEach(user => {
+            allUsers.forEach(user => {
                 const userDiv = document.createElement('div');
                 userDiv.className = 'team-card';
                 userDiv.style.margin = '8px 0';
                 
                 userDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <h4 style="color: var(--text-primary); margin: 0; font-size: 16px;">${user.name}</h4>
+                        <h4 style="color: var(--text-primary); margin: 0; font-size: 16px;">${user.name} ${user.isDefaultAdmin ? '(Default Admin)' : ''}</h4>
                         <span style="color: ${user.isAdmin ? 'var(--success)' : 'var(--text-secondary)'}; font-weight: 600; font-size: 12px; padding: 2px 8px; background: ${user.isAdmin ? 'rgba(16, 185, 129, 0.1)' : 'var(--surface-color)'}; border-radius: 10px; border: 1px solid ${user.isAdmin ? 'var(--success)' : 'var(--border-color)'};">${user.isAdmin ? 'Admin' : 'User'}</span>
                     </div>
                     <p style="font-size: 13px; color: var(--text-secondary);"><strong>Username:</strong> ${user.username}</p>
                     <p style="font-size: 13px; color: var(--text-secondary);"><strong>Email:</strong> ${user.email}</p>
                     <p style="font-size: 13px; color: var(--text-secondary);"><strong>Joined:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
                     
+                    ${!user.isDefaultAdmin ? `
                     <div style="margin-top: 10px; display: flex; gap: 6px;">
-                        <button onclick="toggleUserAdmin('${user.id}')" style="padding: 6px 10px; font-size: 11px;" ${user.isAdmin ? 'background: var(--white); color: var(--danger); border-color: var(--danger);' : 'background: var(--success);'}>
+                        <button onclick="toggleUserAdmin('${user.id}')" style="padding: 6px 10px; font-size: 11px;" ${user.isAdmin ? 'background: var(--white); color: var(--danger); border-color: var(--danger);' : 'background: var(--success);'} ${currentUser.username === DEFAULT_ADMIN.username ? '' : 'disabled'}>
                             <i class="fas fa-user-shield"></i> ${user.isAdmin ? 'Remove Admin' : 'Make Admin'}
                         </button>
                     </div>
+                    ` : '<p style="font-size: 12px; color: var(--text-light); margin-top: 10px;">Default Admin - Cannot be modified</p>'}
                 `;
                 usersList.appendChild(userDiv);
             });
         }
         
         function toggleUserAdmin(userId) {
+            // Only default admin can toggle other users' admin status
+            if (currentUser.username !== DEFAULT_ADMIN.username) {
+                showToast('Permission Denied', 'Only the default admin can modify user permissions');
+                return;
+            }
+            
             const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
             const userIndex = users.findIndex(u => u.id === userId);
             
@@ -3445,7 +3761,7 @@
             const completedOrders = orders.filter(o => o.status === 'completed').length;
             
             document.getElementById('adminTotalOrders').textContent = totalOrders;
-            document.getElementById('adminTotalUsers').textContent = users.length;
+            document.getElementById('adminTotalUsers').textContent = users.length + 1; // +1 for default admin
             document.getElementById('adminPendingOrders').textContent = pendingOrders;
             document.getElementById('adminApprovedOrders').textContent = approvedOrders;
             document.getElementById('adminCompletedOrders').textContent = completedOrders;
@@ -3460,6 +3776,7 @@
                 
                 localStorage.setItem('infxOrders', JSON.stringify(orders));
                 
+                // Notify the user who placed the order
                 addNotification(
                     orders[orderIndex].userId,
                     'Order Status Updated',
@@ -3520,27 +3837,42 @@
         
         function exportUsersToExcel() {
             const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
-            const worksheet = XLSX.utils.json_to_sheet(users);
+            const defaultAdmin = {
+                id: 'ADMIN001',
+                username: DEFAULT_ADMIN.username,
+                email: DEFAULT_ADMIN.email,
+                name: DEFAULT_ADMIN.name,
+                isAdmin: true,
+                isDefaultAdmin: true,
+                created_at: new Date().toISOString()
+            };
+            
+            const allUsers = [defaultAdmin, ...users];
+            const worksheet = XLSX.utils.json_to_sheet(allUsers);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
             XLSX.writeFile(workbook, "infix_users.xlsx");
             showToast('Export Complete', 'Users exported to Excel file');
         }
         
-        function addNotification(userId, title, message, type = 'info') {
-            const notification = {
-                id: 'NOT' + Date.now(),
-                userId: userId,
-                title: title,
-                message: message,
-                type: type,
-                timestamp: new Date().toLocaleString(),
-                read: false
-            };
+        function showToast(title, message) {
+            document.querySelectorAll('.toast').forEach(toast => toast.remove());
             
-            notifications.unshift(notification);
-            localStorage.setItem('infxNotifications', JSON.stringify(notifications));
-            updateNotificationCount();
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <div style="font-weight: 600; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; color: var(--text-primary);">
+                    <i class="fas fa-bell"></i> ${title}
+                </div>
+                <div style="font-size: 12px; color: var(--text-secondary);">${message}</div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
         }
         
         // ==============================================
@@ -3579,51 +3911,6 @@
             
             closeSidebar();
             closeNotifications();
-        }
-        
-        // ==============================================
-        // NOTIFICATION FUNCTIONS
-        // ==============================================
-        function updateNotificationCount() {
-            const unreadCount = notifications.filter(n => !n.read && (n.userId === currentUser.id || n.userId === 'all')).length;
-            const countElement = document.getElementById('notificationCount');
-            countElement.textContent = unreadCount;
-            countElement.style.display = unreadCount > 0 ? 'flex' : 'none';
-        }
-        
-        function clearAllNotifications() {
-            if (notifications.length === 0) {
-                alert('No notifications to clear!');
-                return;
-            }
-            
-            if (confirm('Clear all notifications?')) {
-                notifications = [];
-                localStorage.setItem('infxNotifications', JSON.stringify(notifications));
-                updateNotificationCount();
-                displayNotifications();
-                alert('All notifications cleared!');
-            }
-        }
-        
-        function showToast(title, message) {
-            document.querySelectorAll('.toast').forEach(toast => toast.remove());
-            
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `
-                <div style="font-weight: 600; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; color: var(--text-primary);">
-                    <i class="fas fa-bell"></i> ${title}
-                </div>
-                <div style="font-size: 12px; color: var(--text-secondary);">${message}</div>
-            `;
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 5000);
         }
         
         // ==============================================
@@ -3680,25 +3967,7 @@
                     
                 if (error) throw error;
                 
-                orders = (data || []).map(order => ({
-                    id: order.id,
-                    requestorName: order.requestor_name,
-                    userId: order.user_id,
-                    shopId: order.shop_id,
-                    contactNumber: order.contact_number,
-                    address: order.address,
-                    storeStatus: order.store_status,
-                    region: order.region,
-                    dateNeeded: order.date_needed,
-                    notes: order.notes,
-                    date: new Date(order.created_at).toLocaleString(),
-                    created_at: order.created_at,
-                    status: order.status || 'pending',
-                    items: order.items || [],
-                    returnRequest: order.return_request,
-                    completed_at: order.completed_at
-                }));
-                
+                orders = data || [];
                 displayCustomerOrders();
                 updateHomeStats();
                 return orders;
@@ -3943,7 +4212,7 @@
         }
         
         // ==============================================
-        // ORDER FUNCTIONS
+        // ORDER FUNCTIONS WITH ADMIN NOTIFICATION - FIXED
         // ==============================================
         async function submitRequest() {
             if(cart.length === 0) {
@@ -3982,25 +4251,11 @@
             document.getElementById('userDisplayName').textContent = requestorName;
             document.getElementById('userAvatar').textContent = requestorName.charAt(0).toUpperCase();
             
-            const orderData = {
-                requestorName: requestorName,
-                userId: userId || currentUser.id,
-                shopId: shopId,
-                contactNumber: contactNumber,
-                address: currentDeliveryOption === 'deliver' ? address : 'Pickup Request',
-                storeStatus: storeStatus,
-                region: region,
-                dateNeeded: dateNeeded,
-                notes: notes,
-                deliveryOption: currentDeliveryOption,
-                date: new Date().toISOString(),
-                items: [...cart]
-            };
-            
             try {
                 const orderCounter = parseInt(localStorage.getItem('infxOrderCounter') || '1');
                 const orderNumber = orderCounter.toString().padStart(5, '0');
                 
+                // Update stock for each item in cart
                 for (const cartItem of cart) {
                     const item = items.find(i => i.id == cartItem.itemId);
                     if (item) {
@@ -4008,28 +4263,47 @@
                     }
                 }
                 
+                // Create the order object
                 const newOrder = {
                     id: orderCounter,
-                    ...orderData,
-                    status: 'pending'
+                    requestor_name: requestorName,
+                    user_id: currentUser.id,
+                    shop_id: shopId,
+                    contact_number: contactNumber,
+                    address: currentDeliveryOption === 'deliver' ? address : 'Pickup Request',
+                    store_status: storeStatus,
+                    region: region,
+                    date_needed: dateNeeded,
+                    notes: notes,
+                    delivery_option: currentDeliveryOption,
+                    created_at: new Date().toISOString(),
+                    status: 'pending',
+                    items: [...cart]
                 };
                 
-                orders.unshift(newOrder);
+                // Save to Supabase
+                const { data, error } = await supabase
+                    .from('orders')
+                    .insert([newOrder]);
+                
+                if (error) throw error;
+                
+                // Update local storage
                 localStorage.setItem('infxOrderCounter', (orderCounter + 1).toString());
-                localStorage.setItem('infxOrders', JSON.stringify(orders));
                 localStorage.setItem('infxMaterials', JSON.stringify(items));
                 
-                addNotification(
-                    'all',
-                    'New Order Request',
-                    `New request from ${requestorName} (${shopId})`,
-                    'new_order'
-                );
+                // Refresh orders from database
+                await loadOrders();
                 
+                // NOTIFY ADMINS ABOUT NEW ORDER
+                notifyAdminsAboutNewOrder(orderCounter, requestorName, shopId);
+                
+                // Clear cart
                 cart = [];
                 saveLocalData();
                 updateCartCount();
                 
+                // Clear form fields
                 document.getElementById('requestorName').value = '';
                 document.getElementById('userId').value = '';
                 document.getElementById('shopId').value = '';
@@ -4053,9 +4327,9 @@
             const customerOrders = document.getElementById('customerOrders');
             customerOrders.innerHTML = '';
             
+            // Filter orders for current user
             const userOrders = orders.filter(order => 
-                order.userId === currentUser.id || 
-                order.requestorName.toLowerCase() === currentUser.name.toLowerCase()
+                order.user_id === currentUser.id
             );
             
             let filteredOrders = userOrders;
@@ -4086,23 +4360,25 @@
                 return;
             }
             
-            filteredOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+            filteredOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             
             filteredOrders.forEach(order => {
                 const orderDiv = document.createElement('div');
                 orderDiv.className = 'order-card';
                 
                 const orderNumber = order.id.toString().padStart(5, '0');
+                const itemsList = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+                const totalItems = itemsList.reduce((sum, item) => sum + (item.quantity || 0), 0);
                 
                 orderDiv.innerHTML = `
                     <div class="order-id" style="background: var(--surface-color); color: var(--text-primary); padding: 8px 15px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 600; display: inline-block; margin: 4px 0; font-size: 16px; letter-spacing: 1px; border: 1px solid var(--border-color);">INFX${orderNumber}</div>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Requestor:</strong> ${order.requestorName}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Shop:</strong> ${order.shopId} • ${order.storeStatus} • ${order.region}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Contact:</strong> ${order.contactNumber}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Needed:</strong> ${order.dateNeeded}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Requested:</strong> ${order.date}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Delivery:</strong> ${order.deliveryOption === 'deliver' ? 'Delivery' : 'Pickup'}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Materials:</strong> ${order.items.map(item => `${item.name} × ${item.quantity}`).join(', ')}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Requestor:</strong> ${order.requestor_name}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Shop:</strong> ${order.shop_id} • ${order.store_status} • ${order.region}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Contact:</strong> ${order.contact_number}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Needed:</strong> ${order.date_needed}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Requested:</strong> ${new Date(order.created_at).toLocaleDateString()}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Delivery:</strong> ${order.delivery_option === 'deliver' ? 'Delivery' : 'Pickup'}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Materials:</strong> ${totalItems} items</p>
                     <div style="text-align: center; margin-top: 10px;">
                         <span class="status ${order.status}">${order.status.replace('-', ' ').toUpperCase()}</span>
                     </div>
@@ -4136,8 +4412,7 @@
         // ==============================================
         function updateHomeStats() {
             const userOrders = orders.filter(order => 
-                order.userId === currentUser.id || 
-                order.requestorName.toLowerCase() === currentUser.name.toLowerCase()
+                order.user_id === currentUser.id
             );
             
             document.getElementById('homeTotalProducts').textContent = items.length;
@@ -4216,6 +4491,7 @@
             }
             
             initializeAnnouncement();
+            initializeDarkMode();
             
             await Promise.all([loadItems(), loadCategories(), loadOrders()]);
             
