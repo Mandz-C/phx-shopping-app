@@ -3528,7 +3528,8 @@
                         email: user.email,
                         isAuthenticated: true,
                         rememberMe: rememberMe,
-                        isAdmin: user.isAdmin || false
+                        // FIXED: Explicitly set isAdmin from user object, default to false
+                        isAdmin: user.isAdmin === true
                     };
                 }
                 
@@ -3620,6 +3621,7 @@
                     email: email,
                     password: password,
                     name: username,
+                    // FIXED: Always set isAdmin to false for new users
                     isAdmin: false,
                     created_at: new Date().toISOString()
                 };
@@ -3634,6 +3636,7 @@
                     email: newUser.email,
                     isAuthenticated: true,
                     rememberMe: false,
+                    // FIXED: Ensure new users are not admins
                     isAdmin: false
                 };
                 
@@ -3643,6 +3646,7 @@
                 localStorage.setItem('infxUserEmail', currentUser.email);
                 localStorage.setItem('infxIsAuthenticated', 'true');
                 localStorage.setItem('infxRememberMe', 'false');
+                // FIXED: Explicitly set isAdmin to false in localStorage
                 localStorage.setItem('infxIsAdmin', 'false');
                 
                 hideAuthModal();
