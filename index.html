@@ -26,18 +26,18 @@
         }
         
         :root {
-            /* Light mode variables */
+            /* Modern color palette - cleaner, more neutral */
             --primary-color: #111111;
             --secondary-color: #767676;
             --accent-color: #111111;
-            --background-color: #ffffff;
-            --surface-color: #f8f8f8;
-            --border-color: #e5e5e5;
-            --light-border: #f0f0f0;
-            --text-primary: #111111;
-            --text-secondary: #767676;
-            --text-light: #8e8e8e;
-            --white: #ffffff;
+            --background-color: rgba(0, 0, 0, 0.8); /* Darker for galaxy background */
+            --surface-color: rgba(255, 255, 255, 0.1); /* Semi-transparent */
+            --border-color: rgba(255, 255, 255, 0.2);
+            --light-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff; /* White text for dark background */
+            --text-secondary: #cccccc;
+            --text-light: #aaaaaa;
+            --white: rgba(255, 255, 255, 0.9);
             --black: #000000;
             
             /* Status colors - more subtle */
@@ -56,9 +56,9 @@
             --space-xxl: 48px;
             
             /* Shadows - cleaner, more subtle */
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-            --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 2px 8px rgba(0,0,0,0.4);
+            --shadow-lg: 0 4px 12px rgba(0,0,0,0.5);
             
             /* Border radius */
             --radius-sm: 4px;
@@ -70,34 +70,6 @@
             --transition-base: 0.3s ease;
         }
         
-        /* Dark mode variables */
-        .dark-mode {
-            --primary-color: #ffffff;
-            --secondary-color: #a0a0a0;
-            --accent-color: #ffffff;
-            --background-color: #121212;
-            --surface-color: #1e1e1e;
-            --border-color: #333333;
-            --light-border: #2a2a2a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-light: #666666;
-            --white: #1e1e1e;
-            --black: #ffffff;
-            
-            /* Adjust status colors for dark mode */
-            --success: #2ecc71;
-            --warning: #f1c40f;
-            --danger: #e74c3c;
-            --info: #3498db;
-            --delivery: #9b59b6;
-            
-            /* Shadows for dark mode */
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
-            --shadow-md: 0 2px 8px rgba(0,0,0,0.3);
-            --shadow-lg: 0 4px 12px rgba(0,0,0,0.4);
-        }
-        
         body {
             background-color: var(--background-color);
             color: var(--text-primary);
@@ -105,8 +77,27 @@
             font-size: 14px;
             line-height: 1.5;
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent; /* Better mobile touch */
-            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* PIXEL GALAXY BACKGROUND */
+        #galaxy-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Make all background elements slightly transparent */
+        .sidebar, .section, .header, .auth-container, 
+        .reset-password-container, .admin-container, 
+        .material-form-container, .order-success-container,
+        .notification-panel {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
         }
         
         /* ORDER SUCCESS MODAL - NIKE STYLE */
@@ -117,7 +108,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             z-index: 10002;
             backdrop-filter: blur(4px);
             align-items: center;
@@ -132,7 +123,7 @@
         }
         
         .order-success-container {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.9);
             padding: var(--space-xl);
             border-radius: var(--radius-md);
             width: 90%;
@@ -141,6 +132,7 @@
             animation: fadeIn 0.3s ease;
             position: relative;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .success-check {
@@ -186,8 +178,8 @@
         }
         
         .back-to-main-btn {
-            background: var(--black);
-            color: var(--white);
+            background: var(--white);
+            color: var(--black);
             padding: 12px 24px;
             border: none;
             border-radius: var(--radius-sm);
@@ -203,7 +195,8 @@
         }
         
         .back-to-main-btn:hover {
-            background: var(--text-primary);
+            background: var(--text-secondary);
+            color: var(--white);
         }
         
         @keyframes scaleIn {
@@ -216,8 +209,8 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: var(--black);
-            color: var(--white);
+            background: var(--white);
+            color: var(--black);
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -234,6 +227,7 @@
         .quick-cart-access:hover {
             transform: scale(1.1);
             background: var(--text-primary);
+            color: var(--white);
         }
         
         .quick-cart-access .cart-count {
@@ -261,7 +255,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             z-index: 9999;
             backdrop-filter: blur(4px);
             align-items: center;
@@ -276,7 +270,7 @@
         }
         
         .auth-container {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.9);
             padding: var(--space-xl);
             border-radius: var(--radius-md);
             width: 90%;
@@ -284,6 +278,7 @@
             box-shadow: var(--shadow-lg);
             animation: fadeIn 0.3s ease;
             position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .auth-tabs {
@@ -306,7 +301,7 @@
         
         .auth-tab.active {
             color: var(--text-primary);
-            border-bottom-color: var(--black);
+            border-bottom-color: var(--white);
             font-weight: 600;
         }
         
@@ -333,7 +328,7 @@
         .auth-input-group input {
             width: 100%;
             padding: 12px;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
             color: var(--text-primary);
@@ -342,22 +337,24 @@
         }
         
         .auth-input-group input:focus {
-            border-color: var(--black);
+            border-color: var(--white);
             outline: none;
         }
         
-        /* Remember Me Checkbox */
+        /* Remember Me Checkbox - FIXED FOR CLICKABILITY */
         .remember-me {
             display: flex;
             align-items: center;
             gap: var(--space-sm);
             margin: var(--space-md) 0;
+            cursor: pointer;
         }
         
         .remember-me input[type="checkbox"] {
             width: 16px;
             height: 16px;
             margin: 0;
+            cursor: pointer;
         }
         
         .remember-me label {
@@ -365,6 +362,7 @@
             font-size: 13px;
             color: var(--text-secondary);
             cursor: pointer;
+            user-select: none;
         }
         
         /* RESET PASSWORD MODAL */
@@ -375,7 +373,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             z-index: 10000;
             backdrop-filter: blur(4px);
             align-items: center;
@@ -387,13 +385,14 @@
         }
         
         .reset-password-container {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.9);
             padding: var(--space-xl);
             border-radius: var(--radius-md);
             width: 90%;
             max-width: 400px;
             box-shadow: var(--shadow-lg);
             animation: fadeIn 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .reset-password-header {
@@ -438,10 +437,10 @@
             overflow: hidden;
         }
         
-        /* SIDEBAR - MINIMALIST DESIGN */
+        /* SIDEBAR - MINIMALIST DESIGN - UPDATED FOR OVERLAY */
         .sidebar {
             width: 240px;
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.95);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
@@ -449,16 +448,21 @@
             position: fixed;
             left: 0;
             top: 0;
-            z-index: 100;
+            z-index: 1001;
             overflow-y: auto;
             overflow-x: hidden;
-            transition: var(--transition-base);
-            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-base);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+            transform: translateX(-100%);
+        }
+        
+        .sidebar.active {
+            transform: translateX(0);
         }
         
         .sidebar.collapsed {
             transform: translateX(-100%);
-            width: 0;
         }
         
         /* SIDEBAR TOGGLE BUTTON */
@@ -466,7 +470,7 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.2);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
@@ -476,17 +480,18 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 101;
+            z-index: 1002;
             transition: var(--transition-base);
             box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(5px);
         }
         
         .sidebar-toggle:hover {
-            background: var(--surface-color);
+            background: rgba(255, 255, 255, 0.3);
             border-color: var(--text-primary);
         }
         
-        /* SIDEBAR OVERLAY */
+        /* SIDEBAR OVERLAY FOR CLICK OUTSIDE */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -494,8 +499,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.3);
-            z-index: 99;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            backdrop-filter: blur(3px);
         }
         
         .sidebar-overlay.active {
@@ -515,6 +521,10 @@
             font-size: 24px;
             letter-spacing: -0.5px;
             margin-bottom: var(--space-xs);
+            background: linear-gradient(45deg, #fff, #8cf, #aaf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .sidebar-header p {
@@ -598,7 +608,7 @@
         .nav-item.active {
             background: var(--surface-color);
             color: var(--text-primary);
-            border-left-color: var(--black);
+            border-left-color: var(--white);
             font-weight: 600;
         }
         
@@ -614,8 +624,8 @@
         }
         
         .nav-item .badge {
-            background: var(--text-primary);
-            color: var(--white);
+            background: var(--white);
+            color: var(--black);
             border-radius: 10px;
             padding: 2px 8px;
             font-size: 11px;
@@ -625,8 +635,7 @@
             text-align: center;
         }
         
-        /* DAY/NIGHT MODE TOGGLE IN SIDEBAR */
-        .theme-toggle {
+        .logout-btn {
             display: flex;
             align-items: center;
             gap: var(--space-md);
@@ -639,31 +648,6 @@
             font-size: 13px;
             font-weight: 500;
             margin-top: auto;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .theme-toggle:hover {
-            background: var(--surface-color);
-            color: var(--text-primary);
-        }
-        
-        .theme-toggle i {
-            width: 18px;
-            text-align: center;
-            font-size: 15px;
-        }
-        
-        .logout-btn {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            padding: var(--space-md);
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition-fast);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
         }
         
         .logout-btn:hover {
@@ -677,24 +661,23 @@
             font-size: 15px;
         }
         
-        /* MAIN CONTENT AREA */
+        /* MAIN CONTENT AREA - UPDATED */
         .main-content {
             flex: 1;
-            margin-left: 240px;
+            margin-left: 0;
             padding: var(--space-lg);
             width: 100%;
-            transition: var(--transition-base);
             box-sizing: border-box;
         }
         
         .main-content.expanded {
             margin-left: 0;
-            padding-left: 70px;
+            padding-left: var(--space-lg);
         }
         
         /* HEADER - CLEAN DESIGN */
         .header {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.85);
             padding: var(--space-lg);
             margin-bottom: var(--space-lg);
             position: relative;
@@ -703,50 +686,49 @@
             border-radius: 0;
             box-shadow: none;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            flex-direction: row;
-            text-align: left;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(10px);
         }
         
-        .header-content {
-            position: relative;
-            padding: 0;
+        .header-logo-container {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            gap: var(--space-xs);
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
             width: 100%;
         }
         
-        .header h1 {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: var(--space-xs);
-            font-size: 20px;
-            font-weight: 600;
-            justify-content: flex-start;
-            text-align: left;
-        }
-        
-        .header-logo {
+        .main-logo {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1px;
             color: var(--text-primary);
-            font-weight: 800;
-            font-size: 28px;
-            letter-spacing: -0.5px;
-            margin: 0;
+            text-align: center;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, #fff, #8cf, #aaf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .header-subtitle {
             font-size: 14px;
             color: var(--text-secondary);
             font-weight: 400;
+            margin-top: 5px;
         }
         
         /* HEADER TOP RIGHT NOTIFICATION */
         .header-top-right {
+            position: absolute;
+            right: var(--space-lg);
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
             align-items: center;
             gap: var(--space-md);
@@ -758,7 +740,7 @@
             cursor: pointer;
             font-size: 18px;
             color: var(--text-secondary);
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.1);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -770,7 +752,7 @@
         }
         
         .notification-bell:hover {
-            background: var(--surface-color);
+            background: rgba(255, 255, 255, 0.2);
             color: var(--text-primary);
             border-color: var(--text-primary);
         }
@@ -810,7 +792,7 @@
         
         /* MOVING BANNER - REPLACES ANNOUNCEMENT */
         .banner-container {
-            background: var(--black);
+            background: rgba(0, 0, 0, 0.8);
             color: var(--white);
             padding: 12px 0;
             margin: var(--space-lg) 0;
@@ -819,6 +801,8 @@
             border-radius: var(--radius-sm);
             width: 100%;
             box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
         }
         
         .banner-scroll {
@@ -847,7 +831,7 @@
         
         /* SECTION STYLES - CLEAN CARDS */
         .section {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.85);
             padding: var(--space-lg);
             border-radius: var(--radius-md);
             margin-bottom: var(--space-lg);
@@ -855,6 +839,7 @@
             width: 100%;
             box-sizing: border-box;
             box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(10px);
         }
         
         h2 {
@@ -897,29 +882,46 @@
             width: 100%;
             padding: 12px;
             margin: var(--space-sm) 0;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
             font-size: 14px;
             color: var(--text-primary);
             transition: var(--transition-fast);
             box-sizing: border-box;
-            -webkit-appearance: none; /* Better mobile */
-            touch-action: manipulation; /* Better mobile touch */
+            -webkit-appearance: none;
+            touch-action: manipulation;
         }
         
         input:focus, select:focus, textarea:focus {
-            border-color: var(--black);
+            border-color: var(--white);
             outline: none;
-            box-shadow: 0 0 0 1px var(--black);
+            box-shadow: 0 0 0 1px var(--white);
+        }
+        
+        /* FIXED: CATEGORY DROPDOWN - DARK THEME */
+        select {
+            background: rgba(0, 0, 0, 0.8) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+        }
+        
+        select option {
+            background: rgba(0, 0, 0, 0.95) !important;
+            color: var(--text-primary) !important;
+            padding: 12px !important;
+        }
+        
+        select option:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
         }
         
         /* BUTTONS - MINIMALIST */
         button {
-            background: var(--black);
-            color: var(--white);
+            background: var(--white);
+            color: var(--black);
             padding: 12px 18px;
-            border: 1px solid var(--black);
+            border: 1px solid var(--white);
             border-radius: var(--radius-sm);
             cursor: pointer;
             margin: var(--space-xs);
@@ -930,14 +932,15 @@
             align-items: center;
             gap: 6px;
             white-space: nowrap;
-            -webkit-appearance: none; /* Better mobile */
-            touch-action: manipulation; /* Better mobile touch */
-            min-height: 44px; /* Better mobile touch target */
+            -webkit-appearance: none;
+            touch-action: manipulation;
+            min-height: 44px;
         }
         
         button:hover {
-            background: var(--text-primary);
-            border-color: var(--text-primary);
+            background: var(--text-secondary);
+            border-color: var(--text-secondary);
+            color: var(--white);
         }
         
         button:active {
@@ -951,13 +954,13 @@
         }
         
         button.cancel {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
             border-color: var(--border-color);
         }
         
         button.cancel:hover {
-            background: var(--surface-color);
+            background: rgba(255, 255, 255, 0.2);
             border-color: var(--text-primary);
         }
         
@@ -981,7 +984,7 @@
         
         /* CARDS - MINIMALIST */
         .item-card, .order-card, .category-card, .team-card {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.7);
             border: 1px solid var(--border-color);
             padding: var(--space-md);
             margin: var(--space-sm) 0;
@@ -989,26 +992,28 @@
             transition: var(--transition-fast);
             width: 100%;
             box-sizing: border-box;
+            backdrop-filter: blur(5px);
         }
         
         .item-card:hover, .order-card:hover, .category-card:hover {
-            border-color: var(--black);
+            border-color: var(--white);
             box-shadow: var(--shadow-md);
         }
         
-        /* STATUS BADGES - SUBTLE */
+        /* STATUS BADGES - MORE VISIBLE */
         .status {
             display: inline-block;
-            padding: 4px 8px;
+            padding: 4px 12px;
             border-radius: 12px;
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 700;
             margin: 2px;
             min-width: 70px;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--white);
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         .status.pending { 
@@ -1042,13 +1047,14 @@
             right: 20px;
             width: 320px;
             max-height: 400px;
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.95);
             border-radius: var(--radius-md);
             box-shadow: var(--shadow-lg);
             z-index: 1002;
             display: none;
             overflow: hidden;
             border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
         }
         
         .notification-panel.active {
@@ -1078,7 +1084,7 @@
         }
         
         .notification-header {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.9);
             color: var(--text-primary);
             padding: var(--space-md);
             display: flex;
@@ -1097,7 +1103,7 @@
             max-height: 320px;
             overflow-y: auto;
             padding: var(--space-sm);
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            -webkit-overflow-scrolling: touch;
         }
         
         /* NOTIFICATION ITEMS - CLICKABLE */
@@ -1112,11 +1118,11 @@
         }
         
         .notification-item.unread {
-            background-color: rgba(0, 102, 204, 0.05);
+            background-color: rgba(0, 102, 204, 0.2);
         }
         
         .notification-item.unread:hover {
-            background-color: rgba(0, 102, 204, 0.1);
+            background-color: rgba(0, 102, 204, 0.3);
         }
         
         .notification-item.order-notification {
@@ -1125,11 +1131,11 @@
         
         .notification-item.admin-notification {
             border-left: 3px solid var(--danger) !important;
-            background: rgba(220, 38, 38, 0.05) !important;
+            background: rgba(220, 38, 38, 0.1) !important;
         }
         
         .notification-item.admin-notification.unread {
-            background: rgba(220, 38, 38, 0.1) !important;
+            background: rgba(220, 38, 38, 0.2) !important;
             animation: pulse 2s infinite;
         }
         
@@ -1151,8 +1157,8 @@
             position: fixed;
             bottom: 20px;
             right: 90px;
-            background: var(--black);
-            color: var(--white);
+            background: var(--white);
+            color: var(--black);
             padding: 10px 16px;
             border-radius: var(--radius-sm);
             cursor: pointer;
@@ -1163,12 +1169,13 @@
             align-items: center;
             gap: 8px;
             transition: var(--transition-base);
-            border: 1px solid var(--black);
+            border: 1px solid var(--white);
             font-size: 12px;
         }
         
         .admin-key:hover {
-            background: var(--text-primary);
+            background: var(--text-secondary);
+            color: var(--white);
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
@@ -1181,7 +1188,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             z-index: 10001;
             backdrop-filter: blur(4px);
             align-items: center;
@@ -1193,7 +1200,7 @@
         }
         
         .admin-container {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.95);
             padding: var(--space-xl);
             border-radius: var(--radius-md);
             width: 90%;
@@ -1203,6 +1210,7 @@
             position: relative;
             max-height: 90vh;
             overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .admin-header {
@@ -1252,7 +1260,7 @@
         
         .admin-tab {
             padding: 8px 12px;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--border-color);
             color: var(--text-secondary);
             cursor: pointer;
@@ -1263,9 +1271,9 @@
         }
         
         .admin-tab.active {
-            background: var(--black);
-            color: var(--white);
-            border-color: var(--black);
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
         }
         
         .admin-content {
@@ -1284,7 +1292,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             z-index: 10003;
             backdrop-filter: blur(4px);
             align-items: center;
@@ -1296,7 +1304,7 @@
         }
         
         .material-form-container {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.95);
             padding: var(--space-xl);
             border-radius: var(--radius-md);
             width: 90%;
@@ -1304,6 +1312,7 @@
             box-shadow: var(--shadow-lg);
             animation: fadeIn 0.3s ease;
             position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .material-form-header {
@@ -1346,17 +1355,18 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.95);
             color: var(--text-primary);
             padding: var(--space-md);
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-lg);
             z-index: 1003;
             max-width: 350px;
-            border-left: 3px solid var(--black);
+            border-left: 3px solid var(--white);
             animation: slideInRight 0.3s ease;
             transition: var(--transition-base);
             border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
         }
         
         @keyframes slideInRight {
@@ -1388,7 +1398,7 @@
         
         /* STAT CARDS - MINIMALIST */
         .stat-card {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.7);
             padding: var(--space-lg);
             border-radius: var(--radius-sm);
             text-align: center;
@@ -1396,10 +1406,11 @@
             transition: var(--transition-fast);
             width: 100%;
             box-sizing: border-box;
+            backdrop-filter: blur(5px);
         }
         
         .stat-card:hover {
-            border-color: var(--black);
+            border-color: var(--white);
             box-shadow: var(--shadow-md);
         }
         
@@ -1418,18 +1429,18 @@
             letter-spacing: 0.5px;
         }
         
-        /* CATEGORY TAGS */
+        /* CATEGORY TAGS - IMPROVED VISIBILITY */
         .category-tag {
             display: inline-block;
-            background: var(--surface-color);
-            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
             padding: 3px 8px;
             border-radius: 12px;
             font-size: 10px;
             font-weight: 500;
             margin-right: var(--space-xs);
             margin-bottom: var(--space-xs);
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             white-space: nowrap;
         }
         
@@ -1449,11 +1460,6 @@
                 width: 220px;
             }
             
-            .main-content {
-                margin-left: 220px;
-                padding-left: var(--space-lg);
-            }
-            
             .grid-2 {
                 grid-template-columns: 1fr;
             }
@@ -1465,27 +1471,20 @@
             }
             
             .sidebar {
-                position: fixed;
                 width: 100%;
                 max-width: 280px;
                 z-index: 102;
-                transform: translateX(-100%);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
             }
             
             .sidebar-toggle {
                 display: flex;
                 top: 20px;
                 left: 15px;
-                width: 44px; /* Better touch target */
+                width: 44px;
                 height: 44px;
             }
             
             .main-content {
-                margin-left: 0;
                 padding: var(--space-md);
             }
             
@@ -1498,46 +1497,34 @@
                 right: 15px;
                 left: 15px;
                 top: 100px;
-                max-height: 60vh; /* Better mobile height */
+                max-height: 60vh;
             }
             
             .header {
                 padding: var(--space-md);
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
                 gap: var(--space-md);
-                text-align: left;
+                text-align: center;
                 min-height: 80px;
             }
             
-            .header h1 {
-                font-size: 16px;
-                text-align: left;
-                justify-content: flex-start;
-                margin-top: 10px;
-                flex-direction: column;
+            .header-logo-container {
+                margin-bottom: 10px;
             }
             
-            .header-logo {
-                font-size: 22px;
-                margin-bottom: 5px;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                text-align: left;
-                justify-content: flex-start;
-                gap: var(--space-sm);
+            .main-logo {
+                font-size: 28px;
             }
             
             .header-top-right {
                 position: static;
                 transform: none;
-                align-self: flex-start;
+                align-self: center;
                 margin-top: var(--space-sm);
                 order: 3;
                 width: 100%;
-                justify-content: flex-start;
+                justify-content: center;
             }
             
             .banner-scroll {
@@ -1567,18 +1554,6 @@
                 height: 56px;
             }
             
-            /* Mobile-specific improvements */
-            .delivery-options {
-                flex-direction: column;
-            }
-            
-            .delivery-option {
-                width: 100%;
-                margin-bottom: 5px;
-                padding: 14px;
-                font-size: 14px;
-            }
-            
             .grid-2, .grid-3, .grid-4 {
                 grid-template-columns: 1fr;
                 gap: var(--space-sm);
@@ -1587,23 +1562,20 @@
             button {
                 padding: 12px 16px;
                 font-size: 14px;
-                min-height: 48px; /* Better mobile touch */
-            }
-            
-            /* Mobile form improvements */
-            input, select, textarea {
-                padding: 14px;
-                font-size: 16px; /* Prevents zoom on iOS */
                 min-height: 48px;
             }
             
-            /* Mobile card improvements */
+            input, select, textarea {
+                padding: 14px;
+                font-size: 16px;
+                min-height: 48px;
+            }
+            
             .item-card, .order-card, .team-card {
                 padding: var(--space-md);
                 margin: var(--space-xs) 0;
             }
             
-            /* Mobile stat cards */
             .stat-card {
                 padding: var(--space-md);
             }
@@ -1647,19 +1619,12 @@
                 padding: 6px 10px;
             }
             
-            .header-content {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: var(--space-sm);
-            }
-            
             .notification-panel {
                 width: calc(100% - 20px);
                 right: 10px;
                 left: 10px;
             }
             
-            /* Mobile cart improvements */
             .cart-item {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1670,24 +1635,18 @@
                 align-self: flex-end;
             }
             
-            /* Mobile order cards */
             .order-card {
                 padding: var(--space-sm);
             }
             
-            /* Mobile team cards */
             .team-card {
                 padding: var(--space-sm);
             }
         }
         
         @media (max-width: 360px) {
-            .header h1 {
-                font-size: 14px;
-            }
-            
-            .header-logo {
-                font-size: 18px;
+            .main-logo {
+                font-size: 24px;
             }
             
             .header-subtitle {
@@ -1754,7 +1713,7 @@
         
         .order-filter-btn {
             padding: 8px 14px;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--border-color);
             cursor: pointer;
             border-radius: var(--radius-sm);
@@ -1762,23 +1721,23 @@
             color: var(--text-secondary);
             transition: var(--transition-fast);
             font-weight: 500;
-            min-height: 36px; /* Better mobile touch */
+            min-height: 36px;
         }
         
         .order-filter-btn.active {
-            background: var(--black);
-            color: var(--white);
-            border-color: var(--black);
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
         }
         
         .order-filter-btn:hover:not(.active) {
-            background: var(--surface-color);
+            background: rgba(255, 255, 255, 0.2);
             border-color: var(--text-primary);
         }
         
         /* CHECKOUT FORM - NIKE STYLE */
         .checkout-form {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.7);
             padding: var(--space-md);
             border-radius: var(--radius-sm);
             margin: var(--space-md) 0;
@@ -1792,14 +1751,14 @@
             border-radius: var(--radius-sm);
             overflow: hidden;
             border: 1px solid var(--border-color);
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .delivery-option {
             flex: 1;
             padding: 15px 20px;
             text-align: center;
-            background-color: var(--white);
+            background-color: rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: var(--transition-fast);
             font-weight: 500;
@@ -1808,17 +1767,17 @@
         }
         
         .delivery-option.active {
-            background-color: var(--black);
-            color: var(--white);
+            background-color: var(--white);
+            color: var(--black);
         }
         
         .delivery-option:hover:not(.active) {
-            background-color: var(--surface-color);
+            background-color: rgba(255, 255, 255, 0.2);
         }
         
         /* TEAM CARDS */
         .team-card {
-            background: var(--white);
+            background: rgba(0, 0, 0, 0.7);
             border: 1px solid var(--border-color);
             padding: var(--space-md);
             border-radius: var(--radius-sm);
@@ -1826,7 +1785,7 @@
         }
         
         .team-card:hover {
-            border-color: var(--black);
+            border-color: var(--white);
             box-shadow: var(--shadow-sm);
         }
         
@@ -1855,9 +1814,76 @@
             font-weight: 500;
             border: 1px solid var(--border-color);
         }
+        
+        /* IMPROVED TEXT VISIBILITY STYLES */
+        .item-card h4,
+        .order-card h4,
+        .team-card h4,
+        .category-card h4 {
+            color: #ffffff !important;
+        }
+        
+        .item-card p,
+        .order-card p,
+        .team-card p,
+        .category-card p {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        .admin-content h3,
+        .admin-content h4 {
+            color: #ffffff !important;
+        }
+        
+        .admin-content p {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        /* STOCK DISPLAY IMPROVEMENTS */
+        .item-card span[style*="Stock:"] {
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Low stock warning */
+        .item-card span[style*="color: var(--warning)"] {
+            color: #ffcc00 !important;
+            background: rgba(255, 204, 0, 0.15);
+            border-color: rgba(255, 204, 0, 0.3);
+        }
+        
+        /* Out of stock */
+        .item-card span[style*="color: var(--danger)"] {
+            color: #ff4444 !important;
+            background: rgba(255, 68, 68, 0.15);
+            border-color: rgba(255, 68, 68, 0.3);
+        }
+        
+        /* In stock */
+        .item-card span[style*="color: var(--success)"] {
+            color: #00ff88 !important;
+            background: rgba(0, 255, 136, 0.15);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+        
+        /* Admin panel stock display */
+        .item-card span[style*="color:"] {
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
+    <!-- GALAXY BACKGROUND CANVAS -->
+    <canvas id="galaxy-canvas"></canvas>
+    
     <!-- ORDER SUCCESS MODAL -->
     <div class="order-success-modal" id="orderSuccessModal">
         <div class="order-success-container">
@@ -1964,7 +1990,8 @@
                     <input type="password" id="loginPassword" placeholder="Enter your password" value="">
                 </div>
                 
-                <div class="remember-me">
+                <!-- FIXED: Remember Me Checkbox with clickable label -->
+                <div class="remember-me" onclick="toggleRememberMe()">
                     <input type="checkbox" id="rememberMe">
                     <label for="rememberMe">Remember me</label>
                 </div>
@@ -2169,7 +2196,7 @@
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">INFINIX</div>
-                <p>BTL Materials Management System</p>
+                <p>Material Management System</p>
             </div>
             
             <div class="user-info">
@@ -2208,13 +2235,6 @@
                 </div>
             </div>
             
-            <!-- DAY/NIGHT MODE TOGGLE -->
-            <div class="theme-toggle" id="themeToggle" onclick="toggleDarkMode()">
-                <i class="fas fa-moon"></i>
-                <span>NIGHT MODE</span>
-            </div>
-            
-            <!-- LOGOUT BUTTON -->
             <div class="logout-btn" onclick="logoutUser()">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>LOGOUT</span>
@@ -2225,11 +2245,9 @@
         <div class="main-content" id="mainContentArea">
             <!-- HEADER -->
             <div class="header">
-                <div class="header-content">
-                    <h1>
-                        <span class="header-logo">INFINIX</span>
-                        <span class="header-subtitle">BTL Material Management System</span>
-                    </h1>
+                <div class="header-logo-container">
+                    <div class="main-logo">INFINIX</div>
+                    <div class="header-subtitle">BTL Material Management System</div>
                 </div>
                 
                 <div class="header-top-right">
@@ -2263,7 +2281,7 @@
             <div id="home-tab" class="tab-content active">
                 <div class="section">
                     <div class="home-hero">
-                        <h2 style="color: var(--text-primary); font-size: 20px; margin-bottom: 12px;">Welcome to the BTL Material Management System</h2>
+                        <h2 style="color: var(--text-primary); font-size: 20px; margin-bottom: 12px;">Welcome to the INFINIX Material Management System</h2>
                         <p style="color: var(--text-secondary); font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.5;">Streamline your material requests with our efficient system. Request, track, and manage all your BTL materials in one place.</p>
                         <button class="success" onclick="switchTab('store')"><i class="fas fa-boxes"></i> Browse Materials →</button>
                     </div>
@@ -2483,7 +2501,7 @@
             <div id="about-tab" class="tab-content">
                 <div class="section">
                     <h2><i class="fas fa-users"></i> BTL Team</h2>
-                    <p style="margin-bottom: 20px; color: var(--text-secondary); font-size: 13px;">Meet the team behind the BTL Material Management System</p>
+                    <p style="margin-bottom: 20px; color: var(--text-secondary); font-size: 13px;">Meet the team behind the INFINIX Material Management System</p>
                     
                     <div class="grid-2">
                         <div class="team-card">
@@ -2529,6 +2547,147 @@
 
     <script>
         // ==============================================
+        // PIXEL GALAXY BACKGROUND ANIMATION
+        // ==============================================
+        const galaxyCanvas = document.getElementById('galaxy-canvas');
+        const galaxyCtx = galaxyCanvas.getContext('2d');
+        let animationId = null;
+        let stars = [];
+        let shooters = [];
+        let shooterInterval = null;
+
+        function initGalaxy() {
+            resizeGalaxy();
+            initStars();
+            startGalaxyAnimation();
+            
+            // Start shooting star spawner
+            shooterInterval = setInterval(spawnShooter, 2000);
+        }
+
+        function resizeGalaxy() {
+            galaxyCanvas.width = window.innerWidth;
+            galaxyCanvas.height = window.innerHeight;
+        }
+
+        function initStars() {
+            stars = [];
+            const starCount = Math.min(1400, Math.floor((window.innerWidth * window.innerHeight) / 1000));
+            
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * galaxyCanvas.width,
+                    y: Math.random() * galaxyCanvas.height,
+                    speed: Math.random() * 0.6 + 0.1,
+                    size: Math.random() < 0.9 ? 1 : 2,
+                    twinkle: Math.random() * Math.PI * 2,
+                    twinkleSpeed: Math.random() * 0.03 + 0.02
+                });
+            }
+        }
+
+        function spawnShooter() {
+            if (shooters.length < 25) {
+                const shooterColors = ['#fff', '#aaf', '#faf', '#8cf'];
+                shooters.push({
+                    x: Math.random() * galaxyCanvas.width * 0.5,
+                    y: -20,
+                    vx: Math.random() * 8 + 4,
+                    vy: Math.random() * 8 + 4,
+                    life: 60 + Math.random() * 30,
+                    color: shooterColors[Math.floor(Math.random() * shooterColors.length)],
+                    trail: []
+                });
+            }
+        }
+
+        function drawGalaxy(timestamp) {
+            // Clear canvas
+            galaxyCtx.fillStyle = '#000';
+            galaxyCtx.fillRect(0, 0, galaxyCanvas.width, galaxyCanvas.height);
+
+            // Draw stars
+            for (let i = 0; i < stars.length; i++) {
+                const s = stars[i];
+                
+                s.y += s.speed;
+                if (s.y > galaxyCanvas.height) {
+                    s.y = 0;
+                    s.x = Math.random() * galaxyCanvas.width;
+                }
+                
+                s.twinkle += s.twinkleSpeed;
+                const alpha = 0.5 + Math.sin(s.twinkle) * 0.5;
+                
+                galaxyCtx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                galaxyCtx.fillRect(Math.floor(s.x), Math.floor(s.y), s.size, s.size);
+            }
+
+            // Draw shooting stars
+            for (let i = shooters.length - 1; i >= 0; i--) {
+                const sh = shooters[i];
+                
+                sh.trail.push({ x: sh.x, y: sh.y });
+                if (sh.trail.length > 10) sh.trail.shift();
+                
+                sh.x += sh.vx;
+                sh.y += sh.vy;
+                sh.life--;
+                
+                // Draw trail
+                for (let j = 0; j < sh.trail.length; j++) {
+                    const trailAlpha = j / sh.trail.length * 0.7;
+                    galaxyCtx.fillStyle = sh.color.replace(')', `, ${trailAlpha})`).replace('rgb', 'rgba');
+                    const pos = sh.trail[j];
+                    galaxyCtx.fillRect(Math.floor(pos.x), Math.floor(pos.y), 2, 2);
+                }
+                
+                // Draw head
+                galaxyCtx.fillStyle = sh.color;
+                galaxyCtx.fillRect(Math.floor(sh.x), Math.floor(sh.y), 3, 3);
+                
+                if (sh.life <= 0 || sh.y > galaxyCanvas.height + 50 || sh.x > galaxyCanvas.width + 50) {
+                    shooters.splice(i, 1);
+                }
+            }
+
+            // Draw nebula
+            const time = timestamp * 0.0002;
+            const centerX = galaxyCanvas.width / 2 + Math.sin(time) * 120;
+            const centerY = galaxyCanvas.height / 2 + Math.cos(time * 0.7) * 80;
+            
+            const gradient = galaxyCtx.createRadialGradient(
+                centerX, centerY, 60,
+                galaxyCanvas.width / 2, galaxyCanvas.height / 2, Math.max(galaxyCanvas.width, galaxyCanvas.height) * 0.8
+            );
+            
+            const r = 120 + Math.sin(time) * 80;
+            const g = 50 + Math.sin(time * 1.3) * 50;
+            const b = 255;
+            
+            gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.15)`);
+            gradient.addColorStop(0.4, 'rgba(0, 120, 255, 0.08)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            
+            galaxyCtx.fillStyle = gradient;
+            galaxyCtx.fillRect(0, 0, galaxyCanvas.width, galaxyCanvas.height);
+
+            animationId = requestAnimationFrame(drawGalaxy);
+        }
+
+        function startGalaxyAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            animationId = requestAnimationFrame(drawGalaxy);
+        }
+
+        window.addEventListener('resize', function() {
+            resizeGalaxy();
+            initStars();
+        });
+
+        // ==============================================
         // SUPABASE CONFIGURATION
         // ==============================================
         const supabaseUrl = 'https://ekvknigwsdabnwtjoxyj.supabase.co';
@@ -2545,7 +2704,7 @@
         let orders = [];
         let notifications = JSON.parse(localStorage.getItem('infxNotifications')) || [];
         let currentOrderFilter = 'all';
-        const ADMIN_PASSWORD = "INFINIXBTL123";
+        const ADMIN_PASSWORD = "INFINIX0"; // FIXED: Changed to "INFINIX0"
         let isAdminMode = false;
         let currentDeliveryOption = 'deliver';
         let countdownInterval = null;
@@ -2576,45 +2735,342 @@
             password: "Infinix!",
             name: "Mandz!",
             isAdmin: true,
-            isDefaultAdmin: true // Flag to identify default admin
+            isDefaultAdmin: true
         };
         
         // ==============================================
-        // DARK MODE FUNCTIONALITY
+        // FIXED: Order Management Functions
         // ==============================================
-        function toggleDarkMode() {
-            const body = document.body;
-            const themeToggle = document.getElementById('themeToggle');
-            const icon = themeToggle.querySelector('i');
-            const text = themeToggle.querySelector('span');
-            
-            if (body.classList.contains('dark-mode')) {
-                body.classList.remove('dark-mode');
-                icon.className = 'fas fa-moon';
-                text.textContent = 'NIGHT MODE';
-                localStorage.setItem('infxDarkMode', 'false');
-            } else {
-                body.classList.add('dark-mode');
-                icon.className = 'fas fa-sun';
-                text.textContent = 'DAY MODE';
-                localStorage.setItem('infxDarkMode', 'true');
+        
+        // FIXED: Load orders properly for admin
+        async function loadOrders() {
+            try {
+                const { data, error } = await supabase
+                    .from('orders')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                    
+                if (error) throw error;
+                
+                // IMPORTANT: Admin should see ALL orders, not filtered by userId
+                orders = (data || []).map(order => ({
+                    id: order.id,
+                    requestorName: order.requestor_name,
+                    userId: order.user_id,
+                    shopId: order.shop_id,
+                    contactNumber: order.contact_number,
+                    address: order.address,
+                    storeStatus: order.store_status,
+                    region: order.region,
+                    dateNeeded: order.date_needed,
+                    notes: order.notes,
+                    date: new Date(order.created_at).toLocaleString(),
+                    created_at: order.created_at,
+                    status: order.status || 'pending',
+                    items: order.items || [],
+                    returnRequest: order.return_request,
+                    completed_at: order.completed_at
+                }));
+                
+                // Save to localStorage for offline access
+                localStorage.setItem('infxOrders', JSON.stringify(orders));
+                
+                displayCustomerOrders();
+                updateHomeStats();
+                return orders;
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                // Fallback to localStorage
+                orders = JSON.parse(localStorage.getItem('infxOrders') || '[]');
+                displayCustomerOrders();
+                return orders;
             }
         }
         
-        function initializeDarkMode() {
-            const darkMode = localStorage.getItem('infxDarkMode') === 'true';
-            const themeToggle = document.getElementById('themeToggle');
-            const icon = themeToggle.querySelector('i');
-            const text = themeToggle.querySelector('span');
+        // FIXED: Display customer orders (for regular users)
+        function displayCustomerOrders() {
+            const customerOrders = document.getElementById('customerOrders');
+            customerOrders.innerHTML = '';
             
-            if (darkMode) {
-                document.body.classList.add('dark-mode');
-                icon.className = 'fas fa-sun';
-                text.textContent = 'DAY MODE';
+            // Regular users only see their own orders
+            const userOrders = orders.filter(order => 
+                order.userId === currentUser.id || 
+                order.requestorName.toLowerCase() === currentUser.name.toLowerCase()
+            );
+            
+            let filteredOrders = userOrders;
+            if (currentOrderFilter !== 'all') {
+                filteredOrders = userOrders.filter(o => o.status === currentOrderFilter);
+            }
+            
+            if(filteredOrders.length === 0) {
+                let message = 'No requests found';
+                if (currentOrderFilter !== 'all') {
+                    message = `No ${currentOrderFilter.replace('-', ' ')} requests`;
+                }
+                
+                customerOrders.innerHTML = `
+                    <div style="text-align: center; padding: 30px; color: var(--text-light);">
+                        <h3 style="margin-bottom: 10px;">📭 ${message}</h3>
+                        <p style="margin-bottom: 15px; font-size: 13px;">${currentOrderFilter === 'all' ? 'Your submitted requests will appear here.' : 'No requests match this filter.'}</p>
+                        ${currentOrderFilter !== 'all' ? 
+                            `<button onclick="filterOrders('all')" style="margin-top: 10px; padding: 8px 15px; font-size: 13px;">
+                                View All Requests
+                            </button>` : 
+                            `<button onclick="switchTab('store')" style="margin-top: 10px; padding: 8px 15px; font-size: 13px;">
+                                🛍️ Browse Materials
+                            </button>`
+                        }
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            filteredOrders.forEach(order => {
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'order-card';
+                
+                const orderNumber = order.id.toString().padStart(5, '0');
+                
+                orderDiv.innerHTML = `
+                    <div class="order-id" style="background: var(--surface-color); color: var(--text-primary); padding: 8px 15px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 600; display: inline-block; margin: 4px 0; font-size: 16px; letter-spacing: 1px; border: 1px solid var(--border-color);">INFX${orderNumber}</div>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Requestor:</strong> ${order.requestorName}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Shop:</strong> ${order.shopId} • ${order.storeStatus} • ${order.region}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Contact:</strong> ${order.contactNumber}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Needed:</strong> ${order.dateNeeded}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Requested:</strong> ${order.date}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Delivery:</strong> ${order.deliveryOption === 'deliver' ? 'Delivery' : 'Pickup'}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Materials:</strong> ${order.items.map(item => `${item.name} × ${item.quantity}`).join(', ')}</p>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <span class="status ${order.status}">${order.status.replace('-', ' ').toUpperCase()}</span>
+                    </div>
+                `;
+                customerOrders.appendChild(orderDiv);
+            });
+        }
+        
+        // FIXED: Display admin orders (shows ALL orders)
+        function displayAdminOrders() {
+            const ordersList = document.getElementById('adminOrdersList');
+            ordersList.innerHTML = '';
+            
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<p style="text-align: center; padding: 30px; color: var(--text-light);">No orders found</p>';
+                return;
+            }
+            
+            // Admin sees ALL orders
+            orders.forEach(order => {
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'order-card';
+                orderDiv.style.margin = '8px 0';
+                
+                const orderNumber = order.id.toString().padStart(5, '0');
+                const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
+                
+                orderDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <div class="order-id" style="background: var(--surface-color); color: var(--text-primary); padding: 6px 12px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 600; font-size: 14px; letter-spacing: 1px; border: 1px solid var(--border-color);">INFX${orderNumber}</div>
+                        <span class="status ${order.status}">${order.status.replace('-', ' ').toUpperCase()}</span>
+                    </div>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Requestor:</strong> ${order.requestorName}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>User ID:</strong> ${order.userId}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Shop:</strong> ${order.shopId} • ${order.region}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Items:</strong> ${totalItems} items</p>
+                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</p>
+                    
+                    <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button onclick="updateOrderStatus(${order.id}, 'approved')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'approved' ? 'disabled' : ''}><i class="fas fa-check"></i> Approve</button>
+                        <button onclick="updateOrderStatus(${order.id}, 'out-for-delivery')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'out-for-delivery' ? 'disabled' : ''}><i class="fas fa-truck"></i> Out for Delivery</button>
+                        <button onclick="updateOrderStatus(${order.id}, 'completed')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'completed' ? 'disabled' : ''}><i class="fas fa-check-circle"></i> Complete</button>
+                        <button onclick="updateOrderStatus(${order.id}, 'cancelled')" style="padding: 6px 10px; font-size: 11px; background: var(--white); color: var(--danger); border-color: var(--danger);" ${order.status === 'cancelled' ? 'disabled' : ''}><i class="fas fa-times"></i> Cancel</button>
+                        <button onclick="viewOrderDetails(${order.id})" style="padding: 6px 10px; font-size: 11px; background: var(--info);"><i class="fas fa-eye"></i> View</button>
+                    </div>
+                `;
+                ordersList.appendChild(orderDiv);
+            });
+        }
+        
+        // ==============================================
+        // FIXED: Stock Management Functions
+        // ==============================================
+        
+        // FIXED: Add to cart with stock validation
+        function addToCart(itemId) {
+            const item = items.find(i => i.id == itemId);
+            const quantity = parseInt(document.getElementById(`qty-${itemId}`).value) || 1;
+            
+            if(item && item.stock >= quantity) {
+                const cartItem = cart.find(ci => ci.itemId == itemId);
+                
+                if(cartItem) {
+                    cartItem.quantity += quantity;
+                } else {
+                    cart.push({
+                        itemId: item.id,
+                        name: item.name,
+                        category: item.category,
+                        quantity: quantity
+                    });
+                }
+                
+                saveLocalData();
+                updateCartCount();
+                showToast('Added to Cart', `${quantity} × ${item.name} added to cart`);
+                document.getElementById(`qty-${itemId}`).value = 1;
+                
+                if (document.getElementById('cart-tab').classList.contains('active')) {
+                    displayCart();
+                }
             } else {
-                document.body.classList.remove('dark-mode');
-                icon.className = 'fas fa-moon';
-                text.textContent = 'NIGHT MODE';
+                alert('Not enough stock available!');
+            }
+        }
+        
+        // FIXED: Submit order with stock update
+        async function submitRequest() {
+            if(cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            const requestorName = document.getElementById('requestorName').value.trim();
+            const userId = document.getElementById('userId').value.trim();
+            const shopId = document.getElementById('shopId').value.trim();
+            const contactNumber = document.getElementById('contactNumber').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const storeStatus = document.getElementById('storeStatus').value;
+            const region = document.getElementById('region').value;
+            const dateNeeded = document.getElementById('dateNeeded').value;
+            const notes = document.getElementById('requestNotes').value.trim();
+            
+            if (currentDeliveryOption === 'deliver' && !address) {
+                alert('Please enter address for delivery!');
+                return;
+            }
+            
+            if(!requestorName || !userId || !shopId || !contactNumber || !storeStatus || !region || !dateNeeded) {
+                alert('Please fill all required fields!');
+                return;
+            }
+            
+            const phoneRegex = /^09\d{9}$/;
+            if (!phoneRegex.test(contactNumber)) {
+                alert('Please enter a valid Philippine mobile number (09XXXXXXXXX)');
+                return;
+            }
+            
+            // Update user info
+            currentUser.name = requestorName;
+            localStorage.setItem('infxUserName', requestorName);
+            document.getElementById('userDisplayName').textContent = requestorName;
+            document.getElementById('userAvatar').textContent = requestorName.charAt(0).toUpperCase();
+            
+            const orderData = {
+                requestorName: requestorName,
+                userId: userId || currentUser.id,
+                shopId: shopId,
+                contactNumber: contactNumber,
+                address: currentDeliveryOption === 'deliver' ? address : 'Pickup Request',
+                storeStatus: storeStatus,
+                region: region,
+                dateNeeded: dateNeeded,
+                notes: notes,
+                deliveryOption: currentDeliveryOption,
+                date: new Date().toISOString(),
+                items: [...cart],
+                status: 'pending'
+            };
+            
+            try {
+                const orderCounter = parseInt(localStorage.getItem('infxOrderCounter') || '1');
+                const orderNumber = orderCounter.toString().padStart(5, '0');
+                
+                // FIXED: Update stock for each item
+                for (const cartItem of cart) {
+                    const item = items.find(i => i.id == cartItem.itemId);
+                    if (item) {
+                        // Reduce stock
+                        item.stock -= cartItem.quantity;
+                        
+                        // Update in localStorage
+                        const itemIndex = items.findIndex(i => i.id == cartItem.itemId);
+                        if (itemIndex !== -1) {
+                            items[itemIndex] = item;
+                        }
+                    }
+                }
+                
+                // Save updated items
+                localStorage.setItem('infxMaterials', JSON.stringify(items));
+                
+                // Create new order
+                const newOrder = {
+                    id: orderCounter,
+                    ...orderData
+                };
+                
+                orders.unshift(newOrder);
+                localStorage.setItem('infxOrderCounter', (orderCounter + 1).toString());
+                localStorage.setItem('infxOrders', JSON.stringify(orders));
+                
+                // NOTIFY ADMINS ABOUT NEW ORDER
+                notifyAdminsAboutNewOrder(orderCounter, requestorName, shopId);
+                
+                // Clear cart
+                cart = [];
+                saveLocalData();
+                updateCartCount();
+                
+                // Reset form
+                document.getElementById('requestorName').value = '';
+                document.getElementById('userId').value = '';
+                document.getElementById('shopId').value = '';
+                document.getElementById('contactNumber').value = '';
+                document.getElementById('address').value = '';
+                document.getElementById('storeStatus').value = '';
+                document.getElementById('region').value = '';
+                document.getElementById('dateNeeded').value = '';
+                document.getElementById('requestNotes').value = '';
+                
+                hideCheckoutForm();
+                showOrderSuccessModal();
+                
+                // Refresh displays
+                displayStoreItems();
+                displayAdminMaterials();
+                
+            } catch (error) {
+                console.error('Error submitting order:', error);
+                alert('Error submitting order: ' + error.message);
+            }
+        }
+        
+        // FIXED: Update material stock from admin
+        function updateMaterialStock(itemId) {
+            const item = items.find(i => i.id == itemId);
+            if (!item) return;
+            
+            const newStock = prompt(`Update stock for ${item.name}\nCurrent stock: ${item.stock}\nEnter new stock amount:`, item.stock);
+            
+            if (newStock !== null && !isNaN(newStock)) {
+                item.stock = parseInt(newStock);
+                
+                // Update in items array
+                const itemIndex = items.findIndex(i => i.id == itemId);
+                if (itemIndex !== -1) {
+                    items[itemIndex] = item;
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('infxMaterials', JSON.stringify(items));
+                
+                // Refresh displays
+                displayAdminMaterials();
+                displayStoreItems();
+                showToast('Stock Updated', `${item.name} stock updated to ${newStock}`);
             }
         }
         
@@ -2741,9 +3197,6 @@
             document.getElementById('notificationOverlay').classList.remove('active');
         }
         
-        // ==============================================
-        // NOTIFY ADMINS ABOUT NEW ORDERS
-        // ==============================================
         function notifyAdminsAboutNewOrder(orderId, requestorName, shopId) {
             const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
             const adminUsers = users.filter(user => user.isAdmin);
@@ -2759,15 +3212,13 @@
                 );
             });
             
-            // If no admins found, notify all users
-            if (adminUsers.length === 0) {
-                addNotification(
-                    'all',
-                    '📦 New Order Received',
-                    `Order INFX${orderNumber} from ${requestorName} (${shopId}) has been placed.`,
-                    'new_order'
-                );
-            }
+            // Also notify default admin
+            addNotification(
+                'ADMIN001',
+                '📦 New Order Received',
+                `Order INFX${orderNumber} from ${requestorName} (${shopId}) requires your attention.`,
+                'new_order'
+            );
             
             // Force refresh notification count for admin users
             if (currentUser.isAdmin) {
@@ -2775,9 +3226,6 @@
             }
         }
         
-        // ==============================================
-        // ADD NOTIFICATION FUNCTION
-        // ==============================================
         function addNotification(userId, title, message, type = 'info') {
             const notification = {
                 id: 'NOT' + Date.now(),
@@ -2793,7 +3241,6 @@
             localStorage.setItem('infxNotifications', JSON.stringify(notifications));
             updateNotificationCount();
             
-            // Force refresh notification bell for admin users
             if (userId !== currentUser.id && currentUser.isAdmin) {
                 setTimeout(updateNotificationCount, 500);
             }
@@ -2841,7 +3288,6 @@
             localStorage.setItem('infxAnnouncement', JSON.stringify(announcement));
             updateBanner();
             
-            // Add notification for all users
             addNotification(
                 'all',
                 'New Announcement',
@@ -2926,89 +3372,59 @@
         }
         
         // ==============================================
-        // SIDEBAR FUNCTIONS
+        // SIDEBAR FUNCTIONS - UPDATED FOR OVERLAY
         // ==============================================
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContentArea');
-            const toggleBtn = document.getElementById('sidebarToggle');
             const overlay = document.getElementById('sidebarOverlay');
             
-            sidebarCollapsed = !sidebarCollapsed;
-            
-            if (sidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
-                toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
                 overlay.classList.remove('active');
             } else {
-                sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('expanded');
-                toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                sidebar.classList.add('active');
                 overlay.classList.add('active');
             }
-            
-            localStorage.setItem('infxSidebarCollapsed', sidebarCollapsed.toString());
         }
         
         function closeSidebar() {
             const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContentArea');
-            const toggleBtn = document.getElementById('sidebarToggle');
             const overlay = document.getElementById('sidebarOverlay');
             
-            sidebar.classList.add('collapsed');
-            mainContent.classList.add('expanded');
-            toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            sidebar.classList.remove('active');
             overlay.classList.remove('active');
-            sidebarCollapsed = true;
-            localStorage.setItem('infxSidebarCollapsed', 'true');
         }
         
-        // ==============================================
-        // INITIALIZE SIDEBAR STATE
-        // ==============================================
         function initializeSidebar() {
+            // Start with sidebar closed by default
             const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContentArea');
-            const toggleBtn = document.getElementById('sidebarToggle');
+            const overlay = document.getElementById('sidebarOverlay');
             
-            if (sidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
-                toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            } else {
-                sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('expanded');
-                toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            }
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
         }
         
         // ==============================================
         // PASSWORD VALIDATION FUNCTION
         // ==============================================
         function validatePassword(password) {
-            // Minimum 6 characters
             if (password.length < 6) {
                 return "Password must be at least 6 characters long";
             }
             
-            // At least 1 uppercase letter
             if (!/[A-Z]/.test(password)) {
                 return "Password must contain at least 1 uppercase letter";
             }
             
-            // At least 1 number
             if (!/\d/.test(password)) {
                 return "Password must contain at least 1 number";
             }
             
-            // At least 1 special character
             if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
                 return "Password must contain at least 1 special character (!@#$%^&* etc.)";
             }
             
-            return null; // Password is valid
+            return null;
         }
         
         // ==============================================
@@ -3067,6 +3483,12 @@
             switchAuthTab('login');
         }
         
+        // FIXED: Function to toggle remember me checkbox
+        function toggleRememberMe() {
+            const checkbox = document.getElementById('rememberMe');
+            checkbox.checked = !checkbox.checked;
+        }
+        
         async function loginUser() {
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
@@ -3078,7 +3500,7 @@
             }
             
             try {
-                // First check if it's the default admin
+                // Check if it's the default admin
                 if (username === DEFAULT_ADMIN.username && password === DEFAULT_ADMIN.password) {
                     currentUser = {
                         id: 'ADMIN001',
@@ -3168,7 +3590,6 @@
                 return;
             }
             
-            // Validate password strength
             const passwordError = validatePassword(password);
             if (passwordError) {
                 showAuthError(passwordError);
@@ -3193,21 +3614,19 @@
                     return;
                 }
                 
-                // FIXED: NEW USERS ARE ALWAYS REGULAR USERS, NOT ADMINS
                 const newUser = {
                     id: 'USER' + Date.now(),
                     username: username,
                     email: email,
                     password: password,
                     name: username,
-                    isAdmin: false, // FIX: Always false for new users
+                    isAdmin: false,
                     created_at: new Date().toISOString()
                 };
                 
                 users.push(newUser);
                 localStorage.setItem('infxUsers', JSON.stringify(users));
                 
-                // FIXED: Current user should also NOT be admin
                 currentUser = {
                     id: newUser.id,
                     username: newUser.username,
@@ -3215,7 +3634,7 @@
                     email: newUser.email,
                     isAuthenticated: true,
                     rememberMe: false,
-                    isAdmin: false // FIX: Always false
+                    isAdmin: false
                 };
                 
                 localStorage.setItem('infxUserId', currentUser.id);
@@ -3224,16 +3643,12 @@
                 localStorage.setItem('infxUserEmail', currentUser.email);
                 localStorage.setItem('infxIsAuthenticated', 'true');
                 localStorage.setItem('infxRememberMe', 'false');
-                localStorage.setItem('infxIsAdmin', 'false'); // FIX: Store as false
+                localStorage.setItem('infxIsAdmin', 'false');
                 
                 hideAuthModal();
                 document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('userDisplayName').textContent = currentUser.name;
                 document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
-                
-                const userRoleElement = document.querySelector('.user-role');
-                userRoleElement.textContent = 'User';
-                userRoleElement.style.color = 'var(--text-light)';
                 
                 initializeSidebar();
                 initializeApp();
@@ -3467,7 +3882,7 @@
         }
         
         // ==============================================
-        // ADMIN PANEL FUNCTIONS WITH AUTO-REFRESH
+        // ADMIN PANEL FUNCTIONS
         // ==============================================
         function showAdminPanel() {
             if (currentUser.isAdmin) {
@@ -3478,7 +3893,6 @@
             } else {
                 const password = prompt('Enter Admin Password:');
                 if (password === ADMIN_PASSWORD) {
-                    // Only allow admin access via password for default admin
                     if (currentUser.username === DEFAULT_ADMIN.username) {
                         currentUser.isAdmin = true;
                         localStorage.setItem('infxIsAdmin', 'true');
@@ -3510,17 +3924,15 @@
         
         function startAdminAutoRefresh() {
             if (currentUser.isAdmin) {
-                // Clear existing interval
                 if (adminRefreshInterval) {
                     clearInterval(adminRefreshInterval);
                 }
                 
-                // Check for new orders every 30 seconds when admin panel is open
                 adminRefreshInterval = setInterval(() => {
                     if (document.getElementById('adminModal').classList.contains('active')) {
                         refreshAdminData();
                     }
-                }, 30000); // 30 seconds
+                }, 30000);
             }
         }
         
@@ -3573,69 +3985,6 @@
             updateBanner();
         }
         
-        function displayAdminOrders() {
-            const ordersList = document.getElementById('adminOrdersList');
-            ordersList.innerHTML = '';
-            
-            if (orders.length === 0) {
-                ordersList.innerHTML = '<p style="text-align: center; padding: 30px; color: var(--text-light);">No orders found</p>';
-                return;
-            }
-            
-            orders.forEach(order => {
-                const orderDiv = document.createElement('div');
-                orderDiv.className = 'order-card';
-                orderDiv.style.margin = '8px 0';
-                
-                const orderNumber = order.id.toString().padStart(5, '0');
-                const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
-                
-                orderDiv.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <div class="order-id" style="background: var(--surface-color); color: var(--text-primary); padding: 6px 12px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 600; font-size: 14px; letter-spacing: 1px; border: 1px solid var(--border-color);">INFX${orderNumber}</div>
-                        <span class="status ${order.status}">${order.status.replace('-', ' ').toUpperCase()}</span>
-                    </div>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Requestor:</strong> ${order.requestorName}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Shop:</strong> ${order.shopId} • ${order.region}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Items:</strong> ${totalItems} items</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</p>
-                    
-                    <div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
-                        <button onclick="updateOrderStatus(${order.id}, 'approved')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'approved' ? 'disabled' : ''}><i class="fas fa-check"></i> Approve</button>
-                        <button onclick="updateOrderStatus(${order.id}, 'out-for-delivery')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'out-for-delivery' ? 'disabled' : ''}><i class="fas fa-truck"></i> Out for Delivery</button>
-                        <button onclick="updateOrderStatus(${order.id}, 'completed')" style="padding: 6px 10px; font-size: 11px;" ${order.status === 'completed' ? 'disabled' : ''}><i class="fas fa-check-circle"></i> Complete</button>
-                        <button onclick="updateOrderStatus(${order.id}, 'cancelled')" style="padding: 6px 10px; font-size: 11px; background: var(--white); color: var(--danger); border-color: var(--danger);" ${order.status === 'cancelled' ? 'disabled' : ''}><i class="fas fa-times"></i> Cancel</button>
-                        <button onclick="viewOrderDetails(${order.id})" style="padding: 6px 10px; font-size: 11px; background: var(--info);"><i class="fas fa-eye"></i> View</button>
-                    </div>
-                `;
-                ordersList.appendChild(orderDiv);
-            });
-        }
-        
-        function viewOrderDetails(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if (order) {
-                const orderNumber = order.id.toString().padStart(5, '0');
-                let itemsList = '';
-                order.items.forEach(item => {
-                    itemsList += `• ${item.name} × ${item.quantity}\n`;
-                });
-                
-                alert(`Order Details:\n\n` +
-                      `Order ID: INFX${orderNumber}\n` +
-                      `Requestor: ${order.requestorName}\n` +
-                      `Shop ID: ${order.shopId}\n` +
-                      `Contact: ${order.contactNumber}\n` +
-                      `Region: ${order.region}\n` +
-                      `Date Needed: ${order.dateNeeded}\n` +
-                      `Status: ${order.status}\n` +
-                      `Delivery: ${order.deliveryOption === 'deliver' ? 'Delivery' : 'Pickup'}\n` +
-                      `Address: ${order.address}\n\n` +
-                      `Items:\n${itemsList}\n` +
-                      `Notes: ${order.notes || 'None'}`);
-            }
-        }
-        
         function displayAdminMaterials() {
             const materialsList = document.getElementById('adminMaterialsList');
             materialsList.innerHTML = '';
@@ -3654,10 +4003,10 @@
                 
                 materialDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <h4 style="color: var(--text-primary); margin: 0; font-size: 16px;">${item.name}</h4>
-                        <span style="color: ${stockColor}; font-weight: 600; font-size: 13px;">Stock: ${item.stock}</span>
+                        <h4 style="color: #ffffff; margin: 0; font-size: 16px;">${item.name}</h4>
+                        <span style="color: ${stockColor}; font-weight: 600; font-size: 13px; background: rgba(255, 255, 255, 0.1); padding: 2px 8px; border-radius: 8px;">Stock: ${item.stock}</span>
                     </div>
-                    ${item.description ? `<p style="color: var(--text-secondary); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
+                    ${item.description ? `<p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
                     <div>
                         <span class="category-tag">${item.category || 'Uncategorized'}</span>
                     </div>
@@ -3678,7 +4027,6 @@
             
             const users = JSON.parse(localStorage.getItem('infxUsers') || '[]');
             
-            // Include default admin in the list
             const allUsers = [
                 {
                     id: 'ADMIN001',
@@ -3704,12 +4052,12 @@
                 
                 userDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <h4 style="color: var(--text-primary); margin: 0; font-size: 16px;">${user.name} ${user.isDefaultAdmin ? '(Default Admin)' : ''}</h4>
+                        <h4 style="color: #ffffff; margin: 0; font-size: 16px;">${user.name} ${user.isDefaultAdmin ? '(Default Admin)' : ''}</h4>
                         <span style="color: ${user.isAdmin ? 'var(--success)' : 'var(--text-secondary)'}; font-weight: 600; font-size: 12px; padding: 2px 8px; background: ${user.isAdmin ? 'rgba(16, 185, 129, 0.1)' : 'var(--surface-color)'}; border-radius: 10px; border: 1px solid ${user.isAdmin ? 'var(--success)' : 'var(--border-color)'};">${user.isAdmin ? 'Admin' : 'User'}</span>
                     </div>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Username:</strong> ${user.username}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Email:</strong> ${user.email}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Joined:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+                    <p style="font-size: 13px; color: rgba(255, 255, 255, 0.9);"><strong>Username:</strong> ${user.username}</p>
+                    <p style="font-size: 13px; color: rgba(255, 255, 255, 0.9);"><strong>Email:</strong> ${user.email}</p>
+                    <p style="font-size: 13px; color: rgba(255, 255, 255, 0.9);"><strong>Joined:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
                     
                     ${!user.isDefaultAdmin ? `
                     <div style="margin-top: 10px; display: flex; gap: 6px;">
@@ -3724,7 +4072,6 @@
         }
         
         function toggleUserAdmin(userId) {
-            // Only default admin can toggle other users' admin status
             if (currentUser.username !== DEFAULT_ADMIN.username) {
                 showToast('Permission Denied', 'Only the default admin can modify user permissions');
                 return;
@@ -3766,7 +4113,7 @@
             const completedOrders = orders.filter(o => o.status === 'completed').length;
             
             document.getElementById('adminTotalOrders').textContent = totalOrders;
-            document.getElementById('adminTotalUsers').textContent = users.length + 1; // +1 for default admin
+            document.getElementById('adminTotalUsers').textContent = users.length + 1;
             document.getElementById('adminPendingOrders').textContent = pendingOrders;
             document.getElementById('adminApprovedOrders').textContent = approvedOrders;
             document.getElementById('adminCompletedOrders').textContent = completedOrders;
@@ -3781,7 +4128,6 @@
                 
                 localStorage.setItem('infxOrders', JSON.stringify(orders));
                 
-                // Notify the user who placed the order
                 addNotification(
                     orders[orderIndex].userId,
                     'Order Status Updated',
@@ -3798,19 +4144,27 @@
             }
         }
         
-        function updateMaterialStock(itemId) {
-            const item = items.find(i => i.id == itemId);
-            if (!item) return;
-            
-            const newStock = prompt(`Update stock for ${item.name}\nCurrent stock: ${item.stock}\nEnter new stock amount:`, item.stock);
-            
-            if (newStock !== null && !isNaN(newStock)) {
-                item.stock = parseInt(newStock);
-                localStorage.setItem('infxMaterials', JSON.stringify(items));
+        function viewOrderDetails(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                const orderNumber = order.id.toString().padStart(5, '0');
+                let itemsList = '';
+                order.items.forEach(item => {
+                    itemsList += `• ${item.name} × ${item.quantity}\n`;
+                });
                 
-                displayAdminMaterials();
-                displayStoreItems();
-                showToast('Stock Updated', `${item.name} stock updated to ${newStock}`);
+                alert(`Order Details:\n\n` +
+                      `Order ID: INFX${orderNumber}\n` +
+                      `Requestor: ${order.requestorName}\n` +
+                      `Shop ID: ${order.shopId}\n` +
+                      `Contact: ${order.contactNumber}\n` +
+                      `Region: ${order.region}\n` +
+                      `Date Needed: ${order.dateNeeded}\n` +
+                      `Status: ${order.status}\n` +
+                      `Delivery: ${order.deliveryOption === 'deliver' ? 'Delivery' : 'Pickup'}\n` +
+                      `Address: ${order.address}\n\n` +
+                      `Items:\n${itemsList}\n` +
+                      `Notes: ${order.notes || 'None'}`);
             }
         }
         
@@ -3963,27 +4317,6 @@
             }
         }
         
-        async function loadOrders() {
-            try {
-                const { data, error } = await supabase
-                    .from('orders')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                    
-                if (error) throw error;
-                
-                orders = data || [];
-                displayCustomerOrders();
-                updateHomeStats();
-                return orders;
-            } catch (error) {
-                console.error('Error loading orders:', error);
-                orders = [];
-                displayCustomerOrders();
-                return orders;
-            }
-        }
-        
         // ==============================================
         // MATERIALS FUNCTIONS
         // ==============================================
@@ -4003,15 +4336,17 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'item-card';
                 
-                let stockColor = item.stock > 10 ? 'var(--success)' : item.stock > 0 ? 'var(--warning)' : 'var(--danger)';
+                let stockColor = item.stock > 10 ? '#00ff88' : item.stock > 0 ? '#ffcc00' : '#ff4444';
                 let stockText = item.stock > 10 ? 'In Stock' : item.stock > 0 ? 'Low Stock' : 'Out of Stock';
+                let stockBackground = item.stock > 10 ? 'rgba(0, 255, 136, 0.15)' : item.stock > 0 ? 'rgba(255, 204, 0, 0.15)' : 'rgba(255, 68, 68, 0.15)';
+                let stockBorder = item.stock > 10 ? 'rgba(0, 255, 136, 0.3)' : item.stock > 0 ? 'rgba(255, 204, 0, 0.3)' : 'rgba(255, 68, 68, 0.3)';
                 
                 itemDiv.innerHTML = `
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px; font-size: 16px;">${item.name}</h4>
-                    ${item.description ? `<p style="color: var(--text-secondary); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
+                    <h4 style="color: #ffffff; margin-bottom: 8px; font-size: 16px;">${item.name}</h4>
+                    ${item.description ? `<p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 10px; font-size: 13px;">${item.description}</p>` : ''}
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="category-tag">${item.category || 'Uncategorized'}</span>
-                        <span style="color: ${stockColor}; font-weight: 600; font-size: 12px;">${stockText}: ${item.stock}</span>
+                        <span style="color: ${stockColor}; font-weight: 600; font-size: 13px; background: ${stockBackground}; padding: 3px 8px; border-radius: 10px; border: 1px solid ${stockBorder};">${stockText}: ${item.stock}</span>
                     </div>
                     <div style="margin-top: 12px;">
                         <input type="number" id="qty-${item.id}" min="1" max="${item.stock}" value="1" style="width: 70px; display: inline-block; margin-right: 8px; padding: 6px; font-size: 13px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
@@ -4022,37 +4357,6 @@
                 `;
                 storeItems.appendChild(itemDiv);
             });
-        }
-        
-        function addToCart(itemId) {
-            const item = items.find(i => i.id == itemId);
-            const quantity = parseInt(document.getElementById(`qty-${itemId}`).value) || 1;
-            
-            if(item && item.stock >= quantity) {
-                const cartItem = cart.find(ci => ci.itemId == itemId);
-                
-                if(cartItem) {
-                    cartItem.quantity += quantity;
-                } else {
-                    cart.push({
-                        itemId: item.id,
-                        name: item.name,
-                        category: item.category,
-                        quantity: quantity
-                    });
-                }
-                
-                saveLocalData();
-                updateCartCount();
-                showToast('Added to Cart', `${quantity} × ${item.name} added to cart`);
-                document.getElementById(`qty-${itemId}`).value = 1;
-                
-                if (document.getElementById('cart-tab').classList.contains('active')) {
-                    displayCart();
-                }
-            } else {
-                alert('Not enough stock available!');
-            }
         }
         
         function filterCategory() {
@@ -4095,7 +4399,7 @@
                     align-items: center;
                     padding: 12px;
                     border-bottom: 1px solid var(--border-color);
-                    background: var(--white);
+                    background: rgba(0, 0, 0, 0.5);
                     border-radius: var(--radius-sm);
                     margin: 8px 0;
                     border-left: ${isOutOfStock ? '3px solid var(--danger)' : 'none'};
@@ -4103,17 +4407,17 @@
                 
                 cartItemDiv.innerHTML = `
                     <div>
-                        <strong style="color: var(--text-primary); font-size: 14px;">${cartItem.name}</strong>
-                        ${isOutOfStock ? '<br><span style="color: var(--danger); font-size: 11px;">⚠️ Insufficient stock!</span>' : ''}
+                        <strong style="color: #ffffff; font-size: 14px;">${cartItem.name}</strong>
+                        ${isOutOfStock ? '<br><span style="color: #ff4444; font-size: 11px; background: rgba(255, 68, 68, 0.15); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(255, 68, 68, 0.3);">⚠️ Insufficient stock!</span>' : ''}
                         <br>
-                        <span class="category-tag" style="margin-top: 4px;">${cartItem.category || 'Uncategorized'}</span>
-                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Quantity: ${cartItem.quantity}</div>
-                        ${item ? `<div style="font-size: 11px; color: ${isOutOfStock ? 'var(--danger)' : 'var(--text-primary)'};">Available: ${availableStock}</div>` : ''}
+                        <span class="category-tag" style="margin-top: 4px; background: rgba(255, 255, 255, 0.15); color: #ffffff; border-color: rgba(255, 255, 255, 0.3);">${cartItem.category || 'Uncategorized'}</span>
+                        <div style="font-size: 13px; color: rgba(255, 255, 255, 0.9); margin-top: 4px;">Quantity: ${cartItem.quantity}</div>
+                        ${item ? `<div style="font-size: 11px; color: ${isOutOfStock ? '#ff4444' : '#ffffff'}; background: ${isOutOfStock ? 'rgba(255, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.1)'}; padding: 2px 6px; border-radius: 4px; margin-top: 2px; display: inline-block; border: 1px solid ${isOutOfStock ? 'rgba(255, 68, 68, 0.3)' : 'rgba(255, 255, 255, 0.2)'};">Available: ${availableStock}</div>` : ''}
                     </div>
                     <div style="display: flex; gap: 6px;">
-                        <button onclick="updateCartQuantity(${index}, ${cartItem.quantity - 1})" style="padding: 6px 10px; font-size: 12px; background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color);">➖</button>
-                        <button onclick="updateCartQuantity(${index}, ${cartItem.quantity + 1})" style="padding: 6px 10px; font-size: 12px; background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color);">➕</button>
-                        <button class="cancel" onclick="removeFromCart(${index})" style="padding: 6px 10px; font-size: 12px;"><i class="fas fa-trash"></i></button>
+                        <button onclick="updateCartQuantity(${index}, ${cartItem.quantity - 1})" style="padding: 6px 10px; font-size: 12px; background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3);">➖</button>
+                        <button onclick="updateCartQuantity(${index}, ${cartItem.quantity + 1})" style="padding: 6px 10px; font-size: 12px; background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3);">➕</button>
+                        <button class="cancel" onclick="removeFromCart(${index})" style="padding: 6px 10px; font-size: 12px; background: rgba(255, 68, 68, 0.1); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.3);"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
                 cartItems.appendChild(cartItemDiv);
@@ -4199,11 +4503,10 @@
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             
-            // FIXED: Changed date format from "d/m/Y" to "Y-m-d" for database compatibility
             flatpickr("#dateNeeded", {
                 defaultDate: tomorrow,
                 minDate: tomorrow,
-                dateFormat: "Y-m-d", // FIX: Changed to YYYY-MM-DD format for database
+                dateFormat: "d/m/Y",
                 disableMobile: true
             });
             
@@ -4215,182 +4518,6 @@
         function hideCheckoutForm() {
             document.getElementById('checkoutSection').style.display = 'none';
             document.getElementById('proceedSection').style.display = 'block';
-        }
-        
-        // ==============================================
-        // ORDER FUNCTIONS WITH ADMIN NOTIFICATION - FIXED
-        // ==============================================
-        async function submitRequest() {
-            if(cart.length === 0) {
-                alert('Your cart is empty!');
-                return;
-            }
-            
-            const requestorName = document.getElementById('requestorName').value.trim();
-            const userId = document.getElementById('userId').value.trim();
-            const shopId = document.getElementById('shopId').value.trim();
-            const contactNumber = document.getElementById('contactNumber').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const storeStatus = document.getElementById('storeStatus').value;
-            const region = document.getElementById('region').value;
-            const dateNeeded = document.getElementById('dateNeeded').value;
-            const notes = document.getElementById('requestNotes').value.trim();
-            
-            if (currentDeliveryOption === 'deliver' && !address) {
-                alert('Please enter address for delivery!');
-                return;
-            }
-            
-            if(!requestorName || !userId || !shopId || !contactNumber || !storeStatus || !region || !dateNeeded) {
-                alert('Please fill all required fields!');
-                return;
-            }
-            
-            const phoneRegex = /^09\d{9}$/;
-            if (!phoneRegex.test(contactNumber)) {
-                alert('Please enter a valid Philippine mobile number (09XXXXXXXXX)');
-                return;
-            }
-            
-            currentUser.name = requestorName;
-            localStorage.setItem('infxUserName', requestorName);
-            document.getElementById('userDisplayName').textContent = requestorName;
-            document.getElementById('userAvatar').textContent = requestorName.charAt(0).toUpperCase();
-            
-            try {
-                const orderCounter = parseInt(localStorage.getItem('infxOrderCounter') || '1');
-                const orderNumber = orderCounter.toString().padStart(5, '0');
-                
-                // Update stock for each item in cart
-                for (const cartItem of cart) {
-                    const item = items.find(i => i.id == cartItem.itemId);
-                    if (item) {
-                        item.stock -= cartItem.quantity;
-                    }
-                }
-                
-                // Create the order object with correct date format
-                const newOrder = {
-                    id: orderCounter,
-                    requestor_name: requestorName,
-                    user_id: currentUser.id,
-                    shop_id: shopId,
-                    contact_number: contactNumber,
-                    address: currentDeliveryOption === 'deliver' ? address : 'Pickup Request',
-                    store_status: storeStatus,
-                    region: region,
-                    date_needed: dateNeeded, // Now in YYYY-MM-DD format
-                    notes: notes,
-                    delivery_option: currentDeliveryOption,
-                    created_at: new Date().toISOString(),
-                    status: 'pending',
-                    items: [...cart]
-                };
-                
-                // Save to Supabase
-                const { data, error } = await supabase
-                    .from('orders')
-                    .insert([newOrder]);
-                
-                if (error) throw error;
-                
-                // Update local storage
-                localStorage.setItem('infxOrderCounter', (orderCounter + 1).toString());
-                localStorage.setItem('infxMaterials', JSON.stringify(items));
-                
-                // Refresh orders from database
-                await loadOrders();
-                
-                // NOTIFY ADMINS ABOUT NEW ORDER
-                notifyAdminsAboutNewOrder(orderCounter, requestorName, shopId);
-                
-                // Clear cart
-                cart = [];
-                saveLocalData();
-                updateCartCount();
-                
-                // Clear form fields
-                document.getElementById('requestorName').value = '';
-                document.getElementById('userId').value = '';
-                document.getElementById('shopId').value = '';
-                document.getElementById('contactNumber').value = '';
-                document.getElementById('address').value = '';
-                document.getElementById('storeStatus').value = '';
-                document.getElementById('region').value = '';
-                document.getElementById('dateNeeded').value = '';
-                document.getElementById('requestNotes').value = '';
-                
-                hideCheckoutForm();
-                showOrderSuccessModal();
-                
-            } catch (error) {
-                console.error('Error submitting order:', error);
-                alert('Error submitting order: ' + error.message);
-            }
-        }
-        
-        function displayCustomerOrders() {
-            const customerOrders = document.getElementById('customerOrders');
-            customerOrders.innerHTML = '';
-            
-            // Filter orders for current user
-            const userOrders = orders.filter(order => 
-                order.user_id === currentUser.id
-            );
-            
-            let filteredOrders = userOrders;
-            if (currentOrderFilter !== 'all') {
-                filteredOrders = userOrders.filter(o => o.status === currentOrderFilter);
-            }
-            
-            if(filteredOrders.length === 0) {
-                let message = 'No requests found';
-                if (currentOrderFilter !== 'all') {
-                    message = `No ${currentOrderFilter.replace('-', ' ')} requests`;
-                }
-                
-                customerOrders.innerHTML = `
-                    <div style="text-align: center; padding: 30px; color: var(--text-light);">
-                        <h3 style="margin-bottom: 10px;">📭 ${message}</h3>
-                        <p style="margin-bottom: 15px; font-size: 13px;">${currentOrderFilter === 'all' ? 'Your submitted requests will appear here.' : 'No requests match this filter.'}</p>
-                        ${currentOrderFilter !== 'all' ? 
-                            `<button onclick="filterOrders('all')" style="margin-top: 10px; padding: 8px 15px; font-size: 13px;">
-                                View All Requests
-                            </button>` : 
-                            `<button onclick="switchTab('store')" style="margin-top: 10px; padding: 8px 15px; font-size: 13px;">
-                                🛍️ Browse Materials
-                            </button>`
-                        }
-                    </div>
-                `;
-                return;
-            }
-            
-            filteredOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            
-            filteredOrders.forEach(order => {
-                const orderDiv = document.createElement('div');
-                orderDiv.className = 'order-card';
-                
-                const orderNumber = order.id.toString().padStart(5, '0');
-                const itemsList = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
-                const totalItems = itemsList.reduce((sum, item) => sum + (item.quantity || 0), 0);
-                
-                orderDiv.innerHTML = `
-                    <div class="order-id" style="background: var(--surface-color); color: var(--text-primary); padding: 8px 15px; border-radius: 5px; font-family: 'Courier New', monospace; font-weight: 600; display: inline-block; margin: 4px 0; font-size: 16px; letter-spacing: 1px; border: 1px solid var(--border-color);">INFX${orderNumber}</div>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Requestor:</strong> ${order.requestor_name}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Shop:</strong> ${order.shop_id} • ${order.store_status} • ${order.region}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Contact:</strong> ${order.contact_number}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Needed:</strong> ${order.date_needed}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Date Requested:</strong> ${new Date(order.created_at).toLocaleDateString()}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Delivery:</strong> ${order.delivery_option === 'deliver' ? 'Delivery' : 'Pickup'}</p>
-                    <p style="font-size: 13px; color: var(--text-secondary);"><strong>Materials:</strong> ${totalItems} items</p>
-                    <div style="text-align: center; margin-top: 10px;">
-                        <span class="status ${order.status}">${order.status.replace('-', ' ').toUpperCase()}</span>
-                    </div>
-                `;
-                customerOrders.appendChild(orderDiv);
-            });
         }
         
         function filterOrders(status) {
@@ -4418,7 +4545,8 @@
         // ==============================================
         function updateHomeStats() {
             const userOrders = orders.filter(order => 
-                order.user_id === currentUser.id
+                order.userId === currentUser.id || 
+                order.requestorName.toLowerCase() === currentUser.name.toLowerCase()
             );
             
             document.getElementById('homeTotalProducts').textContent = items.length;
@@ -4497,7 +4625,6 @@
             }
             
             initializeAnnouncement();
-            initializeDarkMode();
             
             await Promise.all([loadItems(), loadCategories(), loadOrders()]);
             
@@ -4508,11 +4635,10 @@
             updateNotificationCount();
             
             if (document.getElementById('cart-tab').classList.contains('active')) {
-                // FIXED: Changed date format to YYYY-MM-DD for database compatibility
                 flatpickr("#dateNeeded", {
                     defaultDate: new Date(),
                     minDate: new Date(),
-                    dateFormat: "Y-m-d", // FIX: Changed format
+                    dateFormat: "d/m/Y",
                     disableMobile: true
                 });
             }
@@ -4522,6 +4648,9 @@
         // START THE APPLICATION
         // ==============================================
         window.onload = function() {
+            // Start galaxy background
+            initGalaxy();
+            
             if (currentUser.isAuthenticated) {
                 document.getElementById('mainContent').style.display = 'block';
                 document.getElementById('userDisplayName').textContent = currentUser.name;
